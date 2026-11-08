@@ -361,6 +361,11 @@ Viral Video Studio — Video enhancement plus viral toolkit app</textarea>
 <button id="resEditBtn" class="px-space-sm py-1.5 rounded-lg bg-slate-900 text-white font-label-caps text-label-caps" type="button">Edit Resume</button>
 </div>
 <p class="font-body-sm text-body-sm text-slate-600">This is how your resume will look. Use Edit Resume to change anything, even after downloading.</p>
+<div class="mt-2">
+<h3 class="font-title-md text-title-md font-bold text-on-surface">Choose a Design</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">16 designs inspired by open-source resume templates. Pick one — the preview, download and print all use it.</p>
+<div id="tplPicker" class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-2"></div>
+</div>
 <div id="resumePreview" class="border border-slate-200 rounded-lg p-space-md bg-white"></div>
 <div class="flex flex-wrap gap-space-xs">
 <button id="resDownload" class="px-space-md py-2 rounded-lg bg-primary-container text-on-primary-container font-label-caps text-label-caps font-bold" type="button">Download .HTML</button>
@@ -375,12 +380,80 @@ Viral Video Studio — Video enhancement plus viral toolkit app</textarea>
   (function () {
     var photoDataURL = "";
     var eduDynCount = 0;
+    var TEMPLATES = [
+      { id: "classic-navy", name: "Classic Navy", desc: "Dark navy banner, clean tables", layout: "single", header: "banner", section: "bar", accent: "#16324F", dark: "#16324F", headerBg: "#16324F", headerText: "#ffffff", subText: "#E0EBF2", thBg: "#DCE6F1", thText: "#16324F", labelBg: "#F0F4F8", nameFont: "sans", photo: "rect" },
+      { id: "twocolor-classic", name: "Two-Color Classic", desc: "Navy and green angled bars, tab headings", layout: "single", header: "topbar", section: "tab", accent: "#1F3864", dark: "#1F3864", headerBg: "#1F3864", headerText: "#ffffff", subText: "#E0EBF2", thBg: "#DCE6F1", thText: "#1F3864", labelBg: "#F0F4F8", nameFont: "serif", photo: "rect", bar2: "#6FA287" },
+      { id: "deepblue-sidebar", name: "Deep Blue Sidebar", desc: "Navy sidebar with photo, skills and contact", layout: "sidebar", header: "sidebar", section: "icon", accent: "#4487C6", dark: "#254665", headerBg: "#254665", headerText: "#ffffff", subText: "#D6E4F0", thBg: "#DCE6F1", thText: "#254665", labelBg: "#F0F4F8", nameFont: "sans", photo: "rect", sidebarBg: "#254665", sidebarText: "#ffffff" },
+      { id: "minimal-light", name: "Minimal Light", desc: "Airy and light, headings in a left column", layout: "labelcol", header: "plain", section: "label", accent: "#1F3864", dark: "#1F3864", headerBg: "#ffffff", headerText: "#1F2937", subText: "#6B7280", thBg: "#F1F5F9", thText: "#1F3864", labelBg: "#F8FAFC", nameFont: "sans", photo: "rect" },
+      { id: "curve-label", name: "Curve Label Classic", desc: "Rounded tab headings, teal accent", layout: "single", header: "banner", section: "tabround", accent: "#00C091", dark: "#16324F", headerBg: "#16324F", headerText: "#ffffff", subText: "#E0EBF2", thBg: "#D9F7EF", thText: "#0B6B52", labelBg: "#F0F4F8", nameFont: "sans", photo: "rect" },
+      { id: "elegant-twocolor", name: "Elegant Two-Color", desc: "Teal and slate, refined and calm", layout: "single", header: "banner", section: "bar", accent: "#00C091", dark: "#334155", headerBg: "#334155", headerText: "#ffffff", subText: "#D9F7EF", thBg: "#D9F7EF", thText: "#0B6B52", labelBg: "#F0F4F8", nameFont: "sans", photo: "rect" },
+      { id: "red-classic", name: "Red Classic", desc: "Bold red banner and ribbon headings", layout: "single", header: "banner", section: "ribbon", accent: "#C0392B", dark: "#7B241C", headerBg: "#C0392B", headerText: "#ffffff", subText: "#FDEDEC", thBg: "#FADBD8", thText: "#7B241C", labelBg: "#FDF2F2", nameFont: "sans", photo: "rect" },
+      { id: "blue-ribbon", name: "Blue Ribbon", desc: "Blue banner, ribbon headings", layout: "single", header: "banner", section: "ribbon", accent: "#2B8FD4", dark: "#1B5E8A", headerBg: "#2B8FD4", headerText: "#ffffff", subText: "#EAF4FC", thBg: "#D6EAF8", thText: "#1B5E8A", labelBg: "#EFF7FD", nameFont: "sans", photo: "rect" },
+      { id: "grey-classic", name: "Grey Classic", desc: "Understated grey monochrome", layout: "single", header: "banner", section: "bar", accent: "#5F6B7A", dark: "#374151", headerBg: "#5F6B7A", headerText: "#ffffff", subText: "#E5E7EB", thBg: "#E5E7EB", thText: "#374151", labelBg: "#F3F4F6", nameFont: "sans", photo: "rect" },
+      { id: "professional-blue", name: "Professional Blue", desc: "Confident blue, crisp lines", layout: "single", header: "banner", section: "bar", accent: "#0B70BD", dark: "#0B3D66", headerBg: "#0B70BD", headerText: "#ffffff", subText: "#D6EAF8", thBg: "#D6EAF8", thText: "#0B3D66", labelBg: "#EFF7FD", nameFont: "sans", photo: "rect" },
+      { id: "tech-creative", name: "Tech Creative", desc: "Dark header, cyan accent", layout: "single", header: "darktech", section: "line", accent: "#00C2FF", dark: "#1A1A2E", headerBg: "#1A1A2E", headerText: "#ffffff", subText: "#A5F3FC", thBg: "#E0F2FE", thText: "#0C4A6E", labelBg: "#F0F9FF", nameFont: "sans", photo: "rect" },
+      { id: "line-creative", name: "Line Creative", desc: "Accent side-lines on headings", layout: "single", header: "banner", section: "line", accent: "#2C3E50", dark: "#2C3E50", headerBg: "#2C3E50", headerText: "#ffffff", subText: "#D5D8DC", thBg: "#EAEDED", thText: "#2C3E50", labelBg: "#F2F3F4", nameFont: "sans", photo: "rect" },
+      { id: "ink-elegant", name: "Ink Elegant", desc: "Black ink, serif name, centered", layout: "single", header: "center", section: "bar", accent: "#1A1A1A", dark: "#1A1A1A", headerBg: "#ffffff", headerText: "#1A1A1A", subText: "#4B5563", thBg: "#F3F4F6", thText: "#1A1A1A", labelBg: "#F9FAFB", nameFont: "serif", photo: "rect" },
+      { id: "yellow-accent", name: "Yellow Accent", desc: "Grey and white with a yellow pop", layout: "single", header: "banner", section: "bar", accent: "#D9A400", dark: "#3A3F44", headerBg: "#3A3F44", headerText: "#ffffff", subText: "#FEF3C7", thBg: "#FEF3C7", thText: "#713F12", labelBg: "#FFFBEB", nameFont: "sans", photo: "rect" },
+      { id: "fashion-twocol", name: "Fashion Two-Column", desc: "Curved navy sidebar with timeline", layout: "sidebar", header: "sidebar", section: "icon", accent: "#254665", dark: "#254665", headerBg: "#254665", headerText: "#ffffff", subText: "#D6E4F0", thBg: "#DCE6F1", thText: "#254665", labelBg: "#F0F4F8", nameFont: "sans", photo: "circle", sidebarBg: "#254665", sidebarText: "#ffffff", sidebarCurve: true },
+      { id: "titlebar-classic", name: "Title Bar Classic", desc: "Centered title bar, classic feel", layout: "single", header: "center", section: "bar", accent: "#16324F", dark: "#16324F", headerBg: "#16324F", headerText: "#ffffff", subText: "#E0EBF2", thBg: "#DCE6F1", thText: "#16324F", labelBg: "#F0F4F8", nameFont: "sans", photo: "rect" }
+    ];
+    var activeTemplateId = "classic-navy";
+    function tpl() { for (var i = 0; i < TEMPLATES.length; i++) { if (TEMPLATES[i].id === activeTemplateId) return TEMPLATES[i]; } return TEMPLATES[0]; }
+    function tplCardHTML(tp) {
+      var sel = tp.id === activeTemplateId;
+      var sw = '<div style="height: 56px; border-radius: 6px; overflow: hidden; border: 1px solid #cbd5e1; background: #ffffff;">'
+        + '<div style="height: 18px; background: ' + tp.headerBg + ';"></div>'
+        + '<div style="height: 8px; margin: 6px 8px 0; background: ' + tp.accent + '; width: 45%; border-radius: 2px;"></div>'
+        + '<div style="height: 4px; margin: 6px 8px 0; background: #cbd5e1; border-radius: 2px;"></div>'
+        + '<div style="height: 4px; margin: 4px 8px 0; background: #e2e8f0; border-radius: 2px; width: 70%;"></div></div>';
+      return '<button type="button" data-tpl="' + tp.id + '" class="tpl-card text-left rounded-lg p-2 ' + (sel ? 'ring-2 ring-violet-400 bg-white/10' : 'bg-white/5 hover:bg-white/10') + '">'
+        + sw
+        + '<div class="font-body-sm text-body-sm font-semibold text-on-surface mt-1">' + tp.name + '</div>'
+        + '<div class="text-[11px] leading-4 text-on-surface-variant">' + tp.desc + '</div></button>';
+    }
+    function renderTemplatePicker() {
+      var p = document.getElementById("tplPicker");
+      if (!p) return;
+      p.innerHTML = TEMPLATES.map(tplCardHTML).join("");
+      p.querySelectorAll(".tpl-card").forEach(function (b) {
+        b.addEventListener("click", function () { activeTemplateId = b.getAttribute("data-tpl"); renderTemplatePicker(); renderResume(); });
+      });
+    }
+
     function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
     function val(id) { var el = document.getElementById(id); return el ? el.value : ""; }
     function section(title) {
-      return '<div style="font-size: 15px; font-weight: bold; color: #16324F; text-transform: uppercase; margin-top: 18px; margin-bottom: 6px;">' + title + '</div>';
+      var t = tpl();
+      if (t.section === "tab" || t.section === "tabround") {
+        var rad = t.section === "tabround" ? "border-radius: 0 12px 12px 0;" : "";
+        return '<div style="margin-top: 18px; margin-bottom: 0;"><span style="display: inline-block; background: ' + t.accent + '; color: #ffffff; font-size: 15px; font-weight: bold; text-transform: uppercase; padding: 5px 16px; ' + rad + '">' + title + '</span></div><div style="border-top: 2px solid ' + t.accent + '; margin-bottom: 8px;"></div>';
+      }
+      if (t.section === "ribbon") {
+        return '<div style="margin-top: 18px; margin-bottom: 0;"><span style="display: inline-block; background: ' + t.accent + '; color: #ffffff; font-size: 15px; font-weight: bold; text-transform: uppercase; padding: 5px 16px; border-radius: 2px;">' + title + '</span></div><div style="border-top: 2px solid ' + t.accent + '; margin-bottom: 8px;"></div>';
+      }
+      if (t.section === "icon") {
+        var ch = title.charAt(0);
+        return '<div style="font-size: 15px; font-weight: bold; color: ' + t.dark + '; text-transform: uppercase; margin-top: 18px; margin-bottom: 6px; padding-bottom: 5px; border-bottom: 2px solid ' + t.accent + ';"><span style="display: inline-block; width: 24px; height: 24px; border-radius: 50%; background: ' + t.dark + '; color: #ffffff; text-align: center; line-height: 24px; font-size: 13px; margin-right: 10px; vertical-align: middle;">' + ch + '</span>' + title + '</div>';
+      }
+      if (t.section === "line") {
+        return '<div style="font-size: 15px; font-weight: bold; color: ' + t.dark + '; text-transform: uppercase; margin-top: 18px; margin-bottom: 6px; border-left: 4px solid ' + t.accent + '; padding-left: 10px;">' + title + '</div>';
+      }
+      return '<div style="font-size: 15px; font-weight: bold; color: ' + t.accent + '; text-transform: uppercase; margin-top: 18px; margin-bottom: 6px;">' + title + '</div>';
+    }
+    function photoHTML(w, h) {
+      var t = tpl();
+      var br = t.photo === "circle" ? "border-radius: 50%;" : "";
+      var inner = "";
+      if (photoDataURL) {
+        inner = '<img src="' + photoDataURL + '" style="width: 100%; height: 100%; object-fit: cover; display: block;" alt="Photo"/>';
+      } else {
+        inner = '<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; text-align: center; color: #ffffff; font-weight: bold; font-size: 14px; line-height: 1.4;">ADD<br/>PHOTO<br/>HERE</div>';
+      }
+      return '<div style="width: ' + w + 'px; height: ' + h + 'px; border: 2px solid #ffffff; background: ' + t.dark + '; overflow: hidden; ' + br + '">' + inner + '</div>';
     }
     function headerHTML() {
+      var t = tpl();
       var name = val("resName").trim() || "Your Name";
       var title = val("resTitle").trim();
       var email = val("resEmail").trim();
@@ -390,25 +463,51 @@ Viral Video Studio — Video enhancement plus viral toolkit app</textarea>
       if (phone) parts.push("PHONE  " + phone);
       if (email) parts.push("EMAIL  " + email);
       var contact1 = parts.join("   |   ");
-      var photoBox = "";
-      if (photoDataURL) {
-        photoBox = '<img src="' + photoDataURL + '" style="width: 100%; height: 100%; object-fit: cover; display: block;" alt="Photo"/>';
-      } else {
-        photoBox = '<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; text-align: center; color: #ffffff; font-weight: bold; font-size: 14px; line-height: 1.4;">ADD<br/>PHOTO<br/>HERE</div>';
+      var nameStyle = t.nameFont === "serif" ? "Georgia, 'Times New Roman', serif" : "inherit";
+      if (t.header === "center") {
+        var h = '<div style="text-align: center; padding: 18px 10px 14px; background: ' + t.headerBg + '; border-bottom: 3px solid ' + t.accent + ';">';
+        h += '<div style="font-family: ' + nameStyle + '; font-size: 32px; font-weight: bold; color: ' + t.headerText + '; line-height: 1.2;">' + esc(name) + '</div>';
+        if (title) h += '<div style="font-size: 14px; color: ' + t.subText + '; margin-top: 4px;">' + esc(title) + '</div>';
+        if (contact1) h += '<div style="font-size: 12px; color: ' + t.subText + '; margin-top: 6px;">' + esc(contact1) + '</div>';
+        if (website) h += '<div style="font-size: 12px; color: ' + t.subText + '; margin-top: 2px;">' + esc(website) + '</div>';
+        h += '</div>';
+        return h;
       }
-      var h = '<div style="display: table; width: 100%; background: #16324F;">';
-      h += '<div style="display: table-cell; vertical-align: middle; padding: 20px;">';
-      h += '<div style="font-size: 30px; font-weight: bold; color: #ffffff; line-height: 1.2;">' + esc(name) + '</div>';
-      if (title) h += '<div style="font-size: 14px; color: #E0EBF2; margin-top: 4px;">' + esc(title) + '</div>';
-      if (contact1) h += '<div style="font-size: 12px; color: #E0EBF2; margin-top: 6px;">' + esc(contact1) + '</div>';
-      if (website) h += '<div style="font-size: 12px; color: #E0EBF2; margin-top: 2px;">' + esc(website) + '</div>';
-      h += '</div>';
-      h += '<div style="display: table-cell; width: 170px; vertical-align: middle; padding: 10px;">';
-      h += '<div style="width: 150px; height: 170px; border: 2px solid #ffffff; background: #16324F; overflow: hidden;">' + photoBox + '</div>';
-      h += '</div>';
-      h += '</div>';
-      return h;
+      if (t.header === "plain") {
+        var h2 = '<div style="display: table; width: 100%;">';
+        h2 += '<div style="display: table-cell; width: 170px; vertical-align: top; padding: 4px 16px 4px 0;">' + photoHTML(150, 170) + '</div>';
+        h2 += '<div style="display: table-cell; vertical-align: middle;">';
+        h2 += '<div style="font-family: ' + nameStyle + '; font-size: 34px; font-weight: bold; color: ' + t.headerText + '; line-height: 1.15;">' + esc(name) + '</div>';
+        if (title) h2 += '<div style="font-size: 14px; color: ' + t.subText + '; margin-top: 6px;">' + esc(title) + '</div>';
+        if (contact1) h2 += '<div style="font-size: 12px; color: ' + t.subText + '; margin-top: 8px;">' + esc(contact1) + '</div>';
+        if (website) h2 += '<div style="font-size: 12px; color: ' + t.subText + '; margin-top: 2px;">' + esc(website) + '</div>';
+        h2 += '</div></div>';
+        return h2;
+      }
+      if (t.header === "topbar") {
+        var h3 = '<div style="padding: 6px 0 0;">';
+        h3 += '<div style="font-family: ' + nameStyle + '; font-size: 30px; font-weight: bold; color: ' + t.dark + '; line-height: 1.2;">' + esc(name) + '</div>';
+        if (title) h3 += '<div style="font-size: 14px; color: ' + t.subText + '; margin-top: 4px;">' + esc(title) + '</div>';
+        h3 += '<div style="display: flex; margin-top: 12px;"><div style="flex: 3; height: 14px; background: ' + t.dark + '; clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 100%, 0 100%);"></div><div style="flex: 1; height: 14px; background: ' + (t.bar2 || t.accent) + '; clip-path: polygon(14px 0, 100% 0, 100% 100%, 0 100%); margin-left: 8px;"></div></div>';
+        h3 += '<div style="display: table; width: 100%; margin-top: 14px;"><div style="display: table-cell; vertical-align: middle;">';
+        if (contact1) h3 += '<div style="font-size: 12px; color: #6B7280;">' + esc(contact1) + '</div>';
+        if (website) h3 += '<div style="font-size: 12px; color: #6B7280; margin-top: 2px;">' + esc(website) + '</div>';
+        h3 += '</div><div style="display: table-cell; width: 170px; vertical-align: middle; padding: 10px;">' + photoHTML(150, 170) + '</div></div></div>';
+        return h3;
+      }
+      var h4 = '<div style="display: table; width: 100%; background: ' + t.headerBg + ';">';
+      h4 += '<div style="display: table-cell; vertical-align: middle; padding: 20px;">';
+      h4 += '<div style="font-family: ' + nameStyle + '; font-size: 30px; font-weight: bold; color: ' + t.headerText + '; line-height: 1.2;">' + esc(name) + '</div>';
+      if (title) h4 += '<div style="font-size: 14px; color: ' + t.subText + '; margin-top: 4px;">' + esc(title) + '</div>';
+      if (contact1) h4 += '<div style="font-size: 12px; color: ' + t.subText + '; margin-top: 6px;">' + esc(contact1) + '</div>';
+      if (website) h4 += '<div style="font-size: 12px; color: ' + t.subText + '; margin-top: 2px;">' + esc(website) + '</div>';
+      h4 += '</div>';
+      h4 += '<div style="display: table-cell; width: 170px; vertical-align: middle; padding: 10px;">' + photoHTML(150, 170) + '</div>';
+      h4 += '</div>';
+      return h4;
     }
+
+
         function eduRows() {
       var rows = [];
       [["edu10_qual", "edu10_school", "edu10_board", "edu10_year", "edu10_marks"],
@@ -445,55 +544,105 @@ Viral Video Studio — Video enhancement plus viral toolkit app</textarea>
       if (rm) rm.addEventListener("click", function () { tr.remove(); renderResume(); });
     }
     function resumeBodyHTML() {
+      var t = tpl();
       var about = val("resAbout").trim();
       var skills = val("resSkills").split(",").map(function (x) { return x.trim(); }).filter(Boolean);
       var projects = val("resProjects").split("\n").map(function (x) { return x.trim(); }).filter(Boolean);
       var edu = eduRows();
       var name = val("resName").trim() || "Your Name";
-      var h = '<div style="font-family: Aptos Display, Arial, Helvetica, sans-serif; color: #1f2937; line-height: 1.5;">';
-      h += headerHTML();
-      if (about) h += section("Professional Summary / Career Objective") + '<div style="font-size: 14px;">' + esc(about) + '</div>';
+      var cert = val("resCert").split("\n").map(function (x) { return x.trim(); }).filter(Boolean);
+      var personal = [["Father's Name", "resFather"], ["Date of Birth", "resDob"], ["Gender", "resGender"], ["Religion", "resReligion"], ["Nationality", "resNationality"], ["Marital Status", "resMarital"], ["Languages Known", "resLanguages"]].map(function (pair) { return [pair[0], val(pair[1]).trim()]; }).filter(function (r) { return r[1]; });
+      var secs = [];
+      if (about) secs.push({ id: "summary", title: "Professional Summary / Career Objective", html: '<div style="font-size: 14px;">' + esc(about) + '</div>' });
       if (edu.length) {
-        h += section("Education") + '<table style="width: 100%; border-collapse: collapse; font-size: 14px;">';
-        h += '<tr><th style="border: 1px solid #94a3b8; background: #DCE6F1; color: #16324F; font-weight: bold; padding: 6px 8px; text-align: left;">Qualification</th><th style="border: 1px solid #94a3b8; background: #DCE6F1; color: #16324F; font-weight: bold; padding: 6px 8px; text-align: left;">School / College</th><th style="border: 1px solid #94a3b8; background: #DCE6F1; color: #16324F; font-weight: bold; padding: 6px 8px; text-align: left;">Board / University</th><th style="border: 1px solid #94a3b8; background: #DCE6F1; color: #16324F; font-weight: bold; padding: 6px 8px; text-align: left;">Year</th><th style="border: 1px solid #94a3b8; background: #DCE6F1; color: #16324F; font-weight: bold; padding: 6px 8px; text-align: left;">Marks</th></tr>';
+        var eh = '<table style="width: 100%; border-collapse: collapse; font-size: 14px;">';
+        eh += '<tr><th style="border: 1px solid #94a3b8; background: ' + t.thBg + '; color: ' + t.thText + '; font-weight: bold; padding: 6px 8px; text-align: left;">Qualification</th><th style="border: 1px solid #94a3b8; background: ' + t.thBg + '; color: ' + t.thText + '; font-weight: bold; padding: 6px 8px; text-align: left;">School / College</th><th style="border: 1px solid #94a3b8; background: ' + t.thBg + '; color: ' + t.thText + '; font-weight: bold; padding: 6px 8px; text-align: left;">Board / University</th><th style="border: 1px solid #94a3b8; background: ' + t.thBg + '; color: ' + t.thText + '; font-weight: bold; padding: 6px 8px; text-align: left;">Year</th><th style="border: 1px solid #94a3b8; background: ' + t.thBg + '; color: ' + t.thText + '; font-weight: bold; padding: 6px 8px; text-align: left;">Marks</th></tr>';
         edu.forEach(function (r) {
-          h += '<tr><td style="border: 1px solid #94a3b8; padding: 6px 8px;">' + esc(r[0]) + '</td><td style="border: 1px solid #94a3b8; padding: 6px 8px;">' + esc(r[1]) + '</td><td style="border: 1px solid #94a3b8; padding: 6px 8px;">' + esc(r[2]) + '</td><td style="border: 1px solid #94a3b8; padding: 6px 8px;">' + esc(r[3]) + '</td><td style="border: 1px solid #94a3b8; padding: 6px 8px;">' + esc(r[4]) + '</td></tr>';
+          eh += '<tr><td style="border: 1px solid #94a3b8; padding: 6px 8px;">' + esc(r[0]) + '</td><td style="border: 1px solid #94a3b8; padding: 6px 8px;">' + esc(r[1]) + '</td><td style="border: 1px solid #94a3b8; padding: 6px 8px;">' + esc(r[2]) + '</td><td style="border: 1px solid #94a3b8; padding: 6px 8px;">' + esc(r[3]) + '</td><td style="border: 1px solid #94a3b8; padding: 6px 8px;">' + esc(r[4]) + '</td></tr>';
         });
-        h += '</table>';
+        eh += '</table>';
+        secs.push({ id: "education", title: "Education", html: eh });
       }
       if (projects.length) {
-        h += section("Work Experience") + '<ul style="font-size: 14px; margin: 0; padding-left: 20px;">';
+        var ph = '<ul style="font-size: 14px; margin: 0; padding-left: 20px;">';
         projects.forEach(function (line) {
           var parts = line.split(" — ");
-          if (parts.length > 1) h += '<li><b>' + esc(parts[0]) + '</b> — ' + esc(parts.slice(1).join(" — ")) + '</li>';
-          else h += '<li>' + esc(line) + '</li>';
+          if (parts.length > 1) ph += '<li><b>' + esc(parts[0]) + '</b> — ' + esc(parts.slice(1).join(" — ")) + '</li>';
+          else ph += '<li>' + esc(line) + '</li>';
         });
-        h += '</ul>';
+        ph += '</ul>';
+        secs.push({ id: "experience", title: "Work Experience", html: ph });
       }
       if (skills.length) {
-        h += section("Key Skills") + '<ul style="font-size: 14px; margin: 0; padding-left: 20px;">';
-        skills.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
-        h += '</ul>';
+        var sh = '<ul style="font-size: 14px; margin: 0; padding-left: 20px;">';
+        skills.forEach(function (line) { sh += '<li>' + esc(line) + '</li>'; });
+        sh += '</ul>';
+        secs.push({ id: "skills", title: "Key Skills", html: sh });
       }
-            var cert = val("resCert").split("\n").map(function (x) { return x.trim(); }).filter(Boolean);
       if (cert.length) {
-        h += section("Certifications / Training");
-        cert.forEach(function (line) { h += '<div style="font-size: 14px;">' + esc(line) + '</div>'; });
+        var ch = '';
+        cert.forEach(function (line) { ch += '<div style="font-size: 14px;">' + esc(line) + '</div>'; });
+        secs.push({ id: "certs", title: "Certifications / Training", html: ch });
       }
-      var personal = [["Father's Name", "resFather"], ["Date of Birth", "resDob"], ["Gender", "resGender"], ["Religion", "resReligion"], ["Nationality", "resNationality"], ["Marital Status", "resMarital"], ["Languages Known", "resLanguages"]].map(function (pair) { return [pair[0], val(pair[1]).trim()]; }).filter(function (r) { return r[1]; });
       if (personal.length) {
-        h += section("Personal Details") + '<table style="width: 100%; border-collapse: collapse; font-size: 14px;">';
+        var prh = '<table style="width: 100%; border-collapse: collapse; font-size: 14px;">';
         personal.forEach(function (r) {
-          h += '<tr><td style="border: 1px solid #94a3b8; background: #F0F4F8; color: #16324F; font-weight: bold; padding: 6px 8px;">' + esc(r[0]) + '</td><td style="border: 1px solid #94a3b8; padding: 6px 8px;">' + esc(r[1]) + '</td></tr>';
+          prh += '<tr><td style="border: 1px solid #94a3b8; background: ' + t.labelBg + '; color: ' + t.thText + '; font-weight: bold; padding: 6px 8px;">' + esc(r[0]) + '</td><td style="border: 1px solid #94a3b8; padding: 6px 8px;">' + esc(r[1]) + '</td></tr>';
         });
-        h += '</table>';
+        prh += '</table>';
+        secs.push({ id: "personal", title: "Personal Details", html: prh });
       }
-h += section("Declaration") + '<div style="font-size: 14px;">I hereby declare that the information provided above is true and correct to the best of my knowledge.</div>';
-      h += '<div style="font-size: 14px; font-weight: bold; margin-top: 16px;">Place: __________________&nbsp;&nbsp;&nbsp;&nbsp;Date: __________________</div>';
-      h += '<div style="font-size: 14px; text-align: right; margin-top: 16px;"><b>Signature</b><br/>(' + esc(name) + ')</div>';
+      var declTitle = "Declaration";
+      var declHtml = '<div style="font-size: 14px;">I hereby declare that the information provided above is true and correct to the best of my knowledge.</div>'
+        + '<div style="font-size: 14px; font-weight: bold; margin-top: 16px;">Place: __________________&nbsp;&nbsp;&nbsp;&nbsp;Date: __________________</div>'
+        + '<div style="font-size: 14px; text-align: right; margin-top: 16px;"><b>Signature</b><br/>(' + esc(name) + ')</div>';
+      var bodyFont = "Aptos Display, Arial, Helvetica, sans-serif";
+      function secById(id) { for (var i = 0; i < secs.length; i++) { if (secs[i].id === id) return secs[i]; } return null; }
+      if (t.layout === "sidebar") {
+        var email = val("resEmail").trim(), phone = val("resPhone").trim(), website = val("resWebsite").trim();
+        var sk = secById("skills"), ps = secById("personal");
+        var side = '<div style="display: table-cell; width: 250px; background: ' + t.sidebarBg + '; color: ' + t.sidebarText + '; padding: 24px 18px; vertical-align: top;' + (t.sidebarCurve ? ' border-radius: 0 0 110px 0;' : '') + '">';
+        side += '<div style="text-align: center;">' + photoHTML(140, 160) + '</div>';
+        side += '<div style="font-size: 24px; font-weight: bold; text-align: center; margin-top: 14px; line-height: 1.2;">' + esc(name) + '</div>';
+        var ttl = val("resTitle").trim();
+        if (ttl) side += '<div style="font-size: 13px; text-align: center; margin-top: 6px; opacity: 0.85;">' + esc(ttl) + '</div>';
+        side += '<div style="margin-top: 18px; font-size: 13px; line-height: 1.9;">';
+        if (phone) side += '<div>Phone: ' + esc(phone) + '</div>';
+        if (email) side += '<div>Email: ' + esc(email) + '</div>';
+        if (website) side += '<div>' + esc(website) + '</div>';
+        side += '</div>';
+        if (sk) side += '<div style="font-size: 14px; font-weight: bold; text-transform: uppercase; margin-top: 22px; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.4); padding-bottom: 4px;">Key Skills</div>' + sk.html;
+        if (ps) {
+          side += '<div style="font-size: 14px; font-weight: bold; text-transform: uppercase; margin-top: 22px; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.4); padding-bottom: 4px;">Personal Details</div><div style="font-size: 13px; line-height: 1.9;">';
+          personal.forEach(function (r) { side += '<div><b>' + esc(r[0]) + ':</b> ' + esc(r[1]) + '</div>'; });
+          side += '</div>';
+        }
+        side += '</div>';
+        var main = '<div style="display: table-cell; vertical-align: top; padding: 24px 22px;">';
+        secs.forEach(function (s) { if (s.id !== "skills" && s.id !== "personal") main += section(s.title) + s.html; });
+        main += section(declTitle) + declHtml;
+        main += '</div>';
+        return '<div style="font-family: ' + bodyFont + '; color: #1f2937; line-height: 1.5;"><div style="display: table; width: 100%;">' + side + main + '</div></div>';
+      }
+      if (t.layout === "labelcol") {
+        var lh = '<div style="font-family: ' + bodyFont + '; color: #1f2937; line-height: 1.5;">';
+        lh += headerHTML();
+        lh += '<table style="width: 100%; border-collapse: collapse; margin-top: 10px;">';
+        secs.forEach(function (s) {
+          lh += '<tr><td style="width: 150px; vertical-align: top; padding: 12px 12px 12px 0; font-size: 15px; font-weight: bold; color: ' + t.dark + '; text-transform: uppercase;">' + s.title + '</td><td style="vertical-align: top; padding: 12px 0;">' + s.html + '</td></tr>';
+        });
+        lh += '<tr><td style="width: 150px; vertical-align: top; padding: 12px 12px 12px 0; font-size: 15px; font-weight: bold; color: ' + t.dark + '; text-transform: uppercase;">' + declTitle + '</td><td style="vertical-align: top; padding: 12px 0;">' + declHtml + '</td></tr>';
+        lh += '</table></div>';
+        return lh;
+      }
+      var h = '<div style="font-family: ' + bodyFont + '; color: #1f2937; line-height: 1.5;">';
+      h += headerHTML();
+      secs.forEach(function (s) { h += section(s.title) + s.html; });
+      h += section(declTitle) + declHtml;
       h += '</div>';
       return h;
     }
+
     function resumeDocHTML() {
       var name = val("resName").trim() || "Your Name";
       return '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8"/>\n<title>Resume - ' + esc(name) + '</title>\n<style>body{margin:0;padding:40px;background:#f3f4f6;} .page{max-width:800px;margin:0 auto;background:#ffffff;padding:40px;}</style>\n</head>\n<body>\n<div class="page">' + resumeBodyHTML() + '</div>\n</body>\n</html>';
@@ -595,6 +744,7 @@ h += section("Declaration") + '<div style="font-size: 14px;">I hereby declare th
     var addRowBtn = document.getElementById("eduAddRow");
     if (addRowBtn) addRowBtn.addEventListener("click", addEduRow);
     renderResume();
+    renderTemplatePicker();
   })();
 </script>
 </body></html>
