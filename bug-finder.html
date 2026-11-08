@@ -850,7 +850,7 @@
   (function () {
     function getHistory() { try { return JSON.parse(localStorage.getItem("realScannerHistory") || "[]"); } catch (e) { return []; } }
     function sevColor(sev) { var m = { PASS: "text-tertiary", HIGH: "text-error", MED: "text-secondary", LOW: "text-primary", INFO: "text-outline" }; return m[sev] || "text-outline"; }
-    function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+    function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;"); }
     function smallestContaining(texts) {
       var best = null, bestLen = Infinity;
       var els = document.querySelectorAll("body *");
@@ -963,7 +963,9 @@
           filtered.forEach(function (c) {
             var card = document.createElement("div");
             card.className = "rounded-lg bg-surface-container-lowest p-space-sm transition-all shadow-sm";
-            card.innerHTML = '<div class="flex items-center gap-space-xs"><span class="font-title-md text-title-md text-on-surface font-semibold">' + esc(c.title) + '</span><span class="font-label-caps text-label-caps uppercase px-1.5 py-0.5 rounded ' + sevColor(c.severity) + '">' + c.severity + ' • ' + c.status + '</span></div><p class="font-body-sm text-body-sm text-on-surface-variant">' + esc(c.detail) + '</p>' + (c.fix ? '<div class="mt-space-sm rounded bg-surface-container-lowest p-space-sm"><span class="font-label-caps text-label-caps text-outline block mb-1">FIX</span><code class="font-code-sm text-code-sm text-tertiary block whitespace-pre-wrap">' + esc(c.fix) + '</code></div>' : '') + '<button class="mt-space-sm px-space-sm py-1 rounded bg-primary-container text-on-primary-container font-label-caps text-label-caps" type="button" onclick="showRealFix(\'' + c.id + '\')">SHOW FIX IN PREVIEW</button>';
+            card.innerHTML = '<div class="flex items-center gap-space-xs"><span class="font-title-md text-title-md text-on-surface font-semibold">' + esc(c.title) + '</span><span class="font-label-caps text-label-caps uppercase px-1.5 py-0.5 rounded ' + sevColor(c.severity) + '">' + esc(c.severity) + ' • ' + esc(c.status) + '</span></div><p class="font-body-sm text-body-sm text-on-surface-variant">' + esc(c.detail) + '</p>' + (c.fix ? '<div class="mt-space-sm rounded bg-surface-container-lowest p-space-sm"><span class="font-label-caps text-label-caps text-outline block mb-1">FIX</span><code class="font-code-sm text-code-sm text-tertiary block whitespace-pre-wrap">' + esc(c.fix) + '</code></div>' : '') + '<button class="mt-space-sm px-space-sm py-1 rounded bg-primary-container text-on-primary-container font-label-caps text-label-caps" type="button" data-fix-id="' + esc(c.id) + '">SHOW FIX IN PREVIEW</button>';
+            var fixBtn = card.querySelector("[data-fix-id]");
+            if (fixBtn) fixBtn.addEventListener("click", function () { showRealFix(fixBtn.getAttribute("data-fix-id")); });
             wrap.appendChild(card);
           });
         }
@@ -978,7 +980,7 @@
       if (!c) return;
       var frame = document.getElementById("emulator-frame");
       if (frame) {
-        frame.innerHTML = '<div class="p-space-md space-y-space-xs"><p class="font-title-md font-semibold">' + esc(c.title) + '</p><p class="font-body-sm text-body-sm text-on-surface-variant">' + esc(c.detail) + '</p><div class="rounded bg-surface-container-lowest p-space-sm"><span class="font-label-caps text-label-caps text-outline block mb-1">CURRENT STATE</span><code class="font-code-sm text-code-sm text-error block">' + c.status + '</code></div><div class="rounded bg-surface-container-lowest p-space-sm"><span class="font-label-caps text-label-caps text-outline block mb-1">FIX TO APPLY ON YOUR SERVER</span><code class="font-code-sm text-code-sm text-tertiary block whitespace-pre-wrap">' + esc(c.fix || "No fix needed.") + '</code></div><p class="font-body-sm text-body-sm text-on-surface-variant">This tool shows the fix. It cannot change your server. Apply the directive above in your server config.</p></div>';
+        frame.innerHTML = '<div class="p-space-md space-y-space-xs"><p class="font-title-md font-semibold">' + esc(c.title) + '</p><p class="font-body-sm text-body-sm text-on-surface-variant">' + esc(c.detail) + '</p><div class="rounded bg-surface-container-lowest p-space-sm"><span class="font-label-caps text-label-caps text-outline block mb-1">CURRENT STATE</span><code class="font-code-sm text-code-sm text-error block">' + esc(c.status) + '</code></div><div class="rounded bg-surface-container-lowest p-space-sm"><span class="font-label-caps text-label-caps text-outline block mb-1">FIX TO APPLY ON YOUR SERVER</span><code class="font-code-sm text-code-sm text-tertiary block whitespace-pre-wrap">' + esc(c.fix || "No fix needed.") + '</code></div><p class="font-body-sm text-body-sm text-on-surface-variant">This tool shows the fix. It cannot change your server. Apply the directive above in your server config.</p></div>';
         frame.scrollIntoView({ behavior: "smooth", block: "center" });
       }
     };
