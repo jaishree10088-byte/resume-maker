@@ -508,9 +508,11 @@
     if (logoInput) logoInput.addEventListener("change", function () {
       var f = logoInput.files && logoInput.files[0];
       if (!f) return;
+      if (f.type && f.type.indexOf("image/") !== 0) { setStatus("Please choose an image file (JPG or PNG) for the logo."); logoInput.value = ""; return; }
       var reader = new FileReader();
       reader.onload = function () {
         var img = new Image();
+        img.onerror = function () { logoDataURL = ""; setStatus("That file could not be read as an image. Please choose a JPG or PNG logo."); };
         img.onload = function () {
           if (img.width && img.height) {
             var maxW = 480;
@@ -521,7 +523,9 @@
             cv.getContext("2d").drawImage(img, 0, 0, cv.width, cv.height);
             logoDataURL = cv.toDataURL("image/png");
           } else {
-            logoDataURL = reader.result;
+            logoDataURL = "";
+            setStatus("That file could not be used as a logo. Please choose a JPG or PNG image.");
+            return;
           }
           var lp = document.getElementById("logo-preview");
           if (lp) { lp.src = logoDataURL; lp.style.display = "block"; }
