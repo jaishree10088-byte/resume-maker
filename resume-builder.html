@@ -729,6 +729,7 @@ Viral Video Studio — Video enhancement plus viral toolkit app</textarea>
     }
     function handlePhoto(file) {
       if (!file) return;
+      if (file.type && file.type.indexOf("image/") !== 0) { alert("Please choose an image file (JPG or PNG) for the photo."); return; }
       var reader = new FileReader();
       reader.onload = function (e) {
         var img = new Image();
@@ -744,11 +745,12 @@ Viral Video Studio — Video enhancement plus viral toolkit app</textarea>
             ctx.drawImage(img, 0, 0, cw, ch);
             photoDataURL = cv.toDataURL("image/jpeg", 0.85);
           } catch (err) {
-            photoDataURL = e.target.result;
+            photoDataURL = "";
+            alert("That image could not be used (SVG or protected image). Please choose a JPG or PNG photo.");
           }
           afterPhoto();
         };
-        img.onerror = function () { photoDataURL = e.target.result; afterPhoto(); };
+        img.onerror = function () { alert("That file could not be read as an image. Please choose a JPG or PNG photo."); };
         img.src = e.target.result;
       };
       reader.readAsDataURL(file);
