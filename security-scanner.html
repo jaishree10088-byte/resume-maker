@@ -512,11 +512,12 @@
       const map = { PASS: "text-tertiary", HIGH: "text-error", MED: "text-secondary", LOW: "text-primary", INFO: "text-outline" };
       return map[sev] || "text-outline";
     }
+    function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;"); }
     function addLog(tag, text, color) {
       const terminal = document.getElementById("terminalStream");
       const row = document.createElement("div");
       row.className = "flex items-start gap-space-xs";
-      row.innerHTML = '<span class="text-outline shrink-0">[' + nowTime() + ']</span><span class="' + color + ' shrink-0">' + tag + ':</span><span class="text-on-surface">' + text + '</span>';
+      row.innerHTML = '<span class="text-outline shrink-0">[' + nowTime() + ']</span><span class="' + color + ' shrink-0">' + esc(tag) + ':</span><span class="text-on-surface">' + esc(text) + '</span>';
       terminal.appendChild(row);
       terminal.scrollTop = terminal.scrollHeight;
     }
@@ -595,8 +596,8 @@
         data.checks.forEach(c => {
           const card = document.createElement("div");
           card.className = "rounded-lg bg-surface-container-lowest p-space-sm transition-all shadow-sm";
-          let html = '<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-xs"><div class="flex items-start gap-space-sm"><div><div class="flex items-center gap-space-xs"><span class="font-title-md text-title-md text-on-surface font-semibold">' + c.title + '</span><span class="font-label-caps text-label-caps uppercase px-1.5 py-0.5 rounded ' + sevColor(c.severity) + '">' + c.severity + " • " + c.status + '</span></div><p class="font-body-sm text-body-sm text-on-surface-variant">' + c.detail + "</p></div></div></div>";
-          if (c.fix) html += '<div class="mt-space-sm rounded bg-surface-container-lowest p-space-sm"><span class="font-label-caps text-label-caps text-outline block mb-1">FIX</span><code class="font-code-sm text-code-sm text-tertiary block whitespace-pre-wrap">' + c.fix + "</code></div>";
+          let html = '<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-xs"><div class="flex items-start gap-space-sm"><div><div class="flex items-center gap-space-xs"><span class="font-title-md text-title-md text-on-surface font-semibold">' + esc(c.title) + '</span><span class="font-label-caps text-label-caps uppercase px-1.5 py-0.5 rounded ' + sevColor(c.severity) + '">' + esc(c.severity) + " • " + esc(c.status) + '</span></div><p class="font-body-sm text-body-sm text-on-surface-variant">' + esc(c.detail) + "</p></div></div></div>";
+          if (c.fix) html += '<div class="mt-space-sm rounded bg-surface-container-lowest p-space-sm"><span class="font-label-caps text-label-caps text-outline block mb-1">FIX</span><code class="font-code-sm text-code-sm text-tertiary block whitespace-pre-wrap">' + esc(c.fix) + "</code></div>";
           card.innerHTML = html;
           findings.appendChild(card);
         });
@@ -653,8 +654,8 @@
       const out = ensureRemediationOutput();
       if (!lastResult) { out.innerHTML = '<p class="font-body-sm text-body-sm text-on-surface-variant">No scan yet. Run a scan first.</p>'; return; }
       const missing = lastResult.checks.filter(c => c.status === "MISSING");
-      let html = '<p class="font-body-sm text-body-sm text-on-surface-variant">Score ' + lastResult.score + "/100 for " + lastResult.final_url + ". " + lastResult.counts.PASS + " checks passed, " + missing.length + " missing.</p>";
-      if (missing.length) html += '<p class="font-body-sm text-body-sm text-on-surface-variant">Missing: ' + missing.map(c => c.title).join(", ") + ".</p>";
+      let html = '<p class="font-body-sm text-body-sm text-on-surface-variant">Score ' + lastResult.score + "/100 for " + esc(lastResult.final_url) + ". " + lastResult.counts.PASS + " checks passed, " + missing.length + " missing.</p>";
+      if (missing.length) html += '<p class="font-body-sm text-body-sm text-on-surface-variant">Missing: ' + missing.map(c => esc(c.title)).join(", ") + ".</p>";
       html += '<p class="font-body-sm text-body-sm text-on-surface-variant">This is a passive header check only, not a full security verdict.</p>';
       out.innerHTML = html;
     }
