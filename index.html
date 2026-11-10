@@ -39,6 +39,10 @@ tailwind.config = {
   }
 };
 </script>
+<!-- Google AdSense loader — INERT until you have a publisher ID. To activate: replace ca-pub-0000000000000000 with your real AdSense publisher ID and remove the comment markers around the script below. Also update ads.txt at the site root with the same ID. -->
+<!--
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0000000000000000" crossorigin="anonymous"></script>
+-->
 <style>
   html, body { margin: 0; padding: 0; }
   body { overscroll-behavior: none; }
@@ -66,6 +70,7 @@ tailwind.config = {
   @media (prefers-reduced-motion: reduce) {
     .animate-pulse, .animate-ping { animation: none !important; }
   }
+  @media print { .ad-slot, .adsbygoogle, ins.adsbygoogle { display: none !important; } }
 </style>
 </head>
 <body class="bg-ink font-sans text-txt antialiased">
@@ -199,6 +204,15 @@ tailwind.config = {
       </div>
     </section>
 
+<!-- ============ AD SLOT (Google AdSense — INERT) ============ -->
+<!-- To activate: replace ca-pub-0000000000000000 with your real AdSense publisher ID and data-ad-slot="0000000000" with your real ad unit ID, then remove the comment markers around the <div> below. This slot sits outside the resume preview and is hidden in print, so ads never appear in a printed or downloaded resume. -->
+<!--
+<div class="ad-slot rounded-xl overflow-hidden">
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0000000000000000" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+-->
+
     <!-- ============ FOOTER (Pro Max: navy 3-col + dark bar) ============ -->
     <footer class="rounded-xl overflow-hidden">
       <div class="bg-[#1E3A5F] text-white">
@@ -220,6 +234,9 @@ tailwind.config = {
               <li><a class="text-white/75 hover:text-white" href="https://aahar.jharkhand.gov.in/" target="_blank" rel="noopener">Ration Card</a></li>
               <li><a class="text-white/75 hover:text-white" href="https://myaadhaar.uidai.gov.in/" target="_blank" rel="noopener">Aadhaar Card</a></li>
               <li><a class="text-white/75 hover:text-white" href="https://pmkisan.gov.in/" target="_blank" rel="noopener">PM Kisan</a></li>
+              <li><a class="text-white/75 hover:text-white" href="privacy-policy.html">Privacy Policy</a></li>
+              <li><a class="text-white/75 hover:text-white" href="about.html">About</a></li>
+              <li><a class="text-white/75 hover:text-white" href="contact.html">Contact</a></li>
             </ul>
           </div>
         </div>
