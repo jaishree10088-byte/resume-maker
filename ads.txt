@@ -1,0 +1,5 @@
+# ResumeMaker ads.txt — AdSense verification placeholder.
+# Replace pub-0000000000000000 with your real AdSense publisher ID (the digits after "ca-pub-")
+# after Google approves this site. Keep the rest of the line identical.
+# This file must stay at https://resumemaker.de5.net/ads.txt
+google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
