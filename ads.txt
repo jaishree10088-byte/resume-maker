@@ -1,3 +1,3 @@
 # ResumeMaker ads.txt — AdSense publisher ID for resumemaker.de5.net.
 # This file must stay at https://resumemaker.de5.net/ads.txt
-google.com, pub-1354351559848686, DIRECT, f08c47fec0942fa0
+google.com, pub-1514533551558448, DIRECT, f08c47fec0942fa0
