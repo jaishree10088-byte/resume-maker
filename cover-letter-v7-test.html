@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Cover Letter Builder – ResumeMaker v7</title>
+<meta name="description" content="ResumeMaker Cover Letter Builder: write a professional cover letter in your browser — live A4 preview, three styles, autosave, download or print. Free, no sign-up."/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&amp;family=Open+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        navy: "#1E3A5F",
+        navyDark: "#152C4A",
+        blue: "#2563EB",
+        cta: "#16A34A",
+        ctaDark: "#15803D",
+        ink: "#F8FAFC",
+        panel: "#ffffff",
+        panel2: "#E9EEF5",
+        line: "#CBD5E1",
+        mut: "#475569",
+        txt: "#0F172A"
+      },
+      fontFamily: {
+        sans: ["Open Sans", "system-ui", "sans-serif"]
+      }
+    }
+  }
+};
+</script>
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1514533551558448" crossorigin="anonymous"></script>
+<script>
+  // Apply saved theme before first paint (no flash).
+  (function () {
+    try {
+      var t = localStorage.getItem("rm_v7_theme");
+      if (t === "dark" || (t === null && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.classList.add("dark");
+      }
+    } catch (e) { /* storage unavailable — stay light */ }
+  })();
+</script>
+<style>
+  html, body { margin: 0; padding: 0; }
+  h1, h2, h3 { font-family: "Poppins", sans-serif; }
+  .field-label { display: block; font-size: 0.8rem; font-weight: 600; color: #334155; margin-bottom: 0.3rem; }
+  .dark .field-label { color: #CBD5E1; }
+  .field-input, .field-textarea {
+    width: 100%; border: 1px solid #CBD5E1; border-radius: 0.5rem;
+    padding: 0.55rem 0.75rem; font-size: 0.9rem; background: #fff; color: #0F172A;
+  }
+  .dark .field-input, .dark .field-textarea { background: #1E293B; border-color: #475569; color: #F1F5F9; }
+  .field-input:focus, .field-textarea:focus { outline: 2px solid #2563EB; outline-offset: 0; border-color: #2563EB; }
+  .style-btn[aria-pressed="true"] { border-color: #2563EB; background: #EFF6FF; color: #1E3A5F; }
+  .dark .style-btn[aria-pressed="true"] { background: #1E3A5F; color: #fff; border-color: #2563EB; }
+  /* ---- Live letter preview styles ---- */
+  .letter-sheet { background: #fff; color: #0F172A; width: 100%; max-width: 820px; margin: 0 auto;
+    padding: 2.5rem 2.25rem; box-shadow: 0 4px 24px rgba(15,23,42,.12); border: 1px solid #E2E8F0; }
+  .letter-sheet p { margin: 0 0 0.9rem 0; line-height: 1.6; font-size: 0.95rem; }
+  .cl-professional { font-family: Georgia, "Times New Roman", serif; }
+  .cl-professional h4 { font-family: Georgia, "Times New Roman", serif; }
+  .cl-professional .cl-name { font-size: 1.5rem; font-weight: 700; color: #1E3A5F; letter-spacing: .01em; }
+  .cl-professional .cl-rule { border-top: 2px solid #1E3A5F; margin: 0.6rem 0 1rem 0; }
+  .cl-modern { font-family: "Open Sans", system-ui, sans-serif; border-left: 6px solid #2563EB; }
+  .cl-modern .cl-name { font-size: 1.5rem; font-weight: 800; color: #0F172A; font-family: "Poppins", sans-serif; }
+  .cl-modern .cl-rule { border-top: 1px solid #DBEAFE; margin: 0.6rem 0 1rem 0; }
+  .cl-modern .cl-accent { color: #2563EB; }
+  .cl-concise { font-family: "Open Sans", system-ui, sans-serif; }
+  .cl-concise p { margin-bottom: 0.55rem; line-height: 1.5; font-size: 0.92rem; }
+  .cl-concise .cl-name { font-size: 1.3rem; font-weight: 700; color: #334155; font-family: "Poppins", sans-serif; }
+  .cl-concise .cl-rule { border-top: 1px solid #CBD5E1; margin: 0.5rem 0 0.8rem 0; }
+  .cl-concise .cl-accent { color: #64748B; }
+  .suggest-opt { text-align: left; width: 100%; border: 1px solid #CBD5E1; border-radius: 0.5rem;
+    padding: 0.55rem 0.75rem; font-size: 0.85rem; background: #F8FAFC; color: #0F172A; cursor: pointer; }
+  .dark .suggest-opt { background: #1E293B; border-color: #475569; color: #F1F5F9; }
+  .suggest-opt:hover { border-color: #2563EB; background: #EFF6FF; }
+  .dark .suggest-opt:hover { background: #1E3A5F; }
+  @media (max-width: 400px) { .letter-sheet { padding: 1.5rem 1.1rem; } }
+  @media print {
+    @page { size: A4; margin: 18mm; }
+    body * { visibility: hidden !important; }
+    #letterSheet, #letterSheet * { visibility: visible !important; }
+    #letterSheet { position: absolute !important; top: 0; left: 0; width: 100% !important;
+      max-width: none !important; box-shadow: none !important; border: none !important; margin: 0 !important; padding: 0 !important; }
+  }
+</style>
+</head>
+<body class="bg-ink font-sans text-txt antialiased dark:bg-slate-900 dark:text-slate-100">
+
+<!-- ============ TOP NAV ============ -->
+<header class="sticky top-0 z-40 bg-navy text-white shadow no-print">
+  <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
+    <a href="index-v7-test.html" class="flex items-center gap-2 min-w-0">
+      <span class="w-9 h-9 rounded-lg bg-white flex items-center justify-center text-navy font-extrabold text-sm shrink-0">RM</span>
+      <span class="leading-tight">
+        <span class="block font-bold tracking-tight text-base">ResumeMaker</span>
+        <span class="block text-[11px] text-white/70 font-mono tracking-widest">v7 · TEST BUILD</span>
+      </span>
+    </a>
+    <nav class="hidden md:flex items-center gap-1 text-sm" aria-label="Main navigation">
+      <a class="px-3 py-2 rounded-lg hover:bg-white/10" href="index-v7-test.html">Home</a>
+      <a class="px-3 py-2 rounded-lg hover:bg-white/10" href="resume-builder-v7-test.html">Resume Builder</a>
+      <a class="px-3 py-2 rounded-lg hover:bg-white/10" href="dashboard-v7-test.html">Dashboard</a>
+      <a class="px-3 py-2 rounded-lg bg-white/15 font-semibold" href="cover-letter-v7-test.html" aria-current="page">Cover Letter</a>
+    </nav>
+    <div class="flex items-center gap-2">
+      <button id="themeToggle" type="button" class="p-2 rounded-lg hover:bg-white/10" aria-label="Toggle dark mode" title="Toggle dark mode">
+        <span class="material-symbols-outlined">dark_mode</span>
+      </button>
+      <button id="menuBtn" type="button" class="md:hidden p-2 rounded-lg hover:bg-white/10" aria-label="Toggle menu">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+    </div>
+  </div>
+  <nav id="mobileNav" class="md:hidden hidden border-t border-white/15 px-4 py-2 space-y-1 text-sm" aria-label="Mobile navigation">
+    <a class="block px-3 py-2 rounded-lg hover:bg-white/10" href="index-v7-test.html">Home</a>
+    <a class="block px-3 py-2 rounded-lg hover:bg-white/10" href="resume-builder-v7-test.html">Resume Builder</a>
+    <a class="block px-3 py-2 rounded-lg hover:bg-white/10" href="dashboard-v7-test.html">Dashboard</a>
+    <a class="block px-3 py-2 rounded-lg bg-white/15 font-semibold" href="cover-letter-v7-test.html" aria-current="page">Cover Letter</a>
+  </nav>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 py-6 space-y-6 w-full min-w-0">
+
+  <!-- ============ PAGE HEADING ============ -->
+  <section class="rounded-xl bg-navy text-white px-6 py-8">
+    <h1 class="text-2xl sm:text-3xl font-extrabold tracking-wide uppercase">Cover Letter Builder</h1>
+    <p class="mt-2 text-white/85 max-w-2xl text-sm sm:text-base">Write a professional cover letter in minutes. Fill in your details, generate a draft from your own information, pick a style, and download or print — free, in your browser. Your letters are saved on this device only.</p>
+    <p class="mt-3 inline-flex items-center gap-2 text-xs bg-white/10 rounded-full px-3 py-1.5">
+      <span class="material-symbols-outlined text-base">lock</span>
+      <span>No sign-up · No upload · Autosaves on this device</span>
+    </p>
+  </section>
+
+  <!-- ============ SAVE STATUS BAR ============ -->
+  <div class="no-print flex flex-wrap items-center justify-between gap-3 rounded-xl bg-panel dark:bg-slate-800 border border-line dark:border-slate-700 px-4 py-3">
+    <div class="flex items-center gap-2 min-w-0">
+      <span class="material-symbols-outlined text-cta">save</span>
+      <span id="saveStatus" class="text-sm font-semibold truncate" role="status">New letter — not saved yet</span>
+      <span id="letterTitleLabel" class="hidden sm:inline text-xs text-mut dark:text-slate-400 truncate"></span>
+    </div>
+    <div class="flex flex-wrap items-center gap-2">
+      <button id="saveNewBtn" type="button" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-line dark:border-slate-600 text-sm font-semibold hover:border-blue">
+        <span class="material-symbols-outlined text-base">content_copy</span> Save as New
+      </button>
+      <button id="newLetterBtn" type="button" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-line dark:border-slate-600 text-sm font-semibold hover:border-blue">
+        <span class="material-symbols-outlined text-base">note_add</span> New Letter
+      </button>
+      <button id="downloadBtn" type="button" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-cta hover:bg-ctaDark text-black text-sm font-bold">
+        <span class="material-symbols-outlined text-base">download</span> Download .HTML
+      </button>
+      <button id="printBtn" type="button" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-blue hover:bg-blue-700 text-white text-sm font-bold">
+        <span class="material-symbols-outlined text-base">print</span> Print / Save as PDF
+      </button>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+
+    <!-- ============ FORM ============ -->
+    <section class="no-print rounded-xl bg-panel dark:bg-slate-800 border border-line dark:border-slate-700 p-5 space-y-5 min-w-0" aria-label="Cover letter details">
+      <h2 class="text-lg font-bold">Your details</h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="field-label" for="fName">Your name *</label>
+          <input id="fName" class="field-input" type="text" placeholder="e.g. Sandip Kumar Mahto" autocomplete="name"/>
+        </div>
+        <div>
+          <label class="field-label" for="fTitle">Professional title *</label>
+          <input id="fTitle" class="field-input" type="text" placeholder="e.g. Web Developer"/>
+        </div>
+        <div>
+          <label class="field-label" for="fEmail">Email</label>
+          <input id="fEmail" class="field-input" type="email" placeholder="you@example.com" autocomplete="email"/>
+        </div>
+        <div>
+          <label class="field-label" for="fPhone">Phone</label>
+          <input id="fPhone" class="field-input" type="tel" placeholder="+91 98765 43210" autocomplete="tel"/>
+        </div>
+        <div>
+          <label class="field-label" for="fLocation">Location</label>
+          <input id="fLocation" class="field-input" type="text" placeholder="e.g. Bokaro, Jharkhand"/>
+        </div>
+        <div>
+          <label class="field-label" for="fWebsite">Website <span class="font-normal text-mut dark:text-slate-400">(optional)</span></label>
+          <input id="fWebsite" class="field-input" type="url" placeholder="https://your-website.com"/>
+        </div>
+      </div>
+
+      <hr class="border-line dark:border-slate-700"/>
+      <h2 class="text-lg font-bold">The job</h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="field-label" for="fCompany">Company name *</label>
+          <input id="fCompany" class="field-input" type="text" placeholder="e.g. Acme Technologies"/>
+        </div>
+        <div>
+          <label class="field-label" for="fJobTitle">Job title *</label>
+          <input id="fJobTitle" class="field-input" type="text" placeholder="e.g. Frontend Developer"/>
+        </div>
+        <div class="sm:col-span-2">
+          <label class="field-label" for="fManager">Hiring manager name <span class="font-normal text-mut dark:text-slate-400">(optional)</span></label>
+          <input id="fManager" class="field-input" type="text" placeholder="e.g. Priya Sharma — leave blank for “Dear Hiring Manager”"/>
+        </div>
+        <div class="sm:col-span-2">
+          <label class="field-label" for="fJobDesc">Job description <span class="font-normal text-mut dark:text-slate-400">(optional — paste it here; the draft uses only words from this text)</span></label>
+          <textarea id="fJobDesc" class="field-textarea" rows="4" placeholder="Paste the job description here. The draft builder only reuses words you paste — it never invents skills or experience."></textarea>
+        </div>
+      </div>
+
+      <hr class="border-line dark:border-slate-700"/>
+
+      <!-- Style selector -->
+      <div>
+        <h2 class="text-lg font-bold mb-2">Letter style</h2>
+        <div class="grid grid-cols-3 gap-2" role="group" aria-label="Letter style">
+          <button id="styleProfessional" type="button" class="style-btn border border-line dark:border-slate-600 rounded-lg px-2 py-3 text-sm font-semibold" data-style="professional" aria-pressed="true">
+            <span class="material-symbols-outlined block text-xl mb-1">article</span>Professional
+          </button>
+          <button id="styleModern" type="button" class="style-btn border border-line dark:border-slate-600 rounded-lg px-2 py-3 text-sm font-semibold" data-style="modern" aria-pressed="false">
+            <span class="material-symbols-outlined block text-xl mb-1">design_services</span>Modern
+          </button>
+          <button id="styleConcise" type="button" class="style-btn border border-line dark:border-slate-600 rounded-lg px-2 py-3 text-sm font-semibold" data-style="concise" aria-pressed="false">
+            <span class="material-symbols-outlined block text-xl mb-1">short_text</span>Concise
+          </button>
+        </div>
+        <p id="styleHint" class="text-xs text-mut dark:text-slate-400 mt-2">Professional: serif headings, navy accents, classic layout.</p>
+      </div>
+
+      <hr class="border-line dark:border-slate-700"/>
+
+      <!-- Letter body -->
+      <div>
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+          <h2 class="text-lg font-bold">Letter body</h2>
+          <button id="generateBtn" type="button" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-blue hover:bg-blue-700 text-white text-sm font-bold">
+            <span class="material-symbols-outlined text-base">auto_awesome</span> Generate Draft
+          </button>
+        </div>
+        <p id="draftLabel" class="hidden text-xs font-semibold text-blue bg-blue-50 dark:bg-blue-900/40 dark:text-blue-200 border border-blue-200 dark:border-blue-800 rounded-lg px-3 py-2 mb-2">
+          Draft suggestion — edit freely. This draft uses only the details you entered above.
+        </p>
+        <textarea id="fBody" class="field-textarea" rows="10" placeholder="Write your letter here, or press “Generate Draft” to build a first draft from your details. Use blank lines between paragraphs."></textarea>
+        <div class="flex flex-wrap gap-2 mt-3">
+          <button id="suggestOpeningBtn" type="button" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-line dark:border-slate-600 text-sm font-semibold hover:border-blue">
+            <span class="material-symbols-outlined text-base">lightbulb</span> Suggest Opening Line
+          </button>
+          <button id="suggestClosingBtn" type="button" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-line dark:border-slate-600 text-sm font-semibold hover:border-blue">
+            <span class="material-symbols-outlined text-base">lightbulb</span> Suggest Closing Line
+          </button>
+        </div>
+        <div id="suggestPanel" class="hidden mt-3 space-y-2" aria-live="polite"></div>
+        <p class="text-xs text-mut dark:text-slate-400 mt-3">Suggestions are built only from the title and company you entered. Pick one to insert it — you can edit it afterwards.</p>
+      </div>
+    </section>
+
+    <!-- ============ LIVE PREVIEW ============ -->
+    <section class="min-w-0" aria-label="Live preview">
+      <div class="flex items-center justify-between mb-3 no-print">
+        <h2 class="text-lg font-bold">Live preview</h2>
+        <span class="text-xs text-mut dark:text-slate-400">A4 · updates as you type</span>
+      </div>
+      <div id="letterSheet" class="letter-sheet cl-professional">
+        <div id="previewSender"></div>
+        <div class="cl-rule"></div>
+        <p id="previewDate"></p>
+        <div id="previewRecipient"></div>
+        <p id="previewSalutation"></p>
+        <div id="previewBody"></div>
+        <p id="previewClosing"></p>
+        <p id="previewSignature"></p>
+      </div>
+    </section>
+  </div>
+
+<!-- ============ AD SLOT (Google AdSense — INERT) ============ -->
+<!-- To activate: replace data-ad-slot="0000000000" with your real ad unit ID (from AdSense: Ads > Ad units), then remove the comment markers around the <div> below. This slot sits outside the letter preview and is hidden in print, so ads never appear in a printed or downloaded letter. -->
+<!--
+<div class="ad-slot rounded-xl overflow-hidden no-print">
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1514533551558448" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+-->
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="rounded-xl overflow-hidden no-print">
+    <div class="bg-navy text-white">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 px-6 py-10 text-center">
+        <div class="space-y-2">
+          <h4 class="text-lg font-bold uppercase tracking-wide">ResumeMaker</h4>
+          <p class="text-sm text-white/75">Free resume and cover letter builder — live preview, download or print. All in your browser.</p>
+        </div>
+        <div class="space-y-2">
+          <h4 class="text-lg font-bold uppercase tracking-wide">Tools</h4>
+          <ul class="space-y-1.5 text-sm">
+            <li><a class="text-white/75 hover:text-white" href="resume-builder-v7-test.html">Resume Builder</a></li>
+            <li><a class="text-white/75 hover:text-white" href="cover-letter-v7-test.html">Cover Letter Builder</a></li>
+            <li><a class="text-white/75 hover:text-white" href="dashboard-v7-test.html">Dashboard</a></li>
+          </ul>
+        </div>
+        <div class="space-y-2">
+          <h4 class="text-lg font-bold uppercase tracking-wide">Resources</h4>
+          <ul class="space-y-1.5 text-sm">
+            <li><a class="text-white/75 hover:text-white" href="privacy-policy.html">Privacy Policy</a></li>
+            <li><a class="text-white/75 hover:text-white" href="about.html">About</a></li>
+            <li><a class="text-white/75 hover:text-white" href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="bg-navyDark text-center py-4 px-4 text-xs text-white/70">Copyright © ResumeMaker 2026 · Developer by Sandip Kumar Mahto</div>
+  </footer>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- Constants & element refs ---------- */
+  var STORAGE_KEY = "rm_v7_coverletters";
+  var THEME_KEY = "rm_v7_theme";
+  var FIELD_IDS = ["fName", "fTitle", "fEmail", "fPhone", "fLocation", "fWebsite",
+                   "fCompany", "fJobTitle", "fManager", "fJobDesc", "fBody"];
+  var els = {};
+  FIELD_IDS.forEach(function (id) { els[id] = document.getElementById(id); });
+  var saveStatus = document.getElementById("saveStatus");
+  var letterTitleLabel = document.getElementById("letterTitleLabel");
+  var draftLabel = document.getElementById("draftLabel");
+  var suggestPanel = document.getElementById("suggestPanel");
+  var letterSheet = document.getElementById("letterSheet");
+  var styleHint = document.getElementById("styleHint");
+
+  var STYLE_HINTS = {
+    professional: "Professional: serif headings, navy accents, classic layout.",
+    modern: "Modern: sans-serif, blue accent bar, clean layout.",
+    concise: "Concise: compact spacing, grey accents, shorter paragraphs suggested."
+  };
+  var STYLE_CLASSES = { professional: "cl-professional", modern: "cl-modern", concise: "cl-concise" };
+
+  var currentId = null;        // id of the letter being edited (null = not yet saved)
+  var currentStyle = "professional";
+  var lastSavedJSON = "";      // snapshot of last saved data, for dirty-checking
+  var saveTimer = null;
+  var suggestMode = null;      // "opening" | "closing" | null
+
+  /* ---------- Helpers ---------- */
+  function $(id) { return document.getElementById(id); }
+  function val(id) { return (els[id] ? els[id].value : "").trim(); }
+  function escapeHtml(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+  function todayLong() {
+    return new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+  }
+  function timeHHMM(d) {
+    var h = d.getHours(), m = d.getMinutes();
+    return (h < 10 ? "0" + h : h) + ":" + (m < 10 ? "0" + m : m);
+  }
+  function makeId() {
+    return "cl_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2, 8);
+  }
+  function slugify(s) {
+    return String(s || "cover-letter").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60) || "cover-letter";
+  }
+
+  /* ---------- Data collect / apply ---------- */
+  function collectData() {
+    var data = { style: currentStyle };
+    FIELD_IDS.forEach(function (id) { data[id] = els[id] ? els[id].value : ""; });
+    return data;
+  }
+  function applyData(data) {
+    FIELD_IDS.forEach(function (id) {
+      if (els[id]) els[id].value = data[id] != null ? data[id] : "";
+    });
+    setStyle(data.style && STYLE_CLASSES[data.style] ? data.style : "professional", false);
+  }
+  function deriveTitle(data) {
+    var job = (data.fJobTitle || "").trim();
+    var comp = (data.fCompany || "").trim();
+    if (job && comp) return job + " — " + comp;
+    if (job) return job;
+    if (comp) return comp;
+    return "Untitled Cover Letter";
+  }
+  function isDirty() {
+    if (!currentId) return FIELD_IDS.some(function (id) { return els[id] && els[id].value.trim() !== ""; });
+    return JSON.stringify(collectData()) !== lastSavedJSON;
+  }
+
+  /* ---------- Storage ---------- */
+  function readAll() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return [];
+      var arr = JSON.parse(raw);
+      return Array.isArray(arr) ? arr : [];
+    } catch (e) { return []; }
+  }
+  function writeAll(arr) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+  }
+  function setStatus(text) { saveStatus.textContent = text; }
+  function setTitleLabel(title) { letterTitleLabel.textContent = title ? "· " + title : ""; }
+
+  function saveNow() {
+    var data = collectData();
+    var title = deriveTitle(data);
+    var now = new Date().toISOString();
+    var all = readAll();
+    if (!currentId) {
+      currentId = makeId();
+      all.push({ id: currentId, title: title, updatedAt: now, data: data });
+      try {
+        var url = new URL(window.location.href);
+        url.searchParams.set("letter", currentId);
+        window.history.replaceState(null, "", url.toString());
+      } catch (e) { /* URL update is a nicety; save still succeeded */ }
+    } else {
+      var found = false;
+      for (var i = 0; i < all.length; i++) {
+        if (all[i].id === currentId) {
+          all[i] = { id: currentId, title: title, updatedAt: now, data: data };
+          found = true; break;
+        }
+      }
+      if (!found) all.push({ id: currentId, title: title, updatedAt: now, data: data });
+    }
+    writeAll(all);
+    lastSavedJSON = JSON.stringify(data);
+    setStatus("Saved ✓ " + timeHHMM(new Date()));
+    setTitleLabel(title);
+  }
+  function scheduleSave() {
+    setStatus("Saving…");
+    if (saveTimer) clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveNow, 600);
+  }
+
+  /* ---------- Live preview ---------- */
+  function renderPreview() {
+    var name = val("fName") || "Your Name";
+    var title = val("fTitle");
+    var email = val("fEmail"), phone = val("fPhone"), location = val("fLocation"), website = val("fWebsite");
+    var company = val("fCompany") || "Company Name";
+    var manager = val("fManager");
+    var body = els.fBody.value;
+
+    var contact = [];
+    if (title) contact.push(escapeHtml(title));
+    var line2 = [];
+    if (email) line2.push(escapeHtml(email));
+    if (phone) line2.push(escapeHtml(phone));
+    if (location) line2.push(escapeHtml(location));
+    if (website) line2.push(escapeHtml(website));
+    if (line2.length) contact.push(line2.join(" &nbsp;·&nbsp; "));
+
+    $("previewSender").innerHTML =
+      '<div class="cl-name">' + escapeHtml(name) + "</div>" +
+      (contact.length ? '<p style="margin-bottom:0.2rem">' + contact.join("<br/>") + "</p>" : "");
+    $("previewDate").textContent = todayLong();
+    $("previewRecipient").innerHTML =
+      "<p>" + (manager ? escapeHtml(manager) + "<br/>" : "") + escapeHtml(company) + "</p>";
+    $("previewSalutation").textContent = manager ? "Dear " + manager + "," : "Dear Hiring Manager,";
+    var paras = body.split(/\n\s*\n/).map(function (p) { return p.trim(); }).filter(Boolean);
+    if (!paras.length && body.trim()) paras = [body.trim()];
+    $("previewBody").innerHTML = paras.length
+      ? paras.map(function (p) { return "<p>" + escapeHtml(p).replace(/\n/g, "<br/>") + "</p>"; }).join("")
+      : '<p style="color:#94A3B8">[Your letter body will appear here as you type.]</p>';
+    $("previewClosing").textContent = "Sincerely,";
+    $("previewSignature").innerHTML = "<strong>" + escapeHtml(name) + "</strong>" +
+      (title ? "<br/>" + escapeHtml(title) : "");
+  }
+
+  /* ---------- Style switching ---------- */
+  function setStyle(style, doSave) {
+    currentStyle = STYLE_CLASSES[style] ? style : "professional";
+    Object.keys(STYLE_CLASSES).forEach(function (s) {
+      letterSheet.classList.toggle(STYLE_CLASSES[s], s === currentStyle);
+      var btn = $("style" + s.charAt(0).toUpperCase() + s.slice(1));
+      if (btn) btn.setAttribute("aria-pressed", s === currentStyle ? "true" : "false");
+    });
+    styleHint.textContent = STYLE_HINTS[currentStyle];
+    renderPreview();
+    if (doSave !== false) scheduleSave();
+  }
+
+  /* ---------- Draft generation (templates only — never invents facts) ---------- */
+  var STOPWORDS = { "the":1,"and":1,"for":1,"with":1,"you":1,"your":1,"are":1,"will":1,"have":1,"this":1,"that":1,"from":1,"role":1,"work":1,"team":1,"able":1,"must":1,"should":1,"their":1,"they":1,"our":1,"who":1,"what":1,"when":1,"where":1,"about":1,"into":1,"over":1,"under":1,"also":1,"more":1,"than":1,"then":1,"them":1,"been":1,"being":1,"such":1,"each":1,"other":1,"some":1,"any":1,"all":1,"can":1,"may":1,"per":1,"via":1,"etc":1 };
+  function extractKeywords(jd) {
+    var words = (jd || "").toLowerCase().replace(/[^a-z0-9\s-]/g, " ").split(/\s+/);
+    var seen = {}, out = [];
+    words.forEach(function (w) {
+      if (w.length >= 5 && !STOPWORDS[w] && !seen[w]) { seen[w] = 1; out.push(w); }
+    });
+    return out.slice(0, 3);
+  }
+  function buildDraft() {
+    var name = val("fName");
+    var title = val("fTitle") || "professional";
+    var company = val("fCompany") || "your company";
+    var job = val("fJobTitle") || "the open position";
+    var kws = extractKeywords(val("fJobDesc"));
+    var p1 = "I am writing to apply for the " + job + " position at " + company +
+      ". As a " + title + ", I was glad to see this opening, and I would welcome the opportunity to contribute to your team.";
+    var p2;
+    if (kws.length) {
+      p2 = "The job description mentions " + kws.join(", ") +
+        ", and these are areas I focus on in my work as a " + title + ".";
+    } else {
+      p2 = "I would welcome the chance to discuss how my background as a " + title +
+        " fits the needs of the " + job + " role at " + company + ".";
+    }
+    var p3 = "Thank you for considering my application. I have attached my resume for your review, and I look forward to hearing from you.";
+    return p1 + "\n\n" + p2 + "\n\n" + p3;
+  }
+
+  /* ---------- Suggestion pickers (template-based, editable) ---------- */
+  function openingLines() {
+    var title = val("fTitle") || "professional";
+    var company = val("fCompany") || "your company";
+    var job = val("fJobTitle") || "the open position";
+    return [
+      "I am excited to apply for the " + job + " role at " + company + ", where I can bring my experience as a " + title + " to your team.",
+      "As a " + title + ", I was pleased to discover the " + job + " opening at " + company + ".",
+      "I am writing to express my interest in the " + job + " position at " + company + "."
+    ];
+  }
+  function closingLines() {
+    var company = val("fCompany") || "your company";
+    return [
+      "Thank you for your time and consideration. I look forward to the opportunity to discuss this role further.",
+      "I would welcome the chance to speak with you about how I can contribute to " + company + ".",
+      "Thank you for considering my application. I hope to hear from you soon."
+    ];
+  }
+  function showSuggestions(mode) {
+    suggestMode = mode;
+    var lines = mode === "opening" ? openingLines() : closingLines();
+    var heading = mode === "opening" ? "Choose an opening line to insert at the top:" : "Choose a closing line to add at the end:";
+    var html = '<p class="text-xs font-semibold text-mut dark:text-slate-400">' + escapeHtml(heading) + " (Suggestions — edit freely after inserting.)</p>";
+    lines.forEach(function (line, i) {
+      html += '<button type="button" class="suggest-opt" data-suggest-idx="' + i + '">' + escapeHtml(line) + "</button>";
+    });
+    suggestPanel.innerHTML = html;
+    suggestPanel.classList.remove("hidden");
+    suggestPanel.querySelectorAll(".suggest-opt").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var idx = parseInt(btn.getAttribute("data-suggest-idx"), 10);
+        var lines2 = suggestMode === "opening" ? openingLines() : closingLines();
+        var chosen = lines2[idx] || "";
+        var cur = els.fBody.value;
+        if (suggestMode === "opening") {
+          els.fBody.value = chosen + (cur.trim() ? "\n\n" + cur : "");
+        } else {
+          els.fBody.value = (cur.trim() ? cur.replace(/\s+$/, "") + "\n\n" : "") + chosen;
+        }
+        suggestPanel.classList.add("hidden");
+        suggestPanel.innerHTML = "";
+        suggestMode = null;
+        renderPreview();
+        scheduleSave();
+        els.fBody.focus();
+      });
+    });
+  }
+
+  /* ---------- Download .HTML (standalone letter) ---------- */
+  function letterStandaloneHtml() {
+    var data = collectData();
+    var name = (data.fName || "Your Name").trim();
+    var title = data.fTitle.trim();
+    var company = (data.fCompany || "Company Name").trim();
+    var manager = data.fManager.trim();
+    var body = data.fBody;
+    var contact = [];
+    if (data.fEmail.trim()) contact.push(escapeHtml(data.fEmail.trim()));
+    if (data.fPhone.trim()) contact.push(escapeHtml(data.fPhone.trim()));
+    if (data.fLocation.trim()) contact.push(escapeHtml(data.fLocation.trim()));
+    if (data.fWebsite.trim()) contact.push(escapeHtml(data.fWebsite.trim()));
+    var paras = body.split(/\n\s*\n/).map(function (p) { return p.trim(); }).filter(Boolean);
+    if (!paras.length && body.trim()) paras = [body.trim()];
+    var bodyHtml = paras.map(function (p) { return "<p>" + escapeHtml(p).replace(/\n/g, "<br/>") + "</p>"; }).join("\n");
+    var css = currentStyle === "modern"
+      ? "body{font-family:'Open Sans',Arial,sans-serif;color:#0F172A;margin:0;padding:40px} .sheet{max-width:700px;margin:0 auto;border-left:6px solid #2563EB;padding-left:28px} h1{font-family:Poppins,Arial,sans-serif;font-size:26px;margin:0 0 4px} .accent{color:#2563EB} hr{border:none;border-top:1px solid #DBEAFE;margin:14px 0} p{line-height:1.6;font-size:15px}"
+      : currentStyle === "concise"
+      ? "body{font-family:'Open Sans',Arial,sans-serif;color:#0F172A;margin:0;padding:40px} .sheet{max-width:700px;margin:0 auto} h1{font-family:Poppins,Arial,sans-serif;font-size:22px;margin:0 0 4px;color:#334155} hr{border:none;border-top:1px solid #CBD5E1;margin:10px 0} p{line-height:1.5;font-size:14px;margin:0 0 9px}"
+      : "body{font-family:Georgia,'Times New Roman',serif;color:#0F172A;margin:0;padding:40px} .sheet{max-width:700px;margin:0 auto} h1{font-size:26px;margin:0 0 4px;color:#1E3A5F} hr{border:none;border-top:2px solid #1E3A5F;margin:12px 0} p{line-height:1.6;font-size:15px}";
+    return "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\"/>\n<title>" +
+      escapeHtml("Cover Letter — " + name) + "</title>\n<style>" + css + "</style>\n</head>\n<body>\n<div class=\"sheet\">\n" +
+      "<h1>" + escapeHtml(name) + "</h1>\n" +
+      (title ? "<p><strong>" + escapeHtml(title) + "</strong></p>\n" : "") +
+      (contact.length ? "<p>" + contact.join(" · ") + "</p>\n" : "") +
+      "<hr/>\n<p>" + escapeHtml(todayLong()) + "</p>\n" +
+      "<p>" + (manager ? escapeHtml(manager) + "<br/>" : "") + escapeHtml(company) + "</p>\n" +
+      "<p>" + escapeHtml(manager ? "Dear " + manager + "," : "Dear Hiring Manager,") + "</p>\n" +
+      bodyHtml + "\n<p>Sincerely,</p>\n<p><strong>" + escapeHtml(name) + "</strong>" +
+      (title ? "<br/>" + escapeHtml(title) : "") + "</p>\n</div>\n</body>\n</html>";
+  }
+
+  /* ---------- Wire up every control ---------- */
+  FIELD_IDS.forEach(function (id) {
+    if (!els[id]) return;
+    els[id].addEventListener("input", function () { renderPreview(); scheduleSave(); });
+  });
+
+  ["professional", "modern", "concise"].forEach(function (s) {
+    var btn = $("style" + s.charAt(0).toUpperCase() + s.slice(1));
+    if (btn) btn.addEventListener("click", function () { setStyle(s, true); });
+  });
+
+  $("generateBtn").addEventListener("click", function () {
+    els.fBody.value = buildDraft();
+    draftLabel.classList.remove("hidden");
+    renderPreview();
+    scheduleSave();
+    els.fBody.focus();
+  });
+
+  $("suggestOpeningBtn").addEventListener("click", function () { showSuggestions("opening"); });
+  $("suggestClosingBtn").addEventListener("click", function () { showSuggestions("closing"); });
+
+  $("saveNewBtn").addEventListener("click", function () {
+    currentId = null;
+    lastSavedJSON = "";
+    saveNow();
+  });
+
+  $("newLetterBtn").addEventListener("click", function () {
+    if (isDirty() && !window.confirm("Start a new letter? Any unsaved changes will be lost.")) return;
+    FIELD_IDS.forEach(function (id) { if (els[id]) els[id].value = ""; });
+    currentId = null;
+    lastSavedJSON = "";
+    draftLabel.classList.add("hidden");
+    suggestPanel.classList.add("hidden");
+    suggestPanel.innerHTML = "";
+    suggestMode = null;
+    setStyle("professional", false);
+    try {
+      var url = new URL(window.location.href);
+      url.searchParams.delete("letter");
+      window.history.replaceState(null, "", url.toString());
+    } catch (e) { /* ignore */ }
+    renderPreview();
+    setStatus("New letter — not saved yet");
+    setTitleLabel("");
+  });
+
+  $("downloadBtn").addEventListener("click", function () {
+    var html = letterStandaloneHtml();
+    var blob = new Blob([html], { type: "text/html;charset=utf-8" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = slugify(deriveTitle(collectData())) + "-cover-letter.html";
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  });
+
+  $("printBtn").addEventListener("click", function () { window.print(); });
+
+  $("themeToggle").addEventListener("click", function () {
+    var dark = document.documentElement.classList.toggle("dark");
+    try { localStorage.setItem(THEME_KEY, dark ? "dark" : "light"); } catch (e) { /* ignore */ }
+  });
+
+  $("menuBtn").addEventListener("click", function () {
+    $("mobileNav").classList.toggle("hidden");
+  });
+
+  /* ---------- Load: ?letter=<id> or blank ---------- */
+  function loadInitial() {
+    var params = new URLSearchParams(window.location.search);
+    var id = params.get("letter");
+    if (id) {
+      var all = readAll();
+      var found = null;
+      for (var i = 0; i < all.length; i++) {
+        if (all[i].id === id) { found = all[i]; break; }
+      }
+      if (found) {
+        currentId = found.id;
+        applyData(found.data || {});
+        lastSavedJSON = JSON.stringify(collectData());
+        var savedAt = found.updatedAt ? new Date(found.updatedAt) : null;
+        setStatus(savedAt && !isNaN(savedAt) ? "Loaded · Saved ✓ " + timeHHMM(savedAt) : "Loaded saved letter");
+        setTitleLabel(found.title || deriveTitle(found.data || {}));
+        renderPreview();
+        return;
+      }
+      setStatus("Letter not found — started a new letter");
+      try {
+        var url = new URL(window.location.href);
+        url.searchParams.delete("letter");
+        window.history.replaceState(null, "", url.toString());
+      } catch (e) { /* ignore */ }
+    }
+    setStyle("professional", false);
+    renderPreview();
+  }
+
+  loadInitial();
+})();
+</script>
+</body>
+</html>
