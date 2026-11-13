@@ -957,23 +957,28 @@ Viral Video Studio — Video enhancement plus viral toolkit app</textarea>
             else units = kids;
           } else units = kids;
         }
-        /* Keep each section heading with its content: a heading (.v7-sec) and the
-           element right after it are paginated as one unit, so a heading can never
-           be left alone at the bottom of a page while its table/list jumps to the
-           next page (that left a big blank gap under PERSONAL DETAILS). */
+        /* Keep each section heading with its content: a section starts at a
+           heading (.v7-sec) and runs until the next heading, so a heading can
+           never be left alone at the bottom of a page while its table/list
+           jumps to the next page (that left a big blank gap under PERSONAL
+           DETAILS). Note tab/ribbon headings emit a second rule-line div right
+           after the heading, so pairing the heading with only its next sibling
+           is not enough — consume everything up to the next heading. */
         var grouped = [];
-        for (var gi = 0; gi < units.length; gi++) {
-          var gu = units[gi];
-          if (gu.classList && gu.classList.contains("v7-sec") && gi + 1 < units.length) {
-            var gwrap = document.createElement("div");
-            gwrap.appendChild(gu);
-            gwrap.appendChild(units[gi + 1]);
-            grouped.push(gwrap);
-            gi++;
+        var curGroup = null;
+        units.forEach(function (u) {
+          var isHead = u.classList && u.classList.contains("v7-sec");
+          if (isHead) {
+            if (curGroup) grouped.push(curGroup);
+            curGroup = document.createElement("div");
+            curGroup.appendChild(u);
+          } else if (curGroup) {
+            curGroup.appendChild(u);
           } else {
-            grouped.push(gu);
+            grouped.push(u);
           }
-        }
+        });
+        if (curGroup) grouped.push(curGroup);
         units = grouped;
         var maxH = 1122 - 2 * cust.margin;
         var cur = null;
