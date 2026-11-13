@@ -365,9 +365,34 @@ tailwind.config = {
       " · " + d.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
   }
 
+  /* ---------- Normalise a saved resume into the flat shape the dashboard reads ----------
+     The builder saves { title, templateId, fields: {resName, resTitle, ...}, eduDyn: [...], lists: {...} }
+     (no `data` object), so read that shape too; keep `data` support for any other writer. */
+  function resumeData(resume) {
+    if (!resume) return {};
+    if (resume.data && typeof resume.data === "object") return resume.data;
+    var f = resume.fields || {};
+    var lists = resume.lists || {};
+    var d = {};
+    d.name = f.resName; d.title = f.resTitle; d.email = f.resEmail; d.phone = f.resPhone;
+    d.about = f.resAbout; d.skills = f.resSkills;
+    d.projects = (lists.proj && lists.proj.length) ? lists.proj : f.resProjects;
+    d.experience = lists.exp || [];
+    var edu = [];
+    ["edu10_", "edu12_", "eduGrad_"].forEach(function (p) {
+      ["qual", "school", "board", "year", "marks"].forEach(function (k) { if (isFilledText(f[p + k])) edu.push(f[p + k]); });
+    });
+    (resume.eduDyn || []).forEach(function (r) { if (r && Object.keys(r).some(function (k) { return isFilledText(r[k]); })) edu.push(r); });
+    if (lists.eduRep && lists.eduRep.length) edu = edu.concat(lists.eduRep);
+    d.education = edu;
+    d.certifications = (lists.certs && lists.certs.length) ? lists.certs : f.resCert;
+    d.languages = (lists.langsLv && lists.langsLv.length) ? lists.langsLv : f.resLanguages;
+    return d;
+  }
+
   /* ---------- Completion: 11 tracked fields ---------- */
   function completionPct(resume) {
-    var d = (resume && resume.data) || {};
+    var d = resumeData(resume);
     var filled = 0;
     var total = 11;
     if (isFilledText(pick(d, "name", "fullName").value)) filled++;
@@ -454,7 +479,7 @@ tailwind.config = {
 
   /* ---------- Thumbnail: first 3 filled lines (styled text, not an image) ---------- */
   function thumbnailLines(resume) {
-    var d = (resume && resume.data) || {};
+    var d = resumeData(resume);
     var lines = [];
     var name = pick(d, "name", "fullName").value;
     var title = pick(d, "title", "jobTitle", "headline").value;
