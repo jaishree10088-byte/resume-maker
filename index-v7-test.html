@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>ResumeMaker – Free AI Resume Builder</title>
+<meta name="description" content="ResumeMaker: build a professional resume with AI writing help in minutes. 17 templates, live preview, ATS checker, cover letter builder — free forever, no sign-up, your data stays in your browser."/>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&amp;family=Open+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        ink: "#F8FAFC",
+        sidebar: "#1E3A5F",
+        navy: "#1E3A5F",
+        navydeep: "#152C4A",
+        panel: "#ffffff",
+        panel2: "#E9EEF5",
+        line: "#CBD5E1",
+        accent: "#16A34A",
+        accent2: "#15803D",
+        secondary: "#2563EB",
+        mut: "#475569",
+        txt: "#0F172A"
+      },
+      fontFamily: {
+        sans: ["Open Sans", "system-ui", "sans-serif"]
+      }
+    }
+  }
+};
+</script>
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1514533551558448" crossorigin="anonymous"></script>
+<script>
+  // Apply saved theme before first paint (localStorage key: rm_v7_theme).
+  (function () {
+    try {
+      if (localStorage.getItem("rm_v7_theme") === "dark") {
+        document.documentElement.classList.add("dark");
+      }
+    } catch (e) { /* private mode: stay in light theme */ }
+  })();
+</script>
+<style>
+  html, body { margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { overscroll-behavior: none; overflow-x: hidden; }
+  h1, h2, h3 { font-family: "Poppins", sans-serif; }
+  h2 { text-transform: uppercase; letter-spacing: .02em; }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb { background: #1E3A5F; border-radius: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  .nav-link, .tpl-card, .feature-card { transition: all 150ms ease; }
+  .tpl-card:hover { transform: translateY(-3px); border-color: #2563EB; box-shadow: 0 10px 24px rgba(30, 58, 95, .12); }
+  .feature-card:hover { transform: translateY(-2px); border-color: #2563EB; }
+  @media (hover: hover) and (pointer: fine) {
+    .nav-link:hover { color: #2563EB; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .animate-pulse { animation: none !important; }
+    html { scroll-behavior: auto; }
+  }
+  .faq-panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 200ms ease; }
+  .faq-item.open .faq-panel { grid-template-rows: 1fr; }
+  .faq-item.open .faq-chevron { transform: rotate(180deg); }
+  .faq-chevron { transition: transform 200ms ease; }
+  .faq-panel > div { overflow: hidden; }
+  @media print { .ad-slot, .adsbygoogle, ins.adsbygoogle { display: none !important; } }
+</style>
+</head>
+<body class="bg-ink font-sans text-txt antialiased dark:bg-slate-900 dark:text-slate-100">
+
+<!-- ============ TOP NAV ============ -->
+<header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-line dark:bg-slate-900/95 dark:border-slate-700">
+  <nav class="mx-auto max-w-7xl px-4 sm:px-6" aria-label="Main navigation">
+    <div class="flex h-16 items-center justify-between gap-3">
+      <a href="index-v7-test.html" class="flex min-w-0 items-center gap-2.5">
+        <img alt="ResumeMaker Logo" class="h-9 w-auto shrink-0 object-contain" src="webforge-logo.png"/>
+        <span class="truncate text-lg font-bold tracking-tight text-navy dark:text-white">ResumeMaker</span>
+        <span class="hidden rounded-full bg-accent/15 px-2 py-0.5 text-[11px] font-bold text-accent2 dark:text-accent sm:inline-block">v7 · TEST</span>
+      </a>
+      <div class="hidden items-center gap-1 lg:flex">
+        <a class="nav-link rounded-lg px-3 py-2 text-sm font-semibold text-txt dark:text-slate-200" href="index-v7-test.html" aria-current="page">Home</a>
+        <a class="nav-link rounded-lg px-3 py-2 text-sm font-semibold text-mut dark:text-slate-300" href="#templates">Templates</a>
+        <a class="nav-link rounded-lg px-3 py-2 text-sm font-semibold text-mut dark:text-slate-300" href="#features">Features</a>
+        <a class="nav-link rounded-lg px-3 py-2 text-sm font-semibold text-mut dark:text-slate-300" href="about.html">About</a>
+        <a class="nav-link rounded-lg px-3 py-2 text-sm font-semibold text-mut dark:text-slate-300" href="contact.html">Contact</a>
+        <a class="nav-link rounded-lg px-3 py-2 text-sm font-semibold text-mut dark:text-slate-300" href="dashboard-v7-test.html">Dashboard</a>
+        <a class="nav-link rounded-lg px-3 py-2 text-sm font-semibold text-mut dark:text-slate-300" href="cover-letter-v7-test.html">Cover Letter</a>
+      </div>
+      <div class="flex shrink-0 items-center gap-2">
+        <button id="themeToggle" type="button" class="flex items-center gap-1.5 rounded-lg border border-line px-2.5 py-2 text-sm font-semibold text-mut hover:text-txt dark:border-slate-600 dark:text-slate-200" aria-label="Toggle dark mode">
+          <span id="themeIcon" class="material-symbols-outlined text-lg">dark_mode</span>
+          <span class="hidden sm:inline" id="themeLabel">Dark</span>
+        </button>
+        <a class="hidden items-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-bold text-white hover:bg-accent2 sm:inline-flex" href="resume-builder-v7-test.html">
+          <span class="material-symbols-outlined text-base">description</span><span>Create My Resume</span>
+        </a>
+        <button id="menuBtn" type="button" class="rounded-lg p-2 text-mut hover:text-txt lg:hidden dark:text-slate-200" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileMenu">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+      </div>
+    </div>
+    <div id="mobileMenu" class="hidden border-t border-line py-3 lg:hidden dark:border-slate-700">
+      <div class="flex flex-col gap-1">
+        <a class="rounded-lg px-3 py-2 text-sm font-semibold text-txt dark:text-slate-200" href="index-v7-test.html" aria-current="page">Home</a>
+        <a class="rounded-lg px-3 py-2 text-sm font-semibold text-mut dark:text-slate-300" href="#templates">Templates</a>
+        <a class="rounded-lg px-3 py-2 text-sm font-semibold text-mut dark:text-slate-300" href="#features">Features</a>
+        <a class="rounded-lg px-3 py-2 text-sm font-semibold text-mut dark:text-slate-300" href="about.html">About</a>
+        <a class="rounded-lg px-3 py-2 text-sm font-semibold text-mut dark:text-slate-300" href="contact.html">Contact</a>
+        <a class="rounded-lg px-3 py-2 text-sm font-semibold text-mut dark:text-slate-300" href="dashboard-v7-test.html">Dashboard</a>
+        <a class="rounded-lg px-3 py-2 text-sm font-semibold text-mut dark:text-slate-300" href="cover-letter-v7-test.html">Cover Letter</a>
+        <a class="mt-1 inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-bold text-white hover:bg-accent2" href="resume-builder-v7-test.html">
+          <span class="material-symbols-outlined text-base">description</span><span>Create My Resume</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <!-- ============ HERO ============ -->
+  <section class="bg-navy text-white dark:bg-navydeep">
+    <div class="mx-auto max-w-7xl px-4 py-14 text-center sm:px-6 sm:py-20">
+      <p class="mx-auto mb-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-bold tracking-wide">
+        <span class="h-2 w-2 rounded-full bg-accent animate-pulse"></span>
+        FREE FOREVER · NO SIGN-UP · NO PAYMENT
+      </p>
+      <h1 class="mx-auto max-w-3xl text-3xl font-extrabold leading-tight sm:text-5xl">Build Your Professional Resume with AI in Minutes</h1>
+      <p class="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white/85 sm:text-lg">Pick one of 17 professional templates, fill in your own details, and preview your resume live as you type. Download or print it as a PDF — everything runs in your browser, and your data never leaves your device.</p>
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+        <a class="inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3 text-sm font-bold text-white hover:bg-accent2 sm:text-base" href="resume-builder-v7-test.html">
+          <span class="material-symbols-outlined text-lg">description</span><span>Create My Resume</span>
+        </a>
+        <a class="inline-flex items-center gap-2 rounded-lg border-2 border-white/70 px-6 py-3 text-sm font-bold text-white hover:bg-white/10 sm:text-base" href="resume-builder-v7-test.html#tplPicker">
+          <span class="material-symbols-outlined text-lg">grid_view</span><span>Explore Templates</span>
+        </a>
+      </div>
+      <p class="mt-6 text-xs text-white/60">17 templates · Live preview · ATS checker · Cover letter builder</p>
+    </div>
+  </section>
+
+  <!-- ============ TEMPLATE SHOWCASE ============ -->
+  <section id="templates" class="mx-auto max-w-7xl scroll-mt-20 px-4 py-12 sm:px-6">
+    <div class="mb-6 text-center">
+      <h2 class="text-2xl font-bold text-navy dark:text-white sm:text-3xl">Choose Your Template</h2>
+      <p class="mx-auto mt-2 max-w-2xl text-sm text-mut dark:text-slate-300 sm:text-base">21 professional designs. Tap any template to open it in the builder — your details carry over.</p>
+    </div>
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+
+      <!-- Classic Navy -->
+      <article class="tpl-card overflow-hidden rounded-xl border border-line bg-panel dark:border-slate-700 dark:bg-slate-800">
+        <div class="h-36 bg-panel2 p-3 dark:bg-slate-700/60">
+          <div class="flex h-full flex-col gap-1.5 rounded-md bg-white p-2.5 shadow-sm">
+            <div class="h-2.5 w-3/5 rounded-sm" style="background:#1E3A5F"></div>
+            <div class="h-1.5 w-2/5 rounded-sm bg-slate-300"></div>
+            <div class="mt-1 h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-4/5 rounded-sm bg-slate-200"></div>
+            <div class="mt-1 h-1.5 w-1/3 rounded-sm" style="background:#1E3A5F"></div>
+            <div class="h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-3/5 rounded-sm bg-slate-200"></div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between gap-2 p-4">
+          <h3 class="text-sm font-bold">Classic Navy</h3>
+          <a class="shrink-0 text-sm font-semibold text-secondary hover:underline" href="resume-builder-v7-test.html?template=classic-navy">Use this template →</a>
+        </div>
+      </article>
+
+      <!-- Two-Color Classic -->
+      <article class="tpl-card overflow-hidden rounded-xl border border-line bg-panel dark:border-slate-700 dark:bg-slate-800">
+        <div class="h-36 bg-panel2 p-3 dark:bg-slate-700/60">
+          <div class="flex h-full flex-col gap-1.5 rounded-md bg-white p-2.5 shadow-sm">
+            <div class="flex gap-1.5"><div class="h-2.5 w-2/5 rounded-sm" style="background:#1E3A5F"></div><div class="h-2.5 w-1/4 rounded-sm" style="background:#2563EB"></div></div>
+            <div class="h-1.5 w-2/5 rounded-sm bg-slate-300"></div>
+            <div class="mt-1 h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-4/5 rounded-sm bg-slate-200"></div>
+            <div class="mt-1 flex gap-1.5"><div class="h-1.5 w-1/4 rounded-sm" style="background:#2563EB"></div><div class="h-1.5 w-1/4 rounded-sm" style="background:#1E3A5F"></div></div>
+            <div class="h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-3/5 rounded-sm bg-slate-200"></div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between gap-2 p-4">
+          <h3 class="text-sm font-bold">Two-Color Classic</h3>
+          <a class="shrink-0 text-sm font-semibold text-secondary hover:underline" href="resume-builder-v7-test.html?template=twocolor-classic">Use this template →</a>
+        </div>
+      </article>
+
+      <!-- Deep Blue Sidebar -->
+      <article class="tpl-card overflow-hidden rounded-xl border border-line bg-panel dark:border-slate-700 dark:bg-slate-800">
+        <div class="h-36 bg-panel2 p-3 dark:bg-slate-700/60">
+          <div class="flex h-full overflow-hidden rounded-md bg-white shadow-sm">
+            <div class="flex w-1/3 flex-col gap-1.5 p-2" style="background:#1E3A5F"><div class="h-2 w-4/5 rounded-sm bg-white/80"></div><div class="mt-1 h-1 w-full rounded-sm bg-white/40"></div><div class="h-1 w-full rounded-sm bg-white/40"></div><div class="h-1 w-3/4 rounded-sm bg-white/40"></div></div>
+            <div class="flex flex-1 flex-col gap-1.5 p-2.5"><div class="h-2 w-3/5 rounded-sm bg-slate-300"></div><div class="h-1 w-full rounded-sm bg-slate-200"></div><div class="h-1 w-full rounded-sm bg-slate-200"></div><div class="h-1 w-4/5 rounded-sm bg-slate-200"></div><div class="mt-1 h-1 w-full rounded-sm bg-slate-200"></div><div class="h-1 w-3/5 rounded-sm bg-slate-200"></div></div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between gap-2 p-4">
+          <h3 class="text-sm font-bold">Deep Blue Sidebar</h3>
+          <a class="shrink-0 text-sm font-semibold text-secondary hover:underline" href="resume-builder-v7-test.html?template=deepblue-sidebar">Use this template →</a>
+        </div>
+      </article>
+
+      <!-- Minimal Light -->
+      <article class="tpl-card overflow-hidden rounded-xl border border-line bg-panel dark:border-slate-700 dark:bg-slate-800">
+        <div class="h-36 bg-panel2 p-3 dark:bg-slate-700/60">
+          <div class="flex h-full flex-col gap-1.5 rounded-md bg-white p-2.5 shadow-sm">
+            <div class="h-2.5 w-1/2 rounded-sm bg-slate-800"></div>
+            <div class="h-px w-full bg-slate-300"></div>
+            <div class="mt-1 h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-4/5 rounded-sm bg-slate-200"></div>
+            <div class="mt-1 h-px w-full bg-slate-300"></div>
+            <div class="h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-3/5 rounded-sm bg-slate-200"></div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between gap-2 p-4">
+          <h3 class="text-sm font-bold">Minimal Light</h3>
+          <a class="shrink-0 text-sm font-semibold text-secondary hover:underline" href="resume-builder-v7-test.html?template=minimal-light">Use this template →</a>
+        </div>
+      </article>
+
+      <!-- Curve Label Classic -->
+      <article class="tpl-card overflow-hidden rounded-xl border border-line bg-panel dark:border-slate-700 dark:bg-slate-800">
+        <div class="h-36 bg-panel2 p-3 dark:bg-slate-700/60">
+          <div class="flex h-full flex-col gap-1.5 rounded-md bg-white p-2.5 shadow-sm">
+            <div class="h-2.5 w-3/5 rounded-sm" style="background:#1E3A5F"></div>
+            <div class="h-1.5 w-2/5 rounded-full bg-slate-300"></div>
+            <div class="mt-1 h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-4/5 rounded-sm bg-slate-200"></div>
+            <div class="mt-1 h-1.5 w-1/3 rounded-full" style="background:#16A34A"></div>
+            <div class="h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-3/5 rounded-sm bg-slate-200"></div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between gap-2 p-4">
+          <h3 class="text-sm font-bold">Curve Label Classic</h3>
+          <a class="shrink-0 text-sm font-semibold text-secondary hover:underline" href="resume-builder-v7-test.html?template=curve-label">Use this template →</a>
+        </div>
+      </article>
+
+      <!-- Elegant Two-Color -->
+      <article class="tpl-card overflow-hidden rounded-xl border border-line bg-panel dark:border-slate-700 dark:bg-slate-800">
+        <div class="h-36 bg-panel2 p-3 dark:bg-slate-700/60">
+          <div class="flex h-full flex-col gap-1.5 rounded-md bg-white p-2.5 shadow-sm">
+            <div class="flex gap-1.5"><div class="h-2.5 w-2/5 rounded-sm" style="background:#0F172A"></div><div class="h-2.5 w-1/4 rounded-sm" style="background:#B45309"></div></div>
+            <div class="h-1.5 w-2/5 rounded-sm bg-slate-300"></div>
+            <div class="mt-1 h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-4/5 rounded-sm bg-slate-200"></div>
+            <div class="mt-1 h-1.5 w-1/3 rounded-sm" style="background:#B45309"></div>
+            <div class="h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-3/5 rounded-sm bg-slate-200"></div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between gap-2 p-4">
+          <h3 class="text-sm font-bold">Elegant Two-Color</h3>
+          <a class="shrink-0 text-sm font-semibold text-secondary hover:underline" href="resume-builder-v7-test.html?template=elegant-twocolor">Use this template →</a>
+        </div>
+      </article>
+
+      <!-- Red Classic -->
+      <article class="tpl-card overflow-hidden rounded-xl border border-line bg-panel dark:border-slate-700 dark:bg-slate-800">
+        <div class="h-36 bg-panel2 p-3 dark:bg-slate-700/60">
+          <div class="flex h-full flex-col gap-1.5 rounded-md bg-white p-2.5 shadow-sm">
+            <div class="h-2.5 w-3/5 rounded-sm" style="background:#B91C1C"></div>
+            <div class="h-1.5 w-2/5 rounded-sm bg-slate-300"></div>
+            <div class="mt-1 h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-4/5 rounded-sm bg-slate-200"></div>
+            <div class="mt-1 h-1.5 w-1/3 rounded-sm" style="background:#B91C1C"></div>
+            <div class="h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-3/5 rounded-sm bg-slate-200"></div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between gap-2 p-4">
+          <h3 class="text-sm font-bold">Red Classic</h3>
+          <a class="shrink-0 text-sm font-semibold text-secondary hover:underline" href="resume-builder-v7-test.html?template=red-classic">Use this template →</a>
+        </div>
+      </article>
+
+      <!-- Blue Ribbon -->
+      <article class="tpl-card overflow-hidden rounded-xl border border-line bg-panel dark:border-slate-700 dark:bg-slate-800">
+        <div class="h-36 bg-panel2 p-3 dark:bg-slate-700/60">
+          <div class="flex h-full flex-col gap-1.5 rounded-md bg-white p-2.5 shadow-sm">
+            <div class="h-2.5 w-3/5 rounded-sm bg-slate-800"></div>
+            <div class="h-1.5 w-full rounded-sm" style="background:#2563EB"></div>
+            <div class="mt-1 h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-4/5 rounded-sm bg-slate-200"></div>
+            <div class="mt-1 h-1.5 w-1/3 rounded-sm" style="background:#2563EB"></div>
+            <div class="h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-3/5 rounded-sm bg-slate-200"></div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between gap-2 p-4">
+          <h3 class="text-sm font-bold">Blue Ribbon</h3>
+          <a class="shrink-0 text-sm font-semibold text-secondary hover:underline" href="resume-builder-v7-test.html?template=blue-ribbon">Use this template →</a>
+        </div>
+      </article>
+
+      <!-- Grey Classic -->
+      <article class="tpl-card overflow-hidden rounded-xl border border-line bg-panel dark:border-slate-700 dark:bg-slate-800">
+        <div class="h-36 bg-panel2 p-3 dark:bg-slate-700/60">
+          <div class="flex h-full flex-col gap-1.5 rounded-md bg-white p-2.5 shadow-sm">
+            <div class="h-2.5 w-3/5 rounded-sm" style="background:#475569"></div>
+            <div class="h-1.5 w-2/5 rounded-sm bg-slate-300"></div>
+            <div class="mt-1 h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-4/5 rounded-sm bg-slate-200"></div>
+            <div class="mt-1 h-1.5 w-1/3 rounded-sm" style="background:#475569"></div>
+            <div class="h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-3/5 rounded-sm bg-slate-200"></div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between gap-2 p-4">
+          <h3 class="text-sm font-bold">Grey Classic</h3>
+          <a class="shrink-0 text-sm font-semibold text-secondary hover:underline" href="resume-builder-v7-test.html?template=grey-classic">Use this template →</a>
+        </div>
+      </article>
+
+      <!-- Professional Blue -->
+      <article class="tpl-card overflow-hidden rounded-xl border border-line bg-panel dark:border-slate-700 dark:bg-slate-800">
+        <div class="h-36 bg-panel2 p-3 dark:bg-slate-700/60">
+          <div class="flex h-full flex-col gap-1.5 rounded-md bg-white p-2.5 shadow-sm">
+            <div class="h-2.5 w-3/5 rounded-sm" style="background:#1D4ED8"></div>
+            <div class="h-1.5 w-2/5 rounded-sm bg-slate-300"></div>
+            <div class="mt-1 h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-4/5 rounded-sm bg-slate-200"></div>
+            <div class="mt-1 h-1.5 w-1/3 rounded-sm" style="background:#1D4ED8"></div>
+            <div class="h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-3/5 rounded-sm bg-slate-200"></div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between gap-2 p-4">
+          <h3 class="text-sm font-bold">Professional Blue</h3>
+          <a class="shrink-0 text-sm font-semibold text-secondary hover:underline" href="resume-builder-v7-test.html?template=professional-blue">Use this template →</a>
+        </div>
+      </article>
+
+      <!-- Tech Creative -->
+      <article class="tpl-card overflow-hidden rounded-xl border border-line bg-panel dark:border-slate-700 dark:bg-slate-800">
+        <div class="h-36 bg-panel2 p-3 dark:bg-slate-700/60">
+          <div class="flex h-full flex-col gap-1.5 rounded-md bg-white p-2.5 shadow-sm">
+            <div class="flex items-center gap-1.5"><div class="h-2.5 w-2/5 rounded-sm" style="background:#0E7490"></div><div class="h-2 w-2 rounded-sm" style="background:#06B6D4"></div><div class="h-2 w-2 rounded-sm" style="background:#06B6D4"></div></div>
+            <div class="h-1.5 w-2/5 rounded-sm bg-slate-300"></div>
+            <div class="mt-1 h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-4/5 rounded-sm bg-slate-200"></div>
+            <div class="mt-1 flex gap-1.5"><div class="h-1.5 w-1/4 rounded-sm" style="background:#06B6D4"></div><div class="h-1.5 w-1/4 rounded-sm" style="background:#0E7490"></div></div>
+            <div class="h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-3/5 rounded-sm bg-slate-200"></div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between gap-2 p-4">
+          <h3 class="text-sm font-bold">Tech Creative</h3>
+          <a class="shrink-0 text-sm font-semibold text-secondary hover:underline" href="resume-builder-v7-test.html?template=tech-creative">Use this template →</a>
+        </div>
+      </article>
+
+      <!-- Line Creative -->
+      <article class="tpl-card overflow-hidden rounded-xl border border-line bg-panel dark:border-slate-700 dark:bg-slate-800">
+        <div class="h-36 bg-panel2 p-3 dark:bg-slate-700/60">
+          <div class="flex h-full flex-col gap-1.5 rounded-md bg-white p-2.5 shadow-sm">
+            <div class="h-2.5 w-3/5 rounded-sm bg-slate-800"></div>
+            <div class="h-0.5 w-full rounded-sm" style="background:#16A34A"></div>
+            <div class="mt-1 h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-4/5 rounded-sm bg-slate-200"></div>
+            <div class="mt-1 h-0.5 w-full rounded-sm" style="background:#16A34A"></div>
+            <div class="h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-3/5 rounded-sm bg-slate-200"></div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between gap-2 p-4">
+          <h3 class="text-sm font-bold">Line Creative</h3>
+          <a class="shrink-0 text-sm font-semibold text-secondary hover:underline" href="resume-builder-v7-test.html?template=line-creative">Use this template →</a>
+        </div>
+      </article>
+
+      <!-- Ink Elegant -->
+      <article class="tpl-card overflow-hidden rounded-xl border border-line bg-panel dark:border-slate-700 dark:bg-slate-800">
+        <div class="h-36 bg-panel2 p-3 dark:bg-slate-700/60">
+          <div class="flex h-full flex-col gap-1.5 rounded-md bg-white p-2.5 shadow-sm">
+            <div class="h-2.5 w-1/2 rounded-sm" style="background:#0F172A"></div>
+            <div class="h-1.5 w-2/5 rounded-sm bg-slate-400"></div>
+            <div class="mt-1 h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-4/5 rounded-sm bg-slate-200"></div>
+            <div class="mt-1 h-1.5 w-1/3 rounded-sm" style="background:#0F172A"></div>
+            <div class="h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-3/5 rounded-sm bg-slate-200"></div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between gap-2 p-4">
+          <h3 class="text-sm font-bold">Ink Elegant</h3>
+          <a class="shrink-0 text-sm font-semibold text-secondary hover:underline" href="resume-builder-v7-test.html?template=ink-elegant">Use this template →</a>
+        </div>
+      </article>
+
+      <!-- Yellow Accent -->
+      <article class="tpl-card overflow-hidden rounded-xl border border-line bg-panel dark:border-slate-700 dark:bg-slate-800">
+        <div class="h-36 bg-panel2 p-3 dark:bg-slate-700/60">
+          <div class="flex h-full flex-col gap-1.5 rounded-md bg-white p-2.5 shadow-sm">
+            <div class="h-2.5 w-3/5 rounded-sm bg-slate-800"></div>
+            <div class="h-1.5 w-1/4 rounded-sm" style="background:#CA8A04"></div>
+            <div class="mt-1 h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-4/5 rounded-sm bg-slate-200"></div>
+            <div class="mt-1 h-1.5 w-1/3 rounded-sm" style="background:#CA8A04"></div>
+            <div class="h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-3/5 rounded-sm bg-slate-200"></div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between gap-2 p-4">
+          <h3 class="text-sm font-bold">Yellow Accent</h3>
+          <a class="shrink-0 text-sm font-semibold text-secondary hover:underline" href="resume-builder-v7-test.html?template=yellow-accent">Use this template →</a>
+        </div>
+      </article>
+
+      <!-- Fashion Two-Column -->
+      <article class="tpl-card overflow-hidden rounded-xl border border-line bg-panel dark:border-slate-700 dark:bg-slate-800">
+        <div class="h-36 bg-panel2 p-3 dark:bg-slate-700/60">
+          <div class="flex h-full overflow-hidden rounded-md bg-white shadow-sm">
+            <div class="flex flex-1 flex-col gap-1.5 p-2.5"><div class="h-2 w-3/5 rounded-sm bg-slate-800"></div><div class="h-1 w-full rounded-sm bg-slate-200"></div><div class="h-1 w-full rounded-sm bg-slate-200"></div><div class="h-1 w-4/5 rounded-sm bg-slate-200"></div><div class="mt-1 h-1 w-full rounded-sm bg-slate-200"></div><div class="h-1 w-3/5 rounded-sm bg-slate-200"></div></div>
+            <div class="flex w-1/3 flex-col gap-1.5 border-l border-line p-2"><div class="h-1.5 w-4/5 rounded-sm" style="background:#BE185D"></div><div class="mt-1 h-1 w-full rounded-sm bg-slate-200"></div><div class="h-1 w-full rounded-sm bg-slate-200"></div><div class="h-1 w-3/4 rounded-sm bg-slate-200"></div></div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between gap-2 p-4">
+          <h3 class="text-sm font-bold">Fashion Two-Column</h3>
+          <a class="shrink-0 text-sm font-semibold text-secondary hover:underline" href="resume-builder-v7-test.html?template=fashion-twocol">Use this template →</a>
+        </div>
+      </article>
+
+      <!-- Title Bar Classic -->
+      <article class="tpl-card overflow-hidden rounded-xl border border-line bg-panel dark:border-slate-700 dark:bg-slate-800">
+        <div class="h-36 bg-panel2 p-3 dark:bg-slate-700/60">
+          <div class="flex h-full flex-col overflow-hidden rounded-md bg-white shadow-sm">
+            <div class="flex items-center px-2.5 py-2" style="background:#1E3A5F"><div class="h-2 w-1/2 rounded-sm bg-white"></div></div>
+            <div class="flex flex-col gap-1.5 p-2.5"><div class="h-1.5 w-2/5 rounded-sm bg-slate-300"></div><div class="h-1 w-full rounded-sm bg-slate-200"></div><div class="h-1 w-full rounded-sm bg-slate-200"></div><div class="h-1 w-4/5 rounded-sm bg-slate-200"></div><div class="mt-1 h-1.5 w-1/3 rounded-sm" style="background:#1E3A5F"></div><div class="h-1 w-full rounded-sm bg-slate-200"></div><div class="h-1 w-3/5 rounded-sm bg-slate-200"></div></div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between gap-2 p-4">
+          <h3 class="text-sm font-bold">Title Bar Classic</h3>
+          <a class="shrink-0 text-sm font-semibold text-secondary hover:underline" href="resume-builder-v7-test.html?template=titlebar-classic">Use this template →</a>
+        </div>
+      </article>
+
+      <!-- Swiss Executive -->
+      <article class="tpl-card overflow-hidden rounded-xl border border-line bg-panel dark:border-slate-700 dark:bg-slate-800">
+        <div class="h-36 bg-panel2 p-3 dark:bg-slate-700/60">
+          <div class="flex h-full flex-col gap-1.5 rounded-md bg-white p-2.5 shadow-sm">
+            <div class="flex items-center justify-between"><div class="h-2.5 w-1/2 rounded-sm" style="background:#1E3A5F"></div><div class="h-2.5 w-2.5 rounded-sm" style="background:#DC2626"></div></div>
+            <div class="h-0.5 w-full rounded-sm" style="background:#DC2626"></div>
+            <div class="mt-1 h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-4/5 rounded-sm bg-slate-200"></div>
+            <div class="mt-1 h-1.5 w-1/3 rounded-sm" style="background:#1E3A5F"></div>
+            <div class="h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-3/5 rounded-sm bg-slate-200"></div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between gap-2 p-4">
+          <h3 class="text-sm font-bold">Swiss Executive</h3>
+          <a class="shrink-0 text-sm font-semibold text-secondary hover:underline" href="resume-builder-v7-test.html?template=swiss-executive">Use this template →</a>
+        </div>
+      </article>
+
+      <!-- Modern Teal -->
+      <article class="tpl-card overflow-hidden rounded-xl border border-line bg-panel dark:border-slate-700 dark:bg-slate-800">
+        <div class="h-36 bg-panel2 p-3 dark:bg-slate-700/60">
+          <div class="flex h-full flex-col overflow-hidden rounded-md bg-white shadow-sm">
+            <div class="flex items-center px-2.5 py-2" style="background:#0D9488"><div class="h-2 w-1/2 rounded-sm bg-white"></div></div>
+            <div class="flex flex-col gap-1.5 p-2.5"><div class="h-1.5 w-2/5 rounded-sm bg-slate-300"></div><div class="h-1 w-full rounded-sm bg-slate-200"></div><div class="h-1 w-full rounded-sm bg-slate-200"></div><div class="h-1 w-4/5 rounded-sm bg-slate-200"></div><div class="mt-1 h-1.5 w-1/3 rounded-sm" style="background:#0D9488"></div><div class="h-1 w-full rounded-sm bg-slate-200"></div><div class="h-1 w-3/5 rounded-sm bg-slate-200"></div></div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between gap-2 p-4">
+          <h3 class="text-sm font-bold">Modern Teal</h3>
+          <a class="shrink-0 text-sm font-semibold text-secondary hover:underline" href="resume-builder-v7-test.html?template=modern-teal">Use this template →</a>
+        </div>
+      </article>
+
+      <!-- Executive Gold -->
+      <article class="tpl-card overflow-hidden rounded-xl border border-line bg-panel dark:border-slate-700 dark:bg-slate-800">
+        <div class="h-36 bg-panel2 p-3 dark:bg-slate-700/60">
+          <div class="flex h-full overflow-hidden rounded-md bg-white shadow-sm">
+            <div class="flex w-1/3 flex-col gap-1.5 p-2.5" style="background:#451A03"><div class="h-2 w-4/5 rounded-sm bg-white"></div><div class="h-1 w-full rounded-sm bg-white/40"></div><div class="h-1 w-3/4 rounded-sm bg-white/40"></div><div class="mt-1 h-1.5 w-4/5 rounded-sm" style="background:#B45309"></div><div class="h-1 w-full rounded-sm bg-white/40"></div></div>
+            <div class="flex flex-1 flex-col gap-1.5 p-2.5"><div class="h-1.5 w-2/5 rounded-sm bg-slate-300"></div><div class="h-1 w-full rounded-sm bg-slate-200"></div><div class="h-1 w-full rounded-sm bg-slate-200"></div><div class="h-1 w-4/5 rounded-sm bg-slate-200"></div><div class="mt-1 h-1.5 w-1/3 rounded-sm" style="background:#B45309"></div><div class="h-1 w-full rounded-sm bg-slate-200"></div></div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between gap-2 p-4">
+          <h3 class="text-sm font-bold">Executive Gold</h3>
+          <a class="shrink-0 text-sm font-semibold text-secondary hover:underline" href="resume-builder-v7-test.html?template=executive-gold">Use this template →</a>
+        </div>
+      </article>
+
+      <!-- Fresh Graduate -->
+      <article class="tpl-card overflow-hidden rounded-xl border border-line bg-panel dark:border-slate-700 dark:bg-slate-800">
+        <div class="h-36 bg-panel2 p-3 dark:bg-slate-700/60">
+          <div class="flex h-full flex-col gap-1.5 rounded-md bg-white p-2.5 shadow-sm">
+            <div class="flex items-center justify-between"><div class="h-2.5 w-1/2 rounded-sm" style="background:#14532D"></div><div class="h-2.5 w-2.5 rounded-sm" style="background:#16A34A"></div></div>
+            <div class="h-0.5 w-full rounded-sm" style="background:#16A34A"></div>
+            <div class="mt-1 h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-4/5 rounded-sm bg-slate-200"></div>
+            <div class="mt-1 h-1.5 w-1/3 rounded-sm" style="background:#14532D"></div>
+            <div class="h-1 w-full rounded-sm bg-slate-200"></div>
+            <div class="h-1 w-3/5 rounded-sm bg-slate-200"></div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between gap-2 p-4">
+          <h3 class="text-sm font-bold">Fresh Graduate</h3>
+          <a class="shrink-0 text-sm font-semibold text-secondary hover:underline" href="resume-builder-v7-test.html?template=fresh-graduate">Use this template →</a>
+        </div>
+      </article>
+
+      <!-- Corporate Grey -->
+      <article class="tpl-card overflow-hidden rounded-xl border border-line bg-panel dark:border-slate-700 dark:bg-slate-800">
+        <div class="h-36 bg-panel2 p-3 dark:bg-slate-700/60">
+          <div class="flex h-full flex-col overflow-hidden rounded-md bg-white shadow-sm">
+            <div class="flex items-center px-2.5 py-2" style="background:#475569"><div class="h-2 w-1/2 rounded-sm bg-white"></div></div>
+            <div class="flex flex-col gap-1.5 p-2.5"><div class="h-1.5 w-2/5 rounded-sm bg-slate-300"></div><div class="h-1 w-full rounded-sm bg-slate-200"></div><div class="h-1 w-full rounded-sm bg-slate-200"></div><div class="h-1 w-4/5 rounded-sm bg-slate-200"></div><div class="mt-1 h-1.5 w-1/3 rounded-sm" style="background:#475569"></div><div class="h-1 w-full rounded-sm bg-slate-200"></div><div class="h-1 w-3/5 rounded-sm bg-slate-200"></div></div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between gap-2 p-4">
+          <h3 class="text-sm font-bold">Corporate Grey</h3>
+          <a class="shrink-0 text-sm font-semibold text-secondary hover:underline" href="resume-builder-v7-test.html?template=corporate-grey">Use this template →</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section id="how" class="border-y border-line bg-panel2/60 dark:border-slate-700 dark:bg-slate-800/50">
+    <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+      <div class="mb-8 text-center">
+        <h2 class="text-2xl font-bold text-navy dark:text-white sm:text-3xl">How It Works</h2>
+        <p class="mx-auto mt-2 max-w-2xl text-sm text-mut dark:text-slate-300 sm:text-base">Three steps from blank page to finished resume.</p>
+      </div>
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div class="rounded-xl border border-line bg-panel p-6 text-center dark:border-slate-700 dark:bg-slate-800">
+          <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-navy text-lg font-extrabold text-white">1</div>
+          <h3 class="mt-4 font-bold">Fill in your details</h3>
+          <p class="mt-2 text-sm text-mut dark:text-slate-300">Enter your name, contact details, experience, education and skills in the builder form. Everything is saved in your browser as you type.</p>
+        </div>
+        <div class="rounded-xl border border-line bg-panel p-6 text-center dark:border-slate-700 dark:bg-slate-800">
+          <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-secondary text-lg font-extrabold text-white">2</div>
+          <h3 class="mt-4 font-bold">Pick a template and preview live</h3>
+          <p class="mt-2 text-sm text-mut dark:text-slate-300">Choose any of the 17 templates and watch your resume update instantly in the live preview. Switch templates any time — your details stay.</p>
+        </div>
+        <div class="rounded-xl border border-line bg-panel p-6 text-center dark:border-slate-700 dark:bg-slate-800">
+          <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-accent text-lg font-extrabold text-white">3</div>
+          <h3 class="mt-4 font-bold">Download or print as PDF</h3>
+          <p class="mt-2 text-sm text-mut dark:text-slate-300">Download your resume as an HTML file or print it straight to PDF from the builder. No watermark, no account, no payment.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURES ============ -->
+  <section id="features" class="mx-auto max-w-7xl scroll-mt-20 px-4 py-12 sm:px-6">
+    <div class="mb-6 text-center">
+      <h2 class="text-2xl font-bold text-navy dark:text-white sm:text-3xl">Features</h2>
+      <p class="mx-auto mt-2 max-w-2xl text-sm text-mut dark:text-slate-300 sm:text-base">Everything included, free forever.</p>
+    </div>
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <a class="feature-card block rounded-xl border border-line bg-panel p-5 dark:border-slate-700 dark:bg-slate-800" href="resume-builder-v7-test.html">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-secondary/15 text-secondary"><span class="material-symbols-outlined">visibility</span></div>
+        <h3 class="mt-3 font-bold">Live preview</h3>
+        <p class="mt-1 text-sm text-mut dark:text-slate-300">See your resume update instantly as you type, in the exact template you picked.</p>
+      </a>
+      <a class="feature-card block rounded-xl border border-line bg-panel p-5 dark:border-slate-700 dark:bg-slate-800" href="#templates">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-navy/10 text-navy dark:text-white"><span class="material-symbols-outlined">grid_view</span></div>
+        <h3 class="mt-3 font-bold">17+ templates</h3>
+        <p class="mt-1 text-sm text-mut dark:text-slate-300">21 professional designs, from classic navy to Swiss Executive. Switch any time.</p>
+      </a>
+      <a class="feature-card block rounded-xl border border-line bg-panel p-5 dark:border-slate-700 dark:bg-slate-800" href="dashboard-v7-test.html">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-accent/15 text-accent"><span class="material-symbols-outlined">fact_check</span></div>
+        <h3 class="mt-3 font-bold">ATS checker</h3>
+        <p class="mt-1 text-sm text-mut dark:text-slate-300">Check your resume against common applicant-tracking-system checks before you send it.</p>
+      </a>
+      <a class="feature-card block rounded-xl border border-line bg-panel p-5 dark:border-slate-700 dark:bg-slate-800" href="cover-letter-v7-test.html">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-secondary/15 text-secondary"><span class="material-symbols-outlined">mail</span></div>
+        <h3 class="mt-3 font-bold">Cover letter builder</h3>
+        <p class="mt-1 text-sm text-mut dark:text-slate-300">Write a matching cover letter for your resume, using your own details and words.</p>
+      </a>
+      <a class="feature-card block rounded-xl border border-line bg-panel p-5 dark:border-slate-700 dark:bg-slate-800" href="resume-builder-v7-test.html">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-navy/10 text-navy dark:text-white"><span class="material-symbols-outlined">upload_file</span></div>
+        <h3 class="mt-3 font-bold">Resume import (PDF/DOCX)</h3>
+        <p class="mt-1 text-sm text-mut dark:text-slate-300">Import an existing resume from PDF or DOCX and keep editing it in the builder.</p>
+      </a>
+      <button type="button" id="darkModeCard" class="feature-card block w-full rounded-xl border border-line bg-panel p-5 text-left dark:border-slate-700 dark:bg-slate-800">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-accent/15 text-accent"><span class="material-symbols-outlined">dark_mode</span></div>
+        <h3 class="mt-3 font-bold">Dark mode</h3>
+        <p class="mt-1 text-sm text-mut dark:text-slate-300">Switch between light and dark themes. Tap this card to try it now — your choice is remembered.</p>
+      </button>
+      <a class="feature-card block rounded-xl border border-line bg-panel p-5 dark:border-slate-700 dark:bg-slate-800" href="#faq">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-secondary/15 text-secondary"><span class="material-symbols-outlined">check_circle</span></div>
+        <h3 class="mt-3 font-bold">Free forever with no sign-up</h3>
+        <p class="mt-1 text-sm text-mut dark:text-slate-300">No account, no email, no payment. Every feature on this page is free to use.</p>
+      </a>
+      <a class="feature-card block rounded-xl border border-line bg-panel p-5 dark:border-slate-700 dark:bg-slate-800" href="privacy-policy.html">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-navy/10 text-navy dark:text-white"><span class="material-symbols-outlined">lock</span></div>
+        <h3 class="mt-3 font-bold">Data stays in your browser</h3>
+        <p class="mt-1 text-sm text-mut dark:text-slate-300">Your resume is stored only in your browser's local storage on your device. Nothing is uploaded.</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ AI INTRO ============ -->
+  <section id="ai" class="border-y border-line bg-panel2/60 dark:border-slate-700 dark:bg-slate-800/50">
+    <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+      <div class="mx-auto max-w-3xl text-center">
+        <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-lg bg-secondary/15 text-secondary"><span class="material-symbols-outlined text-2xl">auto_awesome</span></div>
+        <h2 class="mt-4 text-2xl font-bold text-navy dark:text-white sm:text-3xl">AI Writing Help, Honestly Explained</h2>
+        <p class="mt-4 text-sm leading-relaxed text-mut dark:text-slate-300 sm:text-base">The builder offers template-based writing suggestions built from your own words — for example, turning a short note about a job into a clear, well-worded bullet point. Every suggestion is shown to you first and is fully editable.</p>
+        <p class="mt-3 text-sm leading-relaxed text-mut dark:text-slate-300 sm:text-base">It never invents qualifications, jobs or skills you do not have, and it never sends your details anywhere: the suggestions work from what you typed, in your browser. What you approve is what appears on your resume — nothing more.</p>
+        <a class="mt-6 inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-3 text-sm font-bold text-white hover:bg-accent2" href="resume-builder-v7-test.html">
+          <span class="material-symbols-outlined text-lg">description</span><span>Try It in the Builder</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section id="faq" class="mx-auto max-w-3xl scroll-mt-20 px-4 py-12 sm:px-6">
+    <div class="mb-6 text-center">
+      <h2 class="text-2xl font-bold text-navy dark:text-white sm:text-3xl">Frequently Asked Questions</h2>
+    </div>
+    <div class="space-y-3">
+      <div class="faq-item open rounded-xl border border-line bg-panel dark:border-slate-700 dark:bg-slate-800">
+        <button type="button" class="faq-btn flex w-full items-center justify-between gap-3 px-5 py-4 text-left" aria-expanded="true">
+          <span class="font-bold">Is it really free?</span>
+          <span class="material-symbols-outlined faq-chevron shrink-0 text-mut">expand_more</span>
+        </button>
+        <div class="faq-panel"><div><p class="px-5 pb-5 text-sm leading-relaxed text-mut dark:text-slate-300">Yes, free forever, no sign-up, no payment. Every template and feature on this page is free to use.</p></div></div>
+      </div>
+      <div class="faq-item rounded-xl border border-line bg-panel dark:border-slate-700 dark:bg-slate-800">
+        <button type="button" class="faq-btn flex w-full items-center justify-between gap-3 px-5 py-4 text-left" aria-expanded="false">
+          <span class="font-bold">Do I need an account?</span>
+          <span class="material-symbols-outlined faq-chevron shrink-0 text-mut">expand_more</span>
+        </button>
+        <div class="faq-panel"><div><p class="px-5 pb-5 text-sm leading-relaxed text-mut dark:text-slate-300">No. There is no account, no login and no email address needed. Open the builder and start typing.</p></div></div>
+      </div>
+      <div class="faq-item rounded-xl border border-line bg-panel dark:border-slate-700 dark:bg-slate-800">
+        <button type="button" class="faq-btn flex w-full items-center justify-between gap-3 px-5 py-4 text-left" aria-expanded="false">
+          <span class="font-bold">Where is my data stored?</span>
+          <span class="material-symbols-outlined faq-chevron shrink-0 text-mut">expand_more</span>
+        </button>
+        <div class="faq-panel"><div><p class="px-5 pb-5 text-sm leading-relaxed text-mut dark:text-slate-300">Only in your browser's local storage on your device. Your resume details are never uploaded to a server.</p></div></div>
+      </div>
+      <div class="faq-item rounded-xl border border-line bg-panel dark:border-slate-700 dark:bg-slate-800">
+        <button type="button" class="faq-btn flex w-full items-center justify-between gap-3 px-5 py-4 text-left" aria-expanded="false">
+          <span class="font-bold">How do I download as PDF?</span>
+          <span class="material-symbols-outlined faq-chevron shrink-0 text-mut">expand_more</span>
+        </button>
+        <div class="faq-panel"><div><p class="px-5 pb-5 text-sm leading-relaxed text-mut dark:text-slate-300">From the builder, use Print / Save as PDF. Your browser's print dialog lets you save the finished resume as a PDF file.</p></div></div>
+      </div>
+      <div class="faq-item rounded-xl border border-line bg-panel dark:border-slate-700 dark:bg-slate-800">
+        <button type="button" class="faq-btn flex w-full items-center justify-between gap-3 px-5 py-4 text-left" aria-expanded="false">
+          <span class="font-bold">Can I use it on my phone?</span>
+          <span class="material-symbols-outlined faq-chevron shrink-0 text-mut">expand_more</span>
+        </button>
+        <div class="faq-panel"><div><p class="px-5 pb-5 text-sm leading-relaxed text-mut dark:text-slate-300">Yes, fully responsive. The builder, templates and dashboard work on phones, tablets and desktops.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+<!-- ============ AD SLOT (Google AdSense — INERT) ============ -->
+<!-- To activate: replace data-ad-slot="0000000000" with your real ad unit ID (from AdSense: Ads > Ad units), then remove the comment markers around the <div> below. This slot sits outside the resume preview and is hidden in print, so ads never appear in a printed or downloaded resume. -->
+<!--
+<div class="ad-slot mx-auto max-w-7xl px-4 sm:px-6 rounded-xl overflow-hidden">
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1514533551558448" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+-->
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="mt-4">
+    <div class="bg-navy text-white dark:bg-navydeep">
+      <div class="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-6 py-10 text-center sm:grid-cols-3 sm:text-left">
+        <div class="space-y-2">
+          <h3 class="text-lg font-bold uppercase tracking-wide">ResumeMaker</h3>
+          <p class="text-sm text-white/75">Free resume builder — 17 templates, live preview, ATS checker and cover letter builder. All in your browser.</p>
+        </div>
+        <div class="space-y-2">
+          <h3 class="text-lg font-bold uppercase tracking-wide">Tools</h3>
+          <ul class="space-y-1.5 text-sm">
+            <li><a class="text-white/75 hover:text-white" href="resume-builder-v7-test.html">Resume Builder</a></li>
+            <li><a class="text-white/75 hover:text-white" href="dashboard-v7-test.html">Dashboard</a></li>
+            <li><a class="text-white/75 hover:text-white" href="cover-letter-v7-test.html">Cover Letter</a></li>
+            <li><a class="text-white/75 hover:text-white" href="https://sandipk.qd.je/metadata-cleaner/">MetaClean</a></li>
+          </ul>
+        </div>
+        <div class="space-y-2">
+          <h3 class="text-lg font-bold uppercase tracking-wide">Resources</h3>
+          <ul class="space-y-1.5 text-sm">
+            <li><a class="text-white/75 hover:text-white" href="privacy-policy.html">Privacy Policy</a></li>
+            <li><a class="text-white/75 hover:text-white" href="about.html">About</a></li>
+            <li><a class="text-white/75 hover:text-white" href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="bg-[#152C4A] px-4 py-4 text-center text-xs text-white/70">Copyright © ResumeMaker 2026 · Developer by Sandip Kumar Mahto</div>
+  </footer>
+</main>
+
+<script>
+  (function () {
+    // --- Dark mode toggle (persisted in localStorage key rm_v7_theme) ---
+    var root = document.documentElement;
+    var icon = document.getElementById("themeIcon");
+    var label = document.getElementById("themeLabel");
+    function syncThemeUI() {
+      var dark = root.classList.contains("dark");
+      if (icon) icon.textContent = dark ? "light_mode" : "dark_mode";
+      if (label) label.textContent = dark ? "Light" : "Dark";
+    }
+    function toggleTheme() {
+      var dark = root.classList.toggle("dark");
+      try { localStorage.setItem("rm_v7_theme", dark ? "dark" : "light"); } catch (e) { /* private mode */ }
+      syncThemeUI();
+    }
+    var themeBtn = document.getElementById("themeToggle");
+    if (themeBtn) themeBtn.addEventListener("click", toggleTheme);
+    var darkCard = document.getElementById("darkModeCard");
+    if (darkCard) darkCard.addEventListener("click", toggleTheme);
+    syncThemeUI();
+
+    // --- Mobile hamburger menu ---
+    var menuBtn = document.getElementById("menuBtn");
+    var mobileMenu = document.getElementById("mobileMenu");
+    if (menuBtn && mobileMenu) {
+      menuBtn.addEventListener("click", function () {
+        var open = mobileMenu.classList.toggle("hidden");
+        menuBtn.setAttribute("aria-expanded", String(!open));
+      });
+      mobileMenu.querySelectorAll("a").forEach(function (a) {
+        a.addEventListener("click", function () {
+          mobileMenu.classList.add("hidden");
+          menuBtn.setAttribute("aria-expanded", "false");
+        });
+      });
+    }
+
+    // --- FAQ accordion (one open at a time) ---
+    document.querySelectorAll(".faq-item").forEach(function (item) {
+      var btn = item.querySelector(".faq-btn");
+      if (!btn) return;
+      btn.addEventListener("click", function () {
+        var wasOpen = item.classList.contains("open");
+        document.querySelectorAll(".faq-item").forEach(function (other) {
+          other.classList.remove("open");
+          var b = other.querySelector(".faq-btn");
+          if (b) b.setAttribute("aria-expanded", "false");
+        });
+        if (!wasOpen) {
+          item.classList.add("open");
+          btn.setAttribute("aria-expanded", "true");
+        }
+      });
+    });
+  })();
+</script>
+</body>
+</html>
