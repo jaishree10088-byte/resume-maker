@@ -228,8 +228,8 @@
 }</script>
 <!-- Google AdSense -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1514533551558448" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" integrity="sha512-q+4liFwdPC/bNdhUpZx6aXDx/h77yEQtn4I1slHydcbZK34nLaR3cAeYSJshoxIOq3mjEf7xJE8YWIUHMn+oCQ==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js" integrity="sha512-sG5Q7boJL+ft/weuz6Mmi9XBD+bEzE9AI2FMP4YMFxp3FpTFUQSQQm5K5cSgJCyed6bWs3W8f8h0lp36lHXhQA==" crossorigin="anonymous"></script>
 <style id="v7CustStyle"></style>
 <style>
 .v7-panel{border:1px solid #cbd5e1;border-radius:10px;padding:12px;margin-top:12px;background:#ffffff;}
@@ -669,26 +669,26 @@ Viral Video Studio — Video enhancement plus viral toolkit app</textarea>
       refreshTplPreviews();
     }
 
-    function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+    function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;"); }
     function val(id) { var el = document.getElementById(id); return el ? el.value : ""; }
     function section(title) {
       var t = tpl();
       if (t.section === "tab" || t.section === "tabround") {
         var rad = t.section === "tabround" ? "border-radius: 0 12px 12px 0;" : "";
-        return '<div class="v7-sec" style="margin-top: 18px; margin-bottom: 0;"><span style="display: inline-block; background: ' + t.accent + '; color: #ffffff; font-size: 15px; font-weight: bold; text-transform: uppercase; padding: 5px 16px; ' + rad + '">' + title + '</span></div><div style="border-top: 2px solid ' + t.accent + '; margin-bottom: 8px;"></div>';
+        return '<div class="v7-sec" style="margin-top: 18px; margin-bottom: 0;"><span style="display: inline-block; background: ' + t.accent + '; color: #ffffff; font-size: 15px; font-weight: bold; text-transform: uppercase; padding: 5px 16px; ' + rad + '">' + esc(title) + '</span></div><div style="border-top: 2px solid ' + t.accent + '; margin-bottom: 8px;"></div>';
       }
       if (t.section === "ribbon") {
-        return '<div class="v7-sec" style="margin-top: 18px; margin-bottom: 0;"><span style="display: inline-block; background: ' + t.accent + '; color: #ffffff; font-size: 15px; font-weight: bold; text-transform: uppercase; padding: 5px 16px; border-radius: 2px;">' + title + '</span></div><div style="border-top: 2px solid ' + t.accent + '; margin-bottom: 8px;"></div>';
+        return '<div class="v7-sec" style="margin-top: 18px; margin-bottom: 0;"><span style="display: inline-block; background: ' + t.accent + '; color: #ffffff; font-size: 15px; font-weight: bold; text-transform: uppercase; padding: 5px 16px; border-radius: 2px;">' + esc(title) + '</span></div><div style="border-top: 2px solid ' + t.accent + '; margin-bottom: 8px;"></div>';
       }
       if (t.section === "icon") {
         var ch = title.charAt(0);
         /* The badge shows the first letter, so the title after it starts from the 2nd character (drop-cap style) — rendering the full title too doubles the first letter. */
-        return '<div class="v7-sec" style="font-size: 15px; font-weight: bold; color: ' + t.dark + '; text-transform: uppercase; margin-top: 18px; margin-bottom: 6px; padding-bottom: 5px; border-bottom: 2px solid ' + t.accent + ';"><span style="display: inline-block; width: 24px; height: 24px; border-radius: 50%; background: ' + t.dark + '; color: #ffffff; text-align: center; line-height: 24px; font-size: 13px; margin-right: 10px; vertical-align: middle;">' + ch + '</span>' + title.slice(1) + '</div>';
+        return '<div class="v7-sec" style="font-size: 15px; font-weight: bold; color: ' + t.dark + '; text-transform: uppercase; margin-top: 18px; margin-bottom: 6px; padding-bottom: 5px; border-bottom: 2px solid ' + t.accent + ';"><span style="display: inline-block; width: 24px; height: 24px; border-radius: 50%; background: ' + t.dark + '; color: #ffffff; text-align: center; line-height: 24px; font-size: 13px; margin-right: 10px; vertical-align: middle;">' + esc(ch) + '</span>' + esc(title.slice(1)) + '</div>';
       }
       if (t.section === "line") {
-        return '<div class="v7-sec" style="font-size: 15px; font-weight: bold; color: ' + t.dark + '; text-transform: uppercase; margin-top: 18px; margin-bottom: 6px; border-left: 4px solid ' + t.accent + '; padding-left: 10px;">' + title + '</div>';
+        return '<div class="v7-sec" style="font-size: 15px; font-weight: bold; color: ' + t.dark + '; text-transform: uppercase; margin-top: 18px; margin-bottom: 6px; border-left: 4px solid ' + t.accent + '; padding-left: 10px;">' + esc(title) + '</div>';
       }
-      return '<div class="v7-sec" style="font-size: 15px; font-weight: bold; color: ' + t.accent + '; text-transform: uppercase; margin-top: 18px; margin-bottom: 6px;">' + title + '</div>';
+      return '<div class="v7-sec" style="font-size: 15px; font-weight: bold; color: ' + t.accent + '; text-transform: uppercase; margin-top: 18px; margin-bottom: 6px;">' + esc(title) + '</div>';
     }
     function photoHTML(w, h) {
       var t = tpl();
