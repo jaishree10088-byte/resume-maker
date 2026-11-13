@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ResumeMaker Dashboard — My Resumes &amp; Cover Letters</title>
+<meta name="description" content="ResumeMaker dashboard: manage your resumes and cover letters — view completion, edit, duplicate, rename, download or delete. Everything is saved in your browser, free forever, no account needed."/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&amp;family=Open+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        ink: "#F8FAFC",
+        sidebar: "#1E3A5F",
+        panel: "#ffffff",
+        panel2: "#E9EEF5",
+        line: "#CBD5E1",
+        accent: "#16A34A",
+        accent2: "#15803D",
+        mint: "#16A34A",
+        mut: "#475569",
+        secondary: "#2563EB",
+        txt: "#0F172A"
+      },
+      fontFamily: {
+        sans: ["Open Sans", "system-ui", "sans-serif"]
+      }
+    }
+  }
+};
+</script>
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1514533551558448" crossorigin="anonymous"></script>
+<script>
+/* Apply saved theme before first paint (no flash). Default: light. */
+(function () {
+  try {
+    if (localStorage.getItem("rm_v7_theme") === "dark") {
+      document.documentElement.classList.add("dark");
+    }
+  } catch (e) { /* storage unavailable — stay light */ }
+})();
+</script>
+<style>
+  html, body { margin: 0; padding: 0; }
+  body { overscroll-behavior: none; }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb { background: #1E3A5F; border-radius: 6px; }
+  h1, h2, h3 { font-family: "Poppins", sans-serif; }
+  .dark body { background-color: #0F172A; color: #F1F5F9; }
+  .card, .stat-card { transition: all 150ms ease; }
+  @media (hover: hover) and (pointer: fine) {
+    .card:hover { transform: translateY(-2px); border-color: #2563EB; }
+    .stat-card:hover { border-color: #2563EB; }
+  }
+  button:active { transform: scale(0.97); }
+  @media print { .ad-slot, .adsbygoogle, ins.adsbygoogle { display: none !important; } }
+</style>
+</head>
+<body class="bg-ink font-sans text-txt antialiased dark:bg-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+
+<!-- ============ HEADER ============ -->
+<header class="sticky top-0 z-40 bg-[#1E3A5F] text-white shadow-md">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3 flex-wrap">
+    <a href="index-v7-test.html" class="flex items-center gap-2.5 min-w-0 shrink-0">
+      <span class="w-9 h-9 rounded-lg bg-white flex items-center justify-center shrink-0"><span class="text-sm font-extrabold text-[#1E3A5F]">RM</span></span>
+      <span class="flex flex-col leading-tight">
+        <span class="text-base font-bold tracking-tight">ResumeMaker</span>
+        <span class="font-mono text-[10px] text-[#16A34A] tracking-widest">DASHBOARD · v7</span>
+      </span>
+    </a>
+    <nav class="flex items-center gap-1 overflow-x-auto flex-1 min-w-0 order-3 w-full sm:order-none sm:w-auto" aria-label="Main navigation">
+      <a href="index-v7-test.html" class="px-3 py-2 rounded-lg text-sm text-white/85 hover:text-white hover:bg-white/10 whitespace-nowrap">Home</a>
+      <a href="dashboard-v7-test.html" aria-current="page" class="px-3 py-2 rounded-lg text-sm font-semibold bg-white/15 text-white whitespace-nowrap">Dashboard</a>
+      <a href="resume-builder-v7-test.html" class="px-3 py-2 rounded-lg text-sm text-white/85 hover:text-white hover:bg-white/10 whitespace-nowrap">Resume Builder</a>
+      <a href="cover-letter-v7-test.html" class="px-3 py-2 rounded-lg text-sm text-white/85 hover:text-white hover:bg-white/10 whitespace-nowrap">Cover Letter</a>
+    </nav>
+    <div class="flex items-center gap-2 ml-auto shrink-0">
+      <button id="themeToggle" type="button" class="p-2 rounded-lg text-white/85 hover:text-white hover:bg-white/10" aria-label="Toggle dark mode" title="Toggle dark mode">
+        <span id="themeIcon" class="material-symbols-outlined block">dark_mode</span>
+      </button>
+      <button id="createTopBtn" type="button" class="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[#16A34A] hover:bg-[#15803D] text-white text-sm font-bold">
+        <span class="material-symbols-outlined text-lg">add</span><span class="hidden xs:inline sm:inline">New Resume</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="w-full max-w-7xl mx-auto flex-1 px-4 py-6 space-y-6 min-w-0">
+
+  <!-- ============ DATA ERROR BANNER (corrupted localStorage) ============ -->
+  <div id="dataErrorBanner" class="hidden rounded-xl border border-red-300 bg-red-50 dark:bg-red-950/40 dark:border-red-800 p-4" role="alert">
+    <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+      <span class="material-symbols-outlined text-red-600 dark:text-red-400 text-2xl shrink-0">warning</span>
+      <p id="dataErrorText" class="text-sm text-red-800 dark:text-red-200 flex-1 min-w-0">Your saved data could not be read.</p>
+      <button id="clearDataBtn" type="button" class="shrink-0 px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white text-sm font-bold">Clear saved data</button>
+    </div>
+  </div>
+
+  <!-- ============ WELCOME + STATS ============ -->
+  <section>
+    <h1 class="text-2xl sm:text-3xl font-extrabold">Welcome back</h1>
+    <p class="text-sm sm:text-base text-slate-500 dark:text-slate-400 mt-1">All your resumes and cover letters live in this browser — no account, no upload, free forever.</p>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-5">
+      <div class="stat-card rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-5">
+        <div class="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm font-semibold"><span class="material-symbols-outlined text-[#2563EB]">description</span>Total Resumes</div>
+        <p id="statTotal" class="text-3xl font-extrabold mt-2">0</p>
+      </div>
+      <div class="stat-card rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-5">
+        <div class="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm font-semibold"><span class="material-symbols-outlined text-[#16A34A]">task_alt</span>Average Completion</div>
+        <p id="statAvg" class="text-3xl font-extrabold mt-2">0%</p>
+      </div>
+      <div class="stat-card rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-5">
+        <div class="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm font-semibold"><span class="material-symbols-outlined text-[#1E3A5F] dark:text-slate-300">schedule</span>Most Recently Edited</div>
+        <p id="statRecent" class="text-3xl font-extrabold mt-2 break-words">—</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MY RESUMES ============ -->
+  <section aria-labelledby="resumesHeading">
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-3">
+      <div>
+        <h2 id="resumesHeading" class="text-xl font-bold uppercase tracking-wide">My Resumes</h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400">Open a resume to keep editing, or start a fresh one.</p>
+      </div>
+      <button id="createNewBtn" type="button" class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-[#16A34A] hover:bg-[#15803D] text-white text-sm font-bold shrink-0">
+        <span class="material-symbols-outlined text-lg">add</span>Create New Resume
+      </button>
+    </div>
+
+    <!-- Search + sort toolbar -->
+    <div class="flex flex-col sm:flex-row gap-3 mb-4">
+      <label class="flex items-center gap-2 flex-1 px-3 py-2.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 min-w-0">
+        <span class="material-symbols-outlined text-slate-400 shrink-0">search</span>
+        <input id="searchInput" type="text" placeholder="Search resumes by title…" autocomplete="off"
+          class="w-full bg-transparent text-sm placeholder:text-slate-400 focus:outline-none min-w-0"/>
+      </label>
+      <label class="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shrink-0">
+        <span class="material-symbols-outlined text-slate-400">sort</span>
+        <span class="text-sm text-slate-500 dark:text-slate-400">Sort:</span>
+        <select id="sortSelect" class="bg-transparent text-sm font-semibold focus:outline-none cursor-pointer">
+          <option value="edited">Last edited</option>
+          <option value="title">Title A–Z</option>
+        </select>
+      </label>
+    </div>
+
+    <!-- Empty state: no resumes -->
+    <div id="resumesEmpty" class="hidden rounded-xl bg-white dark:bg-slate-800 border border-dashed border-slate-300 dark:border-slate-600 p-8 sm:p-12 text-center">
+      <span class="material-symbols-outlined text-5xl text-slate-300 dark:text-slate-600 block">description</span>
+      <h3 class="text-lg font-bold mt-3">No resumes yet — create your first resume</h3>
+      <p class="text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-md mx-auto">Pick one of 17 professional designs, fill in your details, and download your resume — all free, right in your browser.</p>
+      <button id="createEmptyBtn" type="button" class="mt-5 inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-[#16A34A] hover:bg-[#15803D] text-white text-sm font-bold">
+        <span class="material-symbols-outlined text-lg">add</span>Create Your First Resume
+      </button>
+    </div>
+
+    <!-- No search results -->
+    <div id="resumesNoMatch" class="hidden rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-8 text-center">
+      <h3 class="text-lg font-bold">No resumes match your search</h3>
+      <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Try a different title, or clear the search box.</p>
+      <button id="clearSearchBtn" type="button" class="mt-4 px-4 py-2 rounded-lg bg-[#2563EB] hover:bg-blue-700 text-white text-sm font-bold">Clear search</button>
+    </div>
+
+    <div id="resumesGrid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+  </section>
+
+  <!-- ============ RECENTLY EDITED ============ -->
+  <section aria-labelledby="recentHeading" id="recentSection">
+    <h2 id="recentHeading" class="text-xl font-bold uppercase tracking-wide mb-3">Recently Edited</h2>
+    <div id="recentList" class="rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 divide-y divide-slate-200 dark:divide-slate-700 overflow-hidden"></div>
+    <p id="recentEmpty" class="hidden text-sm text-slate-500 dark:text-slate-400">Nothing edited yet — your most recent resumes will appear here.</p>
+  </section>
+
+  <!-- ============ MY COVER LETTERS ============ -->
+  <section aria-labelledby="lettersHeading">
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-3">
+      <div>
+        <h2 id="lettersHeading" class="text-xl font-bold uppercase tracking-wide">My Cover Letters</h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400">Cover letters you have written with the Cover Letter builder.</p>
+      </div>
+      <a href="cover-letter-v7-test.html" class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-[#2563EB] hover:bg-blue-700 text-white text-sm font-bold shrink-0">
+        <span class="material-symbols-outlined text-lg">mail</span>Write a Cover Letter
+      </a>
+    </div>
+
+    <div id="lettersEmpty" class="hidden rounded-xl bg-white dark:bg-slate-800 border border-dashed border-slate-300 dark:border-slate-600 p-8 sm:p-12 text-center">
+      <span class="material-symbols-outlined text-5xl text-slate-300 dark:text-slate-600 block">mail</span>
+      <h3 class="text-lg font-bold mt-3">No cover letters yet</h3>
+      <p class="text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-md mx-auto">Write a tailored cover letter for your next application — it will be saved here automatically.</p>
+      <a href="cover-letter-v7-test.html" class="mt-5 inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-[#2563EB] hover:bg-blue-700 text-white text-sm font-bold">
+        <span class="material-symbols-outlined text-lg">add</span>Write Your First Cover Letter
+      </a>
+    </div>
+
+    <div id="lettersGrid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+  </section>
+
+<!-- ============ AD SLOT (Google AdSense — INERT) ============ -->
+<!-- To activate: replace data-ad-slot="0000000000" with your real ad unit ID (from AdSense: Ads > Ad units), then remove the comment markers around the <div> below. This slot sits outside any resume preview and is hidden in print, so ads never appear in a downloaded or printed resume. -->
+<!--
+<div class="ad-slot rounded-xl overflow-hidden">
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1514533551558448" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+-->
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="rounded-xl overflow-hidden mt-2">
+    <div class="bg-[#1E3A5F] text-white">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 px-6 py-10 text-center sm:text-left">
+        <div class="space-y-2">
+          <h4 class="text-lg font-bold uppercase tracking-wide">ResumeMaker</h4>
+          <p class="text-sm text-white/75">Free resume builder — 17 designs, live preview, download or print. All in your browser.</p>
+        </div>
+        <div class="space-y-2">
+          <h4 class="text-lg font-bold uppercase tracking-wide">Tools</h4>
+          <ul class="space-y-1.5 text-sm">
+            <li><a class="text-white/75 hover:text-white" href="resume-builder-v7-test.html">Resume Builder</a></li>
+            <li><a class="text-white/75 hover:text-white" href="cover-letter-v7-test.html">Cover Letter</a></li>
+            <li><a class="text-white/75 hover:text-white" href="dashboard-v7-test.html">Dashboard</a></li>
+          </ul>
+        </div>
+        <div class="space-y-2">
+          <h4 class="text-lg font-bold uppercase tracking-wide">Resources</h4>
+          <ul class="space-y-1.5 text-sm">
+            <li><a class="text-white/75 hover:text-white" href="privacy-policy.html">Privacy Policy</a></li>
+            <li><a class="text-white/75 hover:text-white" href="about.html">About</a></li>
+            <li><a class="text-white/75 hover:text-white" href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="bg-[#152C4A] text-center py-4 px-4 text-xs text-white/70">Copyright © ResumeMaker 2026 · Developer by Sandip Kumar Mahto</div>
+  </footer>
+</main>
+
+<!-- ============ DELETE CONFIRMATION MODAL ============ -->
+<div id="deleteModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
+  <div class="w-full max-w-sm rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 shadow-xl">
+    <div class="flex items-center gap-3">
+      <span class="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400 flex items-center justify-center shrink-0"><span class="material-symbols-outlined">delete</span></span>
+      <h3 id="deleteModalTitle" class="text-lg font-bold">Delete this item?</h3>
+    </div>
+    <p id="deleteModalText" class="text-sm text-slate-500 dark:text-slate-400 mt-3 break-words">This cannot be undone.</p>
+    <div class="flex gap-3 mt-6">
+      <button id="deleteCancelBtn" type="button" class="flex-1 px-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 text-sm font-bold hover:bg-slate-100 dark:hover:bg-slate-700">Cancel</button>
+      <button id="deleteConfirmBtn" type="button" class="flex-1 px-4 py-2.5 rounded-lg bg-red-600 hover:bg-red-700 text-white text-sm font-bold">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ RENAME MODAL ============ -->
+<div id="renameModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60" role="dialog" aria-modal="true" aria-labelledby="renameModalTitle">
+  <div class="w-full max-w-sm rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 shadow-xl">
+    <h3 id="renameModalTitle" class="text-lg font-bold">Rename resume</h3>
+    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Give this resume a clear title so you can find it later.</p>
+    <label class="block mt-4">
+      <span class="text-sm font-semibold">Resume title</span>
+      <input id="renameInput" type="text" maxlength="100" class="mt-1 w-full px-3 py-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-sm focus:outline-none focus:border-[#2563EB] min-w-0"/>
+    </label>
+    <div class="flex gap-3 mt-6">
+      <button id="renameCancelBtn" type="button" class="flex-1 px-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 text-sm font-bold hover:bg-slate-100 dark:hover:bg-slate-700">Cancel</button>
+      <button id="renameSaveBtn" type="button" class="flex-1 px-4 py-2.5 rounded-lg bg-[#16A34A] hover:bg-[#15803D] text-white text-sm font-bold">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CLEAR SAVED DATA MODAL ============ -->
+<div id="clearModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60" role="dialog" aria-modal="true" aria-labelledby="clearModalTitle">
+  <div class="w-full max-w-sm rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 shadow-xl">
+    <div class="flex items-center gap-3">
+      <span class="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400 flex items-center justify-center shrink-0"><span class="material-symbols-outlined">warning</span></span>
+      <h3 id="clearModalTitle" class="text-lg font-bold">Clear all saved data?</h3>
+    </div>
+    <p class="text-sm text-slate-500 dark:text-slate-400 mt-3">This deletes every saved resume and cover letter stored in this browser (all ResumeMaker v7 data). This cannot be undone.</p>
+    <div class="flex gap-3 mt-6">
+      <button id="clearCancelBtn" type="button" class="flex-1 px-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-600 text-sm font-bold hover:bg-slate-100 dark:hover:bg-slate-700">Cancel</button>
+      <button id="clearConfirmBtn" type="button" class="flex-1 px-4 py-2.5 rounded-lg bg-red-600 hover:bg-red-700 text-white text-sm font-bold">Clear data</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- Storage keys (data contract — do not change) ---------- */
+  var KEY_RESUMES = "rm_v7_resumes";
+  var KEY_CURRENT = "rm_v7_current";
+  var KEY_LETTERS = "rm_v7_coverletters";
+  var KEY_THEME = "rm_v7_theme";
+  var RM_KEYS = [KEY_RESUMES, KEY_CURRENT, KEY_LETTERS, KEY_THEME];
+
+  /* ---------- Template names (same 21 as the builder) ---------- */
+  var TEMPLATES = {
+    "classic-navy": "Classic Navy",
+    "twocolor-classic": "Two-Color Classic",
+    "deepblue-sidebar": "Deep Blue Sidebar",
+    "minimal-light": "Minimal Light",
+    "curve-label": "Curve Label Classic",
+    "elegant-twocolor": "Elegant Two-Color",
+    "red-classic": "Red Classic",
+    "blue-ribbon": "Blue Ribbon",
+    "grey-classic": "Grey Classic",
+    "professional-blue": "Professional Blue",
+    "tech-creative": "Tech Creative",
+    "line-creative": "Line Creative",
+    "ink-elegant": "Ink Elegant",
+    "yellow-accent": "Yellow Accent",
+    "fashion-twocol": "Fashion Two-Column",
+    "titlebar-classic": "Title Bar Classic",
+    "swiss-executive": "Swiss Executive",
+    "modern-teal": "Modern Teal",
+    "executive-gold": "Executive Gold",
+    "fresh-graduate": "Fresh Graduate",
+    "corporate-grey": "Corporate Grey"
+  };
+
+  /* ---------- Helpers ---------- */
+  function $(id) { return document.getElementById(id); }
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+  function uid() {
+    return "rm_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2, 8);
+  }
+  function isFilledText(v) { return typeof v === "string" && v.trim().length > 0; }
+  function isFilledList(v) {
+    if (Array.isArray(v)) {
+      return v.some(function (item) {
+        if (typeof item === "string") return item.trim().length > 0;
+        if (item && typeof item === "object") {
+          return Object.keys(item).some(function (k) { return isFilledText(item[k]) || isFilledList(item[k]); });
+        }
+        return item != null && String(item).trim().length > 0;
+      });
+    }
+    return isFilledText(v);
+  }
+  function pick(data) {
+    var out = {};
+    var args = Array.prototype.slice.call(arguments, 1);
+    for (var i = 0; i < args.length; i++) {
+      if (data && data[args[i]] != null) { out.value = data[args[i]]; out.found = true; return out; }
+    }
+    return { value: undefined, found: false };
+  }
+  function fmtDate(iso) {
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return "Unknown date";
+    return d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+  }
+  function fmtDateTime(iso) {
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return "Unknown date";
+    return d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) +
+      " · " + d.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+  }
+
+  /* ---------- Completion: 11 tracked fields ---------- */
+  function completionPct(resume) {
+    var d = (resume && resume.data) || {};
+    var filled = 0;
+    var total = 11;
+    if (isFilledText(pick(d, "name", "fullName").value)) filled++;
+    if (isFilledText(pick(d, "title", "jobTitle", "headline").value)) filled++;
+    if (isFilledText(pick(d, "email").value)) filled++;
+    if (isFilledText(pick(d, "phone").value)) filled++;
+    if (isFilledText(pick(d, "about", "summary", "profile").value)) filled++;
+    if (isFilledList(pick(d, "skills").value)) filled++;
+    if (isFilledList(pick(d, "experience", "experiences").value)) filled++;
+    if (isFilledList(pick(d, "education").value)) filled++;
+    if (isFilledList(pick(d, "projects").value)) filled++;
+    if (isFilledList(pick(d, "certifications", "certs").value)) filled++;
+    if (isFilledList(pick(d, "languages").value)) filled++;
+    return Math.round((filled / total) * 100);
+  }
+
+  /* ---------- Load / save (corrupt JSON handled gracefully) ---------- */
+  var corruptKeys = [];
+  function loadArray(key) {
+    var raw = null;
+    try { raw = localStorage.getItem(key); } catch (e) { return []; }
+    if (raw == null || raw === "") return [];
+    try {
+      var parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed)) { corruptKeys.push(key); return []; }
+      return parsed.filter(function (item) { return item && typeof item === "object"; });
+    } catch (e) {
+      corruptKeys.push(key);
+      return [];
+    }
+  }
+  function saveArray(key, arr) {
+    try { localStorage.setItem(key, JSON.stringify(arr)); } catch (e) { /* storage full/unavailable */ }
+  }
+
+  var resumes = loadArray(KEY_RESUMES);
+  var letters = loadArray(KEY_LETTERS);
+
+  /* ---------- Error banner for corrupted data ---------- */
+  if (corruptKeys.length > 0) {
+    $("dataErrorBanner").classList.remove("hidden");
+    $("dataErrorText").textContent =
+      "Your saved data in " + corruptKeys.join(", ") + " could not be read (damaged or not valid saved data). " +
+      "Your other saved items are unaffected. You can clear all ResumeMaker v7 saved data and start fresh.";
+  }
+
+  /* ---------- State ---------- */
+  var searchQuery = "";
+  var sortMode = "edited";
+  var pendingDelete = null; /* {kind: "resume"|"letter", id: string, title: string} */
+  var pendingRenameId = null;
+
+  /* ---------- Theme ---------- */
+  function syncThemeIcon() {
+    var dark = document.documentElement.classList.contains("dark");
+    $("themeIcon").textContent = dark ? "light_mode" : "dark_mode";
+  }
+  $("themeToggle").addEventListener("click", function () {
+    var dark = document.documentElement.classList.toggle("dark");
+    try { localStorage.setItem(KEY_THEME, dark ? "dark" : "light"); } catch (e) {}
+    syncThemeIcon();
+  });
+  syncThemeIcon();
+
+  /* ---------- Navigation actions ---------- */
+  function createNewResume() {
+    try { localStorage.removeItem(KEY_CURRENT); } catch (e) {}
+    window.location.href = "resume-builder-v7-test.html";
+  }
+  function openResume(id) {
+    try { localStorage.setItem(KEY_CURRENT, id); } catch (e) {}
+    window.location.href = "resume-builder-v7-test.html?resume=" + encodeURIComponent(id);
+  }
+  function downloadResume(id) {
+    try { localStorage.setItem(KEY_CURRENT, id); } catch (e) {}
+    window.location.href = "resume-builder-v7-test.html?resume=" + encodeURIComponent(id) + "&download=1";
+  }
+  function openLetter(id) {
+    window.location.href = "cover-letter-v7-test.html?letter=" + encodeURIComponent(id);
+  }
+  $("createTopBtn").addEventListener("click", createNewResume);
+  $("createNewBtn").addEventListener("click", createNewResume);
+  $("createEmptyBtn").addEventListener("click", createNewResume);
+
+  /* ---------- Thumbnail: first 3 filled lines (styled text, not an image) ---------- */
+  function thumbnailLines(resume) {
+    var d = (resume && resume.data) || {};
+    var lines = [];
+    var name = pick(d, "name", "fullName").value;
+    var title = pick(d, "title", "jobTitle", "headline").value;
+    var email = pick(d, "email").value;
+    var skills = pick(d, "skills").value;
+    if (isFilledText(name)) lines.push({ text: name, cls: "font-bold text-slate-800 dark:text-slate-100" });
+    if (isFilledText(title)) lines.push({ text: title, cls: "text-slate-600 dark:text-slate-300" });
+    if (isFilledText(email)) lines.push({ text: email, cls: "text-slate-500 dark:text-slate-400 text-xs" });
+    if (lines.length < 3 && isFilledList(skills)) {
+      var s = Array.isArray(skills) ? skills.join(", ") : skills;
+      lines.push({ text: s, cls: "text-slate-500 dark:text-slate-400 text-xs truncate" });
+    }
+    if (lines.length === 0) lines.push({ text: "No details filled yet", cls: "text-slate-400 italic text-sm" });
+    return lines.slice(0, 3);
+  }
+
+  /* ---------- Render: stats ---------- */
+  function renderStats() {
+    $("statTotal").textContent = String(resumes.length);
+    if (resumes.length === 0) {
+      $("statAvg").textContent = "0%";
+      $("statRecent").textContent = "—";
+      return;
+    }
+    var sum = 0;
+    var latest = null;
+    resumes.forEach(function (r) {
+      sum += completionPct(r);
+      var t = new Date(r.updatedAt).getTime();
+      if (!isNaN(t) && (latest === null || t > latest)) latest = t;
+    });
+    $("statAvg").textContent = Math.round(sum / resumes.length) + "%";
+    $("statRecent").textContent = latest === null ? "—" : fmtDate(new Date(latest).toISOString());
+  }
+
+  /* ---------- Render: resume cards ---------- */
+  function visibleResumes() {
+    var list = resumes.slice();
+    if (searchQuery) {
+      var q = searchQuery.toLowerCase();
+      list = list.filter(function (r) { return (r.title || "").toLowerCase().indexOf(q) >= 0; });
+    }
+    if (sortMode === "title") {
+      list.sort(function (a, b) { return (a.title || "").localeCompare(b.title || ""); });
+    } else {
+      list.sort(function (a, b) {
+        var ta = new Date(a.updatedAt).getTime(); if (isNaN(ta)) ta = 0;
+        var tb = new Date(b.updatedAt).getTime(); if (isNaN(tb)) tb = 0;
+        return tb - ta;
+      });
+    }
+    return list;
+  }
+
+  function renderResumes() {
+    var grid = $("resumesGrid");
+    var list = visibleResumes();
+    var hasAny = resumes.length > 0;
+
+    $("resumesEmpty").classList.toggle("hidden", hasAny);
+    $("resumesNoMatch").classList.toggle("hidden", !(hasAny && list.length === 0 && searchQuery !== ""));
+    grid.innerHTML = "";
+
+    list.forEach(function (r) {
+      var pct = completionPct(r);
+      var tplName = TEMPLATES[r.templateId] || "Classic Navy";
+      var lines = thumbnailLines(r);
+      var thumbHtml = lines.map(function (ln) {
+        return '<p class="' + ln.cls + ' truncate">' + esc(ln.text) + "</p>";
+      }).join("");
+      var card = document.createElement("article");
+      card.className = "card rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-5 flex flex-col gap-3 min-w-0";
+      card.innerHTML =
+        '<div class="rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 px-3 py-2.5 space-y-0.5 min-h-[74px]">' + thumbHtml + "</div>" +
+        '<div class="min-w-0">' +
+          '<h3 class="font-bold text-base truncate" title="' + esc(r.title || "Untitled Resume") + '">' + esc(r.title || "Untitled Resume") + "</h3>" +
+          '<p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Template: ' + esc(tplName) + " · Edited " + esc(fmtDate(r.updatedAt)) + "</p>" +
+        "</div>" +
+        '<div>' +
+          '<div class="flex justify-between text-xs font-semibold mb-1"><span>Completion</span><span>' + pct + "%</span></div>" +
+          '<div class="w-full h-2 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden" role="progressbar" aria-valuenow="' + pct + '" aria-valuemin="0" aria-valuemax="100" aria-label="Resume completion">' +
+            '<div class="h-full rounded-full ' + (pct >= 80 ? "bg-[#16A34A]" : pct >= 40 ? "bg-[#2563EB]" : "bg-amber-500") + '" style="width:' + pct + '%"></div>' +
+          "</div>" +
+        "</div>" +
+        '<div class="flex flex-wrap gap-2 mt-auto">' +
+          '<button type="button" data-act="open" class="flex-1 min-w-[84px] px-3 py-2 rounded-lg bg-[#16A34A] hover:bg-[#15803D] text-white text-xs font-bold">Open / Edit</button>' +
+          '<button type="button" data-act="download" class="px-3 py-2 rounded-lg bg-[#2563EB] hover:bg-blue-700 text-white text-xs font-bold" title="Download .HTML">Download</button>' +
+          '<button type="button" data-act="duplicate" class="px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 text-xs font-bold hover:bg-slate-100 dark:hover:bg-slate-700" title="Duplicate">Duplicate</button>' +
+          '<button type="button" data-act="rename" class="px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 text-xs font-bold hover:bg-slate-100 dark:hover:bg-slate-700" title="Rename">Rename</button>' +
+          '<button type="button" data-act="delete" class="px-3 py-2 rounded-lg border border-red-300 dark:border-red-800 text-red-600 dark:text-red-400 text-xs font-bold hover:bg-red-50 dark:hover:bg-red-950/40" title="Delete">Delete</button>' +
+        "</div>";
+      card.querySelector('[data-act="open"]').addEventListener("click", function () { openResume(r.id); });
+      card.querySelector('[data-act="download"]').addEventListener("click", function () { downloadResume(r.id); });
+      card.querySelector('[data-act="duplicate"]').addEventListener("click", function () { duplicateResume(r.id); });
+      card.querySelector('[data-act="rename"]').addEventListener("click", function () { openRenameModal(r.id); });
+      card.querySelector('[data-act="delete"]').addEventListener("click", function () {
+        openDeleteModal("resume", r.id, r.title || "Untitled Resume");
+      });
+      grid.appendChild(card);
+    });
+  }
+
+  /* ---------- Render: recently edited ---------- */
+  function renderRecent() {
+    var listEl = $("recentList");
+    listEl.innerHTML = "";
+    if (resumes.length === 0) {
+      $("recentSection").classList.add("hidden");
+      return;
+    }
+    $("recentSection").classList.remove("hidden");
+    var sorted = resumes.slice().sort(function (a, b) {
+      var ta = new Date(a.updatedAt).getTime(); if (isNaN(ta)) ta = 0;
+      var tb = new Date(b.updatedAt).getTime(); if (isNaN(tb)) tb = 0;
+      return tb - ta;
+    }).slice(0, 5);
+    sorted.forEach(function (r) {
+      var row = document.createElement("button");
+      row.type = "button";
+      row.className = "w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-slate-50 dark:hover:bg-slate-700/50 min-w-0";
+      row.innerHTML =
+        '<span class="material-symbols-outlined text-[#2563EB] shrink-0">description</span>' +
+        '<span class="flex-1 min-w-0"><span class="block font-semibold text-sm truncate">' + esc(r.title || "Untitled Resume") + "</span>" +
+        '<span class="block text-xs text-slate-500 dark:text-slate-400 truncate">' + esc(TEMPLATES[r.templateId] || "Classic Navy") + " · " + completionPct(r) + "% complete</span></span>" +
+        '<span class="text-xs text-slate-500 dark:text-slate-400 shrink-0 whitespace-nowrap">' + esc(fmtDate(r.updatedAt)) + "</span>";
+      row.addEventListener("click", function () { openResume(r.id); });
+      listEl.appendChild(row);
+    });
+  }
+
+  /* ---------- Render: cover letters ---------- */
+  function renderLetters() {
+    var grid = $("lettersGrid");
+    grid.innerHTML = "";
+    $("lettersEmpty").classList.toggle("hidden", letters.length > 0);
+    letters.slice().sort(function (a, b) {
+      var ta = new Date(a.updatedAt).getTime(); if (isNaN(ta)) ta = 0;
+      var tb = new Date(b.updatedAt).getTime(); if (isNaN(tb)) tb = 0;
+      return tb - ta;
+    }).forEach(function (l) {
+      var card = document.createElement("article");
+      card.className = "card rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-5 flex flex-col gap-3 min-w-0";
+      card.innerHTML =
+        '<div class="flex items-start gap-3 min-w-0">' +
+          '<span class="w-10 h-10 rounded-lg bg-[#2563EB]/10 text-[#2563EB] flex items-center justify-center shrink-0"><span class="material-symbols-outlined">mail</span></span>' +
+          '<div class="min-w-0"><h3 class="font-bold text-base truncate" title="' + esc(l.title || "Untitled Cover Letter") + '">' + esc(l.title || "Untitled Cover Letter") + "</h3>" +
+          '<p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Edited ' + esc(fmtDateTime(l.updatedAt)) + "</p></div>" +
+        "</div>" +
+        '<div class="flex flex-wrap gap-2 mt-auto">' +
+          '<button type="button" data-act="open" class="flex-1 min-w-[84px] px-3 py-2 rounded-lg bg-[#2563EB] hover:bg-blue-700 text-white text-xs font-bold">Open</button>' +
+          '<button type="button" data-act="duplicate" class="px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 text-xs font-bold hover:bg-slate-100 dark:hover:bg-slate-700">Duplicate</button>' +
+          '<button type="button" data-act="delete" class="px-3 py-2 rounded-lg border border-red-300 dark:border-red-800 text-red-600 dark:text-red-400 text-xs font-bold hover:bg-red-50 dark:hover:bg-red-950/40">Delete</button>' +
+        "</div>";
+      card.querySelector('[data-act="open"]').addEventListener("click", function () { openLetter(l.id); });
+      card.querySelector('[data-act="duplicate"]').addEventListener("click", function () { duplicateLetter(l.id); });
+      card.querySelector('[data-act="delete"]').addEventListener("click", function () {
+        openDeleteModal("letter", l.id, l.title || "Untitled Cover Letter");
+      });
+      grid.appendChild(card);
+    });
+  }
+
+  function renderAll() {
+    renderStats();
+    renderResumes();
+    renderRecent();
+    renderLetters();
+  }
+
+  /* ---------- Resume actions ---------- */
+  function duplicateResume(id) {
+    var src = null;
+    resumes.forEach(function (r) { if (r.id === id) src = r; });
+    if (!src) return;
+    var copy = JSON.parse(JSON.stringify(src));
+    copy.id = uid();
+    copy.title = (src.title || "Untitled Resume") + " (Copy)";
+    copy.updatedAt = new Date().toISOString();
+    resumes.push(copy);
+    saveArray(KEY_RESUMES, resumes);
+    renderAll();
+  }
+  function duplicateLetter(id) {
+    var src = null;
+    letters.forEach(function (l) { if (l.id === id) src = l; });
+    if (!src) return;
+    var copy = JSON.parse(JSON.stringify(src));
+    copy.id = uid();
+    copy.title = (src.title || "Untitled Cover Letter") + " (Copy)";
+    copy.updatedAt = new Date().toISOString();
+    letters.push(copy);
+    saveArray(KEY_LETTERS, letters);
+    renderAll();
+  }
+
+  /* ---------- Modals ---------- */
+  function showModal(id) { $(id).classList.remove("hidden"); }
+  function hideModal(id) { $(id).classList.add("hidden"); }
+
+  function openDeleteModal(kind, id, title) {
+    pendingDelete = { kind: kind, id: id, title: title };
+    $("deleteModalTitle").textContent = kind === "letter" ? "Delete this cover letter?" : "Delete this resume?";
+    $("deleteModalText").textContent = "“" + title + "” will be permanently deleted from this browser. This cannot be undone.";
+    showModal("deleteModal");
+  }
+  $("deleteCancelBtn").addEventListener("click", function () { pendingDelete = null; hideModal("deleteModal"); });
+  $("deleteModal").addEventListener("click", function (e) { if (e.target === $("deleteModal")) { pendingDelete = null; hideModal("deleteModal"); } });
+  $("deleteConfirmBtn").addEventListener("click", function () {
+    if (!pendingDelete) { hideModal("deleteModal"); return; }
+    if (pendingDelete.kind === "letter") {
+      letters = letters.filter(function (l) { return l.id !== pendingDelete.id; });
+      saveArray(KEY_LETTERS, letters);
+    } else {
+      resumes = resumes.filter(function (r) { return r.id !== pendingDelete.id; });
+      saveArray(KEY_RESUMES, resumes);
+      try {
+        if (localStorage.getItem(KEY_CURRENT) === pendingDelete.id) localStorage.removeItem(KEY_CURRENT);
+      } catch (e) {}
+    }
+    pendingDelete = null;
+    hideModal("deleteModal");
+    renderAll();
+  });
+
+  function openRenameModal(id) {
+    var target = null;
+    resumes.forEach(function (r) { if (r.id === id) target = r; });
+    if (!target) return;
+    pendingRenameId = id;
+    $("renameInput").value = target.title || "";
+    showModal("renameModal");
+    setTimeout(function () { $("renameInput").focus(); $("renameInput").select(); }, 0);
+  }
+  function saveRename() {
+    var name = ($("renameInput").value || "").trim();
+    if (!name) { $("renameInput").focus(); return; }
+    resumes.forEach(function (r) {
+      if (r.id === pendingRenameId) { r.title = name; r.updatedAt = new Date().toISOString(); }
+    });
+    saveArray(KEY_RESUMES, resumes);
+    pendingRenameId = null;
+    hideModal("renameModal");
+    renderAll();
+  }
+  $("renameSaveBtn").addEventListener("click", saveRename);
+  $("renameInput").addEventListener("keydown", function (e) { if (e.key === "Enter") saveRename(); });
+  $("renameCancelBtn").addEventListener("click", function () { pendingRenameId = null; hideModal("renameModal"); });
+  $("renameModal").addEventListener("click", function (e) { if (e.target === $("renameModal")) { pendingRenameId = null; hideModal("renameModal"); } });
+
+  /* ---------- Clear corrupted data ---------- */
+  $("clearDataBtn").addEventListener("click", function () { showModal("clearModal"); });
+  $("clearCancelBtn").addEventListener("click", function () { hideModal("clearModal"); });
+  $("clearModal").addEventListener("click", function (e) { if (e.target === $("clearModal")) hideModal("clearModal"); });
+  $("clearConfirmBtn").addEventListener("click", function () {
+    RM_KEYS.forEach(function (k) { try { localStorage.removeItem(k); } catch (e) {} });
+    document.documentElement.classList.remove("dark");
+    syncThemeIcon();
+    resumes = [];
+    letters = [];
+    corruptKeys = [];
+    hideModal("clearModal");
+    $("dataErrorBanner").classList.add("hidden");
+    renderAll();
+  });
+
+  /* ---------- Search / sort ---------- */
+  $("searchInput").addEventListener("input", function () {
+    searchQuery = ($("searchInput").value || "").trim();
+    renderResumes();
+  });
+  $("sortSelect").addEventListener("change", function () {
+    sortMode = $("sortSelect").value === "title" ? "title" : "edited";
+    renderResumes();
+  });
+  $("clearSearchBtn").addEventListener("click", function () {
+    $("searchInput").value = "";
+    searchQuery = "";
+    renderResumes();
+  });
+
+  /* ---------- Escape closes modals ---------- */
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      pendingDelete = null; pendingRenameId = null;
+      hideModal("deleteModal"); hideModal("renameModal"); hideModal("clearModal");
+    }
+  });
+
+  renderAll();
+})();
+</script>
+</body>
+</html>
