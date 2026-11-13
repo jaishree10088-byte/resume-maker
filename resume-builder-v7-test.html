@@ -957,6 +957,24 @@ Viral Video Studio — Video enhancement plus viral toolkit app</textarea>
             else units = kids;
           } else units = kids;
         }
+        /* Keep each section heading with its content: a heading (.v7-sec) and the
+           element right after it are paginated as one unit, so a heading can never
+           be left alone at the bottom of a page while its table/list jumps to the
+           next page (that left a big blank gap under PERSONAL DETAILS). */
+        var grouped = [];
+        for (var gi = 0; gi < units.length; gi++) {
+          var gu = units[gi];
+          if (gu.classList && gu.classList.contains("v7-sec") && gi + 1 < units.length) {
+            var gwrap = document.createElement("div");
+            gwrap.appendChild(gu);
+            gwrap.appendChild(units[gi + 1]);
+            grouped.push(gwrap);
+            gi++;
+          } else {
+            grouped.push(gu);
+          }
+        }
+        units = grouped;
         var maxH = 1122 - 2 * cust.margin;
         var cur = null;
         var makePage = function () {
