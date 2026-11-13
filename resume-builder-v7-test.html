@@ -935,7 +935,28 @@ Viral Video Studio — Video enhancement plus viral toolkit app</textarea>
 
     function resumeDocHTML() {
       var name = val("resName").trim() || "Your Name";
-      return '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8"/>\n<title>Resume - ' + esc(name) + '</title>\n<style>body{margin:0;padding:40px;background:#f3f4f6;} .page{max-width:800px;margin:0 auto;background:#ffffff;padding:40px;}</style>\n</head>\n<body>\n<div class="page">' + v7DocWrap(resumeBodyHTML()) + '</div>\n</body>\n</html>';
+      /* Print/download must look exactly like the live preview: use the same
+         paginated A4 sheets (#previewPages) instead of one long page, force
+         A4 paper, and force background colours to print (Chrome drops
+         backgrounds by default without print-color-adjust — that is why the
+         navy sidebar vanished from the downloaded PDF and the Letter paper
+         + arbitrary splits created an extra page). */
+      var pagesEl = document.getElementById("previewPages");
+      var content = (pagesEl && pagesEl.innerHTML)
+        ? pagesEl.innerHTML
+        : '<div class="page">' + v7DocWrap(resumeBodyHTML()) + '</div>';
+      return '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="utf-8"/>\n<title>Resume - ' + esc(name) + '</title>\n<style>'
+        + '*{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}'
+        + 'body{margin:0;padding:40px;background:#f3f4f6;}'
+        + '.page{max-width:800px;margin:0 auto;background:#ffffff;padding:40px;}'
+        + '@page{size:A4;margin:0;}'
+        + '@media print{'
+        + 'body{padding:0 !important;background:#ffffff !important;}'
+        + '.page{max-width:none !important;margin:0 !important;padding:0 !important;box-shadow:none !important;}'
+        + '.v7-page{width:210mm !important;min-height:297mm !important;height:297mm !important;margin:0 !important;box-shadow:none !important;page-break-after:always !important;}'
+        + '.v7-page:last-child{page-break-after:auto !important;}'
+        + '}'
+        + '</style>\n</head>\n<body>\n' + content + '\n</body>\n</html>';
     }
     function renderResume() {
       var pages = document.getElementById("previewPages");
