@@ -191,6 +191,23 @@
     .ticker div,.hero-card::before,.burst{animation:none}
     html{scroll-behavior:auto}
   }
+
+  /* ---------- template mini previews (real resume, readable) ---------- */
+  .tpl .mini .mname{display:block;font-weight:800;font-size:11px;line-height:1.25;margin-bottom:1px}
+  .tpl .mini .mrole{display:block;font-size:8px;color:#5b6b7c;margin-bottom:5px}
+  .tpl .mini .msec{display:block;font-size:7px;font-weight:800;letter-spacing:.08em;margin:5px 0 3px}
+  .tpl .mini .cols .msec{padding:2px 4px;border-radius:3px;margin:0 0 3px}
+
+  /* ---------- print: resume only, for PDF ---------- */
+  @media print{
+    body{background:#fff}
+    header,.hero,.ticker,#templates,#features,#cover,#guides,footer,.dlrow,#copyMsg,#rform,#builder .sec-head{display:none !important}
+    #builder{border:0 !important;background:#fff !important}
+    #builder .wrap{max-width:100%;padding:0}
+    #builder .builder{display:block}
+    .preview-wrap{box-shadow:none}
+    .resume{box-shadow:none !important;max-width:100%;border:1px solid #ccc}
+  }
 </style>
 </head>
 <body>
@@ -289,12 +306,27 @@
         <h3>Your Details</h3>
         <div class="field"><label for="f-name">Full name</label><input id="f-name" value="Sandip Kumar Mahto" /></div>
         <div class="field"><label for="f-role">Job title</label><input id="f-role" value="Full-Stack Developer" /></div>
-        <div class="field"><label for="f-contact">Email · Phone · City</label><input id="f-contact" value="sandip@example.com · +91 98XXX XXXXX · Bokaro, Jharkhand" /></div>
+        <div class="field"><label for="f-email">Email</label><input id="f-email" type="email" value="sandip@example.com" /></div>
+        <div class="field"><label for="f-phone">Phone</label><input id="f-phone" value="+91 98XXX XXXXX" /></div>
+        <div class="field"><label for="f-city">City</label><input id="f-city" value="Bokaro, Jharkhand" /></div>
+        <div class="field"><label for="f-web">Website / LinkedIn</label><input id="f-web" value="linkedin.com/in/sandipkumar" /></div>
         <div class="field"><label for="f-summary">Professional summary</label><textarea id="f-summary">Developer with hands-on experience building Android apps and websites end to end — from design and coding to signed releases on the Play Store. Ships fast, tests everything, and writes clean, minimal code.</textarea></div>
         <div class="field"><label for="f-skills">Skills (comma separated)</label><input id="f-skills" value="JavaScript, Android, HTML/CSS, Python, Git, UI Design" /></div>
         <div class="field"><label for="f-exp">Experience (one line per point)</label><textarea id="f-exp">Built and published 10+ Android apps with AdMob integration
 Developed a daily news website with automated publishing
 Created a resume builder with 21 templates and an ATS checker</textarea></div>
+        <div class="field"><label for="f-edu">Education (one per line — Degree, Institute, Year, Marks)</label><textarea id="f-edu">BCA — Ranchi University, 2022 (78%)
+Class 12 (Science) — Bokaro Steel City School, 2019 (82%)
+Class 10 — Bokaro Steel City School, 2017 (85%)</textarea></div>
+        <div class="field"><label for="f-proj">Projects (one per line)</label><textarea id="f-proj">ResumeMaker — free resume builder website (resumemaker.de5.net)
+Apna Akhbaar — daily news website with auto publishing</textarea></div>
+        <div class="field"><label for="f-cert">Courses &amp; Certifications (one per line)</label><textarea id="f-cert">Google Android Development — 2023
+Full-Stack Web Development — 2022</textarea></div>
+        <div class="field"><label for="f-lang">Languages (comma separated)</label><input id="f-lang" value="Hindi, English" /></div>
+        <div class="field"><label for="f-personal">Personal details (one per line — DOB, Father's name, Gender, Nationality)</label><textarea id="f-personal">Date of Birth: 15/08/2000
+Father's Name: Ramesh Mahto
+Nationality: Indian</textarea></div>
+        <div class="field"><label for="f-jd">Job description (paste to check Job Match)</label><textarea id="f-jd" placeholder="Paste the job description here — see which of your skills it asks for"></textarea><p id="jdMatch" style="color:var(--teal);font-weight:700;margin:.5rem 0 0" role="status"></p></div>
         <div class="field"><label>Accent colour</label><div class="colors" id="colors"></div></div>
         <div class="score">
           <svg class="ring" viewBox="0 0 100 100" role="img" aria-label="ATS score">
@@ -316,6 +348,7 @@ Created a resume builder with 21 templates and an ATS checker</textarea></div>
         </article>
         <div class="dlrow">
           <button class="btn fire" id="dlBtn" type="button">Download Resume (.html)</button>
+          <button class="btn ghost" id="pdfBtn" type="button">Download PDF / Print</button>
           <button class="btn ghost" id="copyBtn" type="button">Copy as Text</button>
         </div>
         <p id="copyMsg" style="color:var(--teal);font-weight:700;margin:.6rem 0 0" role="status"></p>
@@ -437,10 +470,11 @@ var grid = document.getElementById("tplGrid");
 TEMPLATES.forEach(function(t, i){
   var b = document.createElement("button");
   b.type = "button"; b.className = "tpl" + (i===0 ? " active" : "");
-  b.innerHTML = '<span class="mini"><span class="nm" style="display:block;background:'+t[2]+'"></span>' +
+  b.innerHTML = '<span class="mini"><span class="mname" style="color:'+t[2]+'">Sandip Kumar Mahto</span>' +
+    '<span class="mrole">Full-Stack Developer</span>' +
     (t[3]==="side"
-      ? '<span class="cols"><span class="ln" style="height:64px"></span><span style="flex:2"><span class="ln m" style="display:block"></span><span class="ln" style="display:block"></span><span class="ln s" style="display:block"></span><span class="ln" style="display:block"></span></span></span>'
-      : '<span class="ln m" style="display:block"></span><span class="ln" style="display:block"></span><span class="ln s" style="display:block"></span><span class="ln" style="display:block"></span><span class="ln m" style="display:block"></span>') +
+      ? '<span class="cols"><span style="flex:1"><span class="msec" style="background:'+t[2]+'22;color:'+t[2]+'">SKILLS</span><span class="ln" style="display:block"></span><span class="ln s" style="display:block"></span><span class="ln" style="display:block"></span></span><span style="flex:2"><span class="msec" style="color:'+t[2]+'">SUMMARY</span><span class="ln" style="display:block"></span><span class="ln s" style="display:block"></span><span class="msec" style="color:'+t[2]+'">EXPERIENCE</span><span class="ln" style="display:block"></span><span class="ln m" style="display:block"></span></span></span>'
+      : '<span class="msec" style="color:'+t[2]+'">SUMMARY</span><span class="ln" style="display:block"></span><span class="ln s" style="display:block"></span><span class="msec" style="color:'+t[2]+'">EXPERIENCE</span><span class="ln" style="display:block"></span><span class="ln m" style="display:block"></span><span class="msec" style="color:'+t[2]+'">SKILLS</span><span class="ln s" style="display:block"></span>') +
     '</span><span class="tname">'+t[0]+'</span><span class="tcat">'+t[1]+'</span>';
   b.addEventListener("click", function(){
     state.tpl = i; state.accent = t[2];
@@ -467,7 +501,7 @@ syncSwatches();
 
 /* ---------- builder + ATS ---------- */
 var F = {};
-["name","role","contact","summary","skills","exp"].forEach(function(k){ F[k] = document.getElementById("f-"+k); });
+["name","role","email","phone","city","web","summary","skills","exp","edu","proj","cert","lang","personal","jd"].forEach(function(k){ F[k] = document.getElementById("f-"+k); });
 var resume = document.getElementById("resume");
 
 function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
@@ -480,32 +514,47 @@ function render(){
   resume.style.setProperty("--acc", state.accent);
   document.getElementById("r-name").textContent = val("name") || "Your Name";
   document.getElementById("r-role").textContent = val("role") || "Job Title";
-  document.getElementById("r-contact").textContent = val("contact");
+  var contact = [val("email"), val("phone"), val("city"), val("web")].filter(Boolean).join(" · ");
+  document.getElementById("r-contact").textContent = contact;
   var sk = skills().map(function(s){ return "<span>"+esc(s)+"</span>"; }).join("");
-  var ex = val("exp").split("\n").filter(function(l){return l.trim();}).map(function(l){ return "<li>"+esc(l.trim())+"</li>"; }).join("");
-  var main = '<div><h4>Summary</h4><p>'+esc(val("summary"))+'</p></div>' +
-             '<div><h4>Experience</h4><ul>'+ex+'</ul></div>';
+  function list(k){ return val(k).split("\n").filter(function(l){return l.trim();}).map(function(l){ return "<li>"+esc(l.trim())+"</li>"; }).join(""); }
+  function sec(title, inner, has){ return has ? '<div><h4>'+title+'</h4>'+inner+'</div>' : ''; }
+  var lg = val("lang").split(",").map(function(s){return s.trim();}).filter(Boolean).map(function(s){ return "<span>"+esc(s)+"</span>"; }).join("");
+  var main = sec("Summary", "<p>"+esc(val("summary"))+"</p>", val("summary")) +
+             sec("Experience", "<ul>"+list("exp")+"</ul>", val("exp")) +
+             sec("Education", "<ul>"+list("edu")+"</ul>", val("edu")) +
+             sec("Projects", "<ul>"+list("proj")+"</ul>", val("proj")) +
+             sec("Courses & Certifications", "<ul>"+list("cert")+"</ul>", val("cert")) +
+             sec("Languages", '<div class="skilltags">'+lg+"</div>", val("lang")) +
+             sec("Personal Details", "<ul>"+list("personal")+"</ul>", val("personal"));
   var sideHtml = '<div class="side-col"><h4>Skills</h4><div class="skilltags">'+sk+'</div></div>';
-  document.getElementById("r-body").innerHTML = side ? sideHtml + "<div>" + main + "</div>" : main + '<div><h4>Skills</h4><div class="skilltags">'+sk+'</div></div>';
+  document.getElementById("r-body").innerHTML = side ? sideHtml + "<div>" + main + "</div>" : main + sec("Skills", '<div class="skilltags">'+sk+"</div>", sk);
   renderLetter(currentTone);
   score();
+  jobMatch();
 }
 
 function score(){
   var pts = 0, tips = [];
-  if (val("name")) pts += 12; else tips.push("Add your full name.");
-  if (val("role")) pts += 12; else tips.push("Add a job title that matches the role you want.");
-  if (/@/.test(val("contact"))) pts += 10; else tips.push("Include an email address in your contact line.");
-  if (/\d{5,}/.test(val("contact"))) pts += 8; else tips.push("Add a phone number so recruiters can reach you.");
+  if (val("name")) pts += 10; else tips.push("Add your full name.");
+  if (val("role")) pts += 10; else tips.push("Add a job title that matches the role you want.");
+  if (/@/.test(val("email"))) pts += 8; else tips.push("Include an email address.");
+  if (/(\d{5,}|XXX)/.test(val("phone"))) pts += 7; else tips.push("Add a phone number so recruiters can reach you.");
   var sum = val("summary").split(/\s+/).filter(Boolean).length;
-  if (sum >= 25) pts += 20; else if (sum >= 10) { pts += 12; tips.push("Grow your summary past 25 words — say what you built and for whom."); }
+  if (sum >= 25) pts += 15; else if (sum >= 10) { pts += 9; tips.push("Grow your summary past 25 words — say what you built and for whom."); }
   else tips.push("Write a summary of at least 25 words.");
   var n = skills().length;
-  if (n >= 6) pts += 20; else if (n >= 3) { pts += 12; tips.push("List 6+ skills — ATS scanners match on these."); }
+  if (n >= 6) pts += 15; else if (n >= 3) { pts += 9; tips.push("List 6+ skills — ATS scanners match on these."); }
   else tips.push("Add more skills (aim for 6 or more).");
   var lines = val("exp").split("\n").filter(function(l){return l.trim();}).length;
-  if (lines >= 3) pts += 18; else if (lines >= 1) { pts += 10; tips.push("Add 3+ experience points with results, not duties."); }
+  if (lines >= 3) pts += 15; else if (lines >= 1) { pts += 8; tips.push("Add 3+ experience points with results, not duties."); }
   else tips.push("Add your experience — at least 3 bullet points.");
+  var edu = val("edu").split("\n").filter(function(l){return l.trim();}).length;
+  if (edu >= 1) pts += 10; else tips.push("Add your education — degree, institute and year.");
+  var pr = val("proj").split("\n").filter(function(l){return l.trim();}).length;
+  if (pr >= 1) pts += 5; else tips.push("Add a project to show what you built.");
+  var lg = val("lang").split(",").map(function(s){return s.trim();}).filter(Boolean).length;
+  if (lg >= 1) pts += 5; else tips.push("Add the languages you speak.");
   if (!tips.length) tips.push("Clean sweep — this resume is scanner-ready.");
   var C = 264;
   document.getElementById("ringArc").style.strokeDashoffset = C - C * pts / 100;
@@ -515,10 +564,26 @@ function score(){
 }
 Object.keys(F).forEach(function(k){ F[k].addEventListener("input", render); });
 
+/* ---------- job match ---------- */
+function jobMatch(){
+  var el = document.getElementById("jdMatch");
+  var jd = val("jd");
+  if (!jd) { el.textContent = ""; return; }
+  var sk = skills();
+  if (!sk.length) { el.textContent = "Add skills first, then paste a job description."; return; }
+  var low = jd.toLowerCase();
+  var found = sk.filter(function(s){ return low.indexOf(s.toLowerCase()) !== -1; });
+  var missing = sk.filter(function(s){ return low.indexOf(s.toLowerCase()) === -1; });
+  var pct = Math.round(found.length / sk.length * 100);
+  el.textContent = "Job Match: " + pct + "% — " + found.length + " of " + sk.length + " skills found in this job description." + (missing.length ? " Missing: " + missing.join(", ") + "." : " All your skills match!");
+}
+
 /* ---------- download / copy ---------- */
 function resumeText(){
-  return [val("name"), val("role"), val("contact"), "", "SUMMARY", val("summary"), "", "SKILLS", skills().join(", "), "", "EXPERIENCE", val("exp")].join("\n");
+  var contact = [val("email"), val("phone"), val("city"), val("web")].filter(Boolean).join(" · ");
+  return [val("name"), val("role"), contact, "", "SUMMARY", val("summary"), "", "SKILLS", skills().join(", "), "", "EXPERIENCE", val("exp"), "", "EDUCATION", val("edu"), "", "PROJECTS", val("proj"), "", "COURSES & CERTIFICATIONS", val("cert"), "", "LANGUAGES", val("lang"), "", "PERSONAL DETAILS", val("personal")].join("\n");
 }
+document.getElementById("pdfBtn").addEventListener("click", function(){ window.print(); });
 document.getElementById("dlBtn").addEventListener("click", function(){
   var html = "<!doctype html><html><head><meta charset='utf-8'><title>Resume — " + esc(val("name")) + "</title></head><body>" + resume.innerHTML + "</body></html>";
   var a = document.createElement("a");
