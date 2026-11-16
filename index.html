@@ -222,7 +222,7 @@
       <a href="#cover">Cover Letter</a>
       <a href="#guides">Guides</a>
       <a href="blog.html">Blog</a>
-      <a class="cta" href="#builder">Build My Resume</a>
+      <a class="cta" href="resume-builder.html">Build My Resume</a>
     </nav>
   </div>
 </header>
@@ -245,7 +245,7 @@
       <h1 class="chunk">Resumes that<br /><span class="o">explode</span> off<br />the <span class="c">pile.</span></h1>
       <p class="lede">Pick a template, drop in your details, and walk out with a <strong>job-ready, ATS-friendly resume</strong> in minutes — plus an ATS score check and a cover letter to match.</p>
       <div class="btnrow">
-        <a class="btn fire" href="#builder">Start Building — It's Free</a>
+        <a class="btn fire" href="resume-builder.html">Start Building — It's Free</a>
         <a class="btn ghost" href="#templates">Browse 21 Templates</a>
       </div>
       <div class="stats">
@@ -288,7 +288,7 @@
   <div class="wrap">
     <div class="sec-head">
       <div><span class="tag cyan">21 Designs</span><h2 class="chunk">Pick your<br />battle gear</h2></div>
-      <p>Every template is ATS-safe: real text, clean structure, no graphics that confuse scanners. Tap one to load it into the builder below.</p>
+      <p>Every template is ATS-safe: real text, clean structure, no graphics that confuse scanners. Tap one to open it in the full builder.</p>
     </div>
     <div class="tpl-grid" id="tplGrid"></div>
   </div>
@@ -296,64 +296,12 @@
 
 <!-- BUILDER -->
 <section id="builder" style="background:var(--bg2);border-block:2px solid var(--line)">
-  <div class="wrap">
-    <div class="sec-head">
-      <div><span class="tag">Live Builder</span><h2 class="chunk">Build it.<br />Blast it out.</h2></div>
-      <p>Type on the left — your resume updates live on the right, with an ATS score that tells you exactly what to fix.</p>
-    </div>
-    <div class="builder">
-      <form class="panel" id="rform" onsubmit="return false">
-        <h3>Your Details</h3>
-        <div class="field"><label for="f-name">Full name</label><input id="f-name" value="Sandip Kumar Mahto" /></div>
-        <div class="field"><label for="f-role">Job title</label><input id="f-role" value="Full-Stack Developer" /></div>
-        <div class="field"><label for="f-email">Email</label><input id="f-email" type="email" value="sandip@example.com" /></div>
-        <div class="field"><label for="f-phone">Phone</label><input id="f-phone" value="+91 98XXX XXXXX" /></div>
-        <div class="field"><label for="f-city">City</label><input id="f-city" value="Bokaro, Jharkhand" /></div>
-        <div class="field"><label for="f-web">Website / LinkedIn</label><input id="f-web" value="linkedin.com/in/sandipkumar" /></div>
-        <div class="field"><label for="f-summary">Professional summary</label><textarea id="f-summary">Developer with hands-on experience building Android apps and websites end to end — from design and coding to signed releases on the Play Store. Ships fast, tests everything, and writes clean, minimal code.</textarea></div>
-        <div class="field"><label for="f-skills">Skills (comma separated)</label><input id="f-skills" value="JavaScript, Android, HTML/CSS, Python, Git, UI Design" /></div>
-        <div class="field"><label for="f-exp">Experience (one line per point)</label><textarea id="f-exp">Built and published 10+ Android apps with AdMob integration
-Developed a daily news website with automated publishing
-Created a resume builder with 21 templates and an ATS checker</textarea></div>
-        <div class="field"><label for="f-edu">Education (one per line — Degree, Institute, Year, Marks)</label><textarea id="f-edu">BCA — Ranchi University, 2022 (78%)
-Class 12 (Science) — Bokaro Steel City School, 2019 (82%)
-Class 10 — Bokaro Steel City School, 2017 (85%)</textarea></div>
-        <div class="field"><label for="f-proj">Projects (one per line)</label><textarea id="f-proj">ResumeMaker — free resume builder website (resumemaker.de5.net)
-Apna Akhbaar — daily news website with auto publishing</textarea></div>
-        <div class="field"><label for="f-cert">Courses &amp; Certifications (one per line)</label><textarea id="f-cert">Google Android Development — 2023
-Full-Stack Web Development — 2022</textarea></div>
-        <div class="field"><label for="f-lang">Languages (comma separated)</label><input id="f-lang" value="Hindi, English" /></div>
-        <div class="field"><label for="f-personal">Personal details (one per line — DOB, Father's name, Gender, Nationality)</label><textarea id="f-personal">Date of Birth: 15/08/2000
-Father's Name: Ramesh Mahto
-Nationality: Indian</textarea></div>
-        <div class="field"><label for="f-jd">Job description (paste to check Job Match)</label><textarea id="f-jd" placeholder="Paste the job description here — see which of your skills it asks for"></textarea><p id="jdMatch" style="color:var(--teal);font-weight:700;margin:.5rem 0 0" role="status"></p></div>
-        <div class="field"><label>Accent colour</label><div class="colors" id="colors"></div></div>
-        <div class="score">
-          <svg class="ring" viewBox="0 0 100 100" role="img" aria-label="ATS score">
-            <circle cx="50" cy="50" r="42" fill="none" stroke="var(--line)" stroke-width="10"/>
-            <circle id="ringArc" cx="50" cy="50" r="42" fill="none" stroke="#ff6a00" stroke-width="10" stroke-linecap="round" transform="rotate(-90 50 50)" stroke-dasharray="264" stroke-dashoffset="264"/>
-            <text id="ringNum" class="num" x="50" y="58" text-anchor="middle">0</text>
-          </svg>
-          <div><p><b>ATS Score</b> — how well scanners can read you.</p><ul id="tips"></ul></div>
-        </div>
-      </form>
-      <div class="preview-wrap">
-        <article class="resume" id="resume">
-          <div class="head">
-            <h3 id="r-name"></h3>
-            <div class="role" id="r-role"></div>
-            <div class="contact" id="r-contact"></div>
-          </div>
-          <div class="body" id="r-body"></div>
-        </article>
-        <div class="dlrow">
-          <button class="btn fire" id="dlBtn" type="button">Download Resume (.html)</button>
-          <button class="btn ghost" id="pdfBtn" type="button">Download PDF / Print</button>
-          <button class="btn ghost" id="copyBtn" type="button">Copy as Text</button>
-        </div>
-        <p id="copyMsg" style="color:var(--teal);font-weight:700;margin:.6rem 0 0" role="status"></p>
-      </div>
-    </div>
+  <div class="wrap" style="text-align:center;padding:3.5rem 20px">
+    <span class="tag">Live Builder</span>
+    <h2 class="chunk" style="margin:1rem 0">Build it.<br />Blast it out.</h2>
+    <p style="color:var(--muted);max-width:34rem;margin:0 auto 1.6rem">The full resume builder — all fields, 21 templates with live previews, ATS checker, Job Match and PDF download. Your data stays in your browser.</p>
+    <a class="btn fire" href="resume-builder.html" style="font-size:1.05rem;padding:.9rem 1.8rem">Open the Full Resume Builder — It's Free</a>
+    <p style="margin-top:1rem;font-size:.9rem;color:var(--muted)">21 templates &middot; Live preview &middot; ATS checker &middot; Cover letter builder &middot; PDF download</p>
   </div>
 </section>
 
@@ -377,19 +325,11 @@ Nationality: Indian</textarea></div>
 
 <!-- COVER LETTER -->
 <section id="cover" style="background:var(--bg2);border-block:2px solid var(--line)">
-  <div class="wrap">
-    <div class="sec-head">
-      <div><span class="tag cyan">Cover Letter</span><h2 class="chunk">One click.<br />Three tones.</h2></div>
-      <p>Generated from the details in the builder above. Pick a tone, copy it, send it.</p>
-    </div>
-    <div class="btnrow" style="margin-bottom:1.2rem">
-      <button class="btn fire" type="button" data-tone="pro">Professional</button>
-      <button class="btn ghost" type="button" data-tone="bold">Confident</button>
-      <button class="btn ghost" type="button" data-tone="warm">Friendly</button>
-      <button class="btn ghost" type="button" id="letterCopy">Copy Letter</button>
-    </div>
-    <div class="letter" id="letter"></div>
-    <p id="letterMsg" style="color:var(--teal);font-weight:700" role="status"></p>
+  <div class="wrap" style="text-align:center;padding:3rem 20px">
+    <span class="tag cyan">Cover Letter</span>
+    <h2 class="chunk" style="margin:1rem 0">One click.<br />Three tones.</h2>
+    <p style="color:var(--muted);max-width:32rem;margin:0 auto 1.6rem">Professional, Confident or Friendly — generated from your resume in one click, ready to copy.</p>
+    <a class="btn fire" href="cover-letter.html">Write My Cover Letter</a>
   </div>
 </section>
 
@@ -477,152 +417,9 @@ TEMPLATES.forEach(function(t, i){
       : '<span class="msec" style="color:'+t[2]+'">SUMMARY</span><span class="ln" style="display:block"></span><span class="ln s" style="display:block"></span><span class="msec" style="color:'+t[2]+'">EXPERIENCE</span><span class="ln" style="display:block"></span><span class="ln m" style="display:block"></span><span class="msec" style="color:'+t[2]+'">SKILLS</span><span class="ln s" style="display:block"></span>') +
     '</span><span class="tname">'+t[0]+'</span><span class="tcat">'+t[1]+'</span>';
   b.addEventListener("click", function(){
-    state.tpl = i; state.accent = t[2];
-    grid.querySelectorAll(".tpl").forEach(function(x){ x.classList.remove("active"); });
-    b.classList.add("active");
-    syncSwatches(); render();
-    document.getElementById("builder").scrollIntoView({behavior:"smooth"});
+    window.location.href = "resume-builder.html";
   });
   grid.appendChild(b);
-});
-
-var colorBox = document.getElementById("colors");
-ACCENTS.forEach(function(c){
-  var s = document.createElement("button");
-  s.type = "button"; s.className = "swatch"; s.style.background = c; s.dataset.c = c;
-  s.setAttribute("aria-label", "Accent colour " + c);
-  s.addEventListener("click", function(){ state.accent = c; syncSwatches(); render(); });
-  colorBox.appendChild(s);
-});
-function syncSwatches(){
-  colorBox.querySelectorAll(".swatch").forEach(function(s){ s.classList.toggle("active", s.dataset.c === state.accent); });
-}
-syncSwatches();
-
-/* ---------- builder + ATS ---------- */
-var F = {};
-["name","role","email","phone","city","web","summary","skills","exp","edu","proj","cert","lang","personal","jd"].forEach(function(k){ F[k] = document.getElementById("f-"+k); });
-var resume = document.getElementById("resume");
-
-function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
-function val(k){ return F[k].value.trim(); }
-function skills(){ return val("skills").split(",").map(function(s){return s.trim();}).filter(Boolean); }
-
-function render(){
-  var side = TEMPLATES[state.tpl][3] === "side";
-  resume.className = "resume" + (side ? " side" : "");
-  resume.style.setProperty("--acc", state.accent);
-  document.getElementById("r-name").textContent = val("name") || "Your Name";
-  document.getElementById("r-role").textContent = val("role") || "Job Title";
-  var contact = [val("email"), val("phone"), val("city"), val("web")].filter(Boolean).join(" · ");
-  document.getElementById("r-contact").textContent = contact;
-  var sk = skills().map(function(s){ return "<span>"+esc(s)+"</span>"; }).join("");
-  function list(k){ return val(k).split("\n").filter(function(l){return l.trim();}).map(function(l){ return "<li>"+esc(l.trim())+"</li>"; }).join(""); }
-  function sec(title, inner, has){ return has ? '<div><h4>'+title+'</h4>'+inner+'</div>' : ''; }
-  var lg = val("lang").split(",").map(function(s){return s.trim();}).filter(Boolean).map(function(s){ return "<span>"+esc(s)+"</span>"; }).join("");
-  var main = sec("Summary", "<p>"+esc(val("summary"))+"</p>", val("summary")) +
-             sec("Experience", "<ul>"+list("exp")+"</ul>", val("exp")) +
-             sec("Education", "<ul>"+list("edu")+"</ul>", val("edu")) +
-             sec("Projects", "<ul>"+list("proj")+"</ul>", val("proj")) +
-             sec("Courses & Certifications", "<ul>"+list("cert")+"</ul>", val("cert")) +
-             sec("Languages", '<div class="skilltags">'+lg+"</div>", val("lang")) +
-             sec("Personal Details", "<ul>"+list("personal")+"</ul>", val("personal"));
-  var sideHtml = '<div class="side-col"><h4>Skills</h4><div class="skilltags">'+sk+'</div></div>';
-  document.getElementById("r-body").innerHTML = side ? sideHtml + "<div>" + main + "</div>" : main + sec("Skills", '<div class="skilltags">'+sk+"</div>", sk);
-  renderLetter(currentTone);
-  score();
-  jobMatch();
-}
-
-function score(){
-  var pts = 0, tips = [];
-  if (val("name")) pts += 10; else tips.push("Add your full name.");
-  if (val("role")) pts += 10; else tips.push("Add a job title that matches the role you want.");
-  if (/@/.test(val("email"))) pts += 8; else tips.push("Include an email address.");
-  if (/(\d{5,}|XXX)/.test(val("phone"))) pts += 7; else tips.push("Add a phone number so recruiters can reach you.");
-  var sum = val("summary").split(/\s+/).filter(Boolean).length;
-  if (sum >= 25) pts += 15; else if (sum >= 10) { pts += 9; tips.push("Grow your summary past 25 words — say what you built and for whom."); }
-  else tips.push("Write a summary of at least 25 words.");
-  var n = skills().length;
-  if (n >= 6) pts += 15; else if (n >= 3) { pts += 9; tips.push("List 6+ skills — ATS scanners match on these."); }
-  else tips.push("Add more skills (aim for 6 or more).");
-  var lines = val("exp").split("\n").filter(function(l){return l.trim();}).length;
-  if (lines >= 3) pts += 15; else if (lines >= 1) { pts += 8; tips.push("Add 3+ experience points with results, not duties."); }
-  else tips.push("Add your experience — at least 3 bullet points.");
-  var edu = val("edu").split("\n").filter(function(l){return l.trim();}).length;
-  if (edu >= 1) pts += 10; else tips.push("Add your education — degree, institute and year.");
-  var pr = val("proj").split("\n").filter(function(l){return l.trim();}).length;
-  if (pr >= 1) pts += 5; else tips.push("Add a project to show what you built.");
-  var lg = val("lang").split(",").map(function(s){return s.trim();}).filter(Boolean).length;
-  if (lg >= 1) pts += 5; else tips.push("Add the languages you speak.");
-  if (!tips.length) tips.push("Clean sweep — this resume is scanner-ready.");
-  var C = 264;
-  document.getElementById("ringArc").style.strokeDashoffset = C - C * pts / 100;
-  document.getElementById("ringArc").style.stroke = pts >= 80 ? "#0fd6b5" : pts >= 55 ? "#ffb300" : "#ff3d00";
-  document.getElementById("ringNum").textContent = pts;
-  document.getElementById("tips").innerHTML = tips.slice(0,3).map(function(t){ return "<li>"+t+"</li>"; }).join("");
-}
-Object.keys(F).forEach(function(k){ F[k].addEventListener("input", render); });
-
-/* ---------- job match ---------- */
-function jobMatch(){
-  var el = document.getElementById("jdMatch");
-  var jd = val("jd");
-  if (!jd) { el.textContent = ""; return; }
-  var sk = skills();
-  if (!sk.length) { el.textContent = "Add skills first, then paste a job description."; return; }
-  var low = jd.toLowerCase();
-  var found = sk.filter(function(s){ return low.indexOf(s.toLowerCase()) !== -1; });
-  var missing = sk.filter(function(s){ return low.indexOf(s.toLowerCase()) === -1; });
-  var pct = Math.round(found.length / sk.length * 100);
-  el.textContent = "Job Match: " + pct + "% — " + found.length + " of " + sk.length + " skills found in this job description." + (missing.length ? " Missing: " + missing.join(", ") + "." : " All your skills match!");
-}
-
-/* ---------- download / copy ---------- */
-function resumeText(){
-  var contact = [val("email"), val("phone"), val("city"), val("web")].filter(Boolean).join(" · ");
-  return [val("name"), val("role"), contact, "", "SUMMARY", val("summary"), "", "SKILLS", skills().join(", "), "", "EXPERIENCE", val("exp"), "", "EDUCATION", val("edu"), "", "PROJECTS", val("proj"), "", "COURSES & CERTIFICATIONS", val("cert"), "", "LANGUAGES", val("lang"), "", "PERSONAL DETAILS", val("personal")].join("\n");
-}
-document.getElementById("pdfBtn").addEventListener("click", function(){ window.print(); });
-document.getElementById("dlBtn").addEventListener("click", function(){
-  var html = "<!doctype html><html><head><meta charset='utf-8'><title>Resume — " + esc(val("name")) + "</title></head><body>" + resume.innerHTML + "</body></html>";
-  var a = document.createElement("a");
-  a.href = URL.createObjectURL(new Blob([html], {type:"text/html"}));
-  a.download = "resume.html"; a.click();
-  setTimeout(function(){ URL.revokeObjectURL(a.href); }, 2000);
-});
-document.getElementById("copyBtn").addEventListener("click", function(){
-  navigator.clipboard.writeText(resumeText()).then(function(){
-    document.getElementById("copyMsg").textContent = "Copied — paste it anywhere.";
-  });
-});
-
-/* ---------- cover letter ---------- */
-var currentTone = "pro";
-var TONES = {
-  pro:  function(n,r,s){ return ["Dear Hiring Manager,", "I am writing to apply for the position of " + r + ". " + s, "I would welcome the opportunity to discuss how my experience can contribute to your team. Thank you for your time and consideration."]; },
-  bold: function(n,r,s){ return ["Dear Hiring Manager,", "You need a " + r + " who delivers. That is exactly what I do. " + s, "Give me thirty minutes and I will show you what I can build for your team. I look forward to your reply."]; },
-  warm: function(n,r,s){ return ["Hello!", "I was excited to come across the " + r + " opening — it sounds like the kind of work I genuinely enjoy. " + s, "I would love to chat about the role whenever it suits you. Thanks so much for reading!"]; }
-};
-function renderLetter(tone){
-  currentTone = tone;
-  var first = val("summary").split(".")[0] + ".";
-  var paras = TONES[tone](val("name") || "Your Name", val("role") || "the role", first);
-  document.getElementById("letter").innerHTML =
-    paras.map(function(p){ return "<p>"+esc(p)+"</p>"; }).join("") +
-    '<p class="sig">' + esc(val("name") || "Your Name") + "</p>";
-}
-document.querySelectorAll("[data-tone]").forEach(function(b){
-  b.addEventListener("click", function(){
-    document.querySelectorAll("[data-tone]").forEach(function(x){ x.className = "btn ghost"; });
-    b.className = "btn fire";
-    renderLetter(b.dataset.tone);
-  });
-});
-document.getElementById("letterCopy").addEventListener("click", function(){
-  navigator.clipboard.writeText(document.getElementById("letter").innerText).then(function(){
-    document.getElementById("letterMsg").textContent = "Cover letter copied.";
-  });
 });
 
 /* ---------- guides ---------- */
@@ -638,7 +435,6 @@ document.getElementById("guideGrid").innerHTML = GUIDES.map(function(g){
   return '<a class="card guide" href="'+g[4]+'"><div class="gimg" style="background:'+g[3]+'"></div><span class="mins">'+g[2]+'</span><h3>'+g[0]+'</h3><p>'+g[1]+'</p></a>';
 }).join("");
 
-render();
 </script>
 </body>
 </html>
