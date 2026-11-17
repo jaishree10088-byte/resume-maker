@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:," />
+<title>Video Clip Studio — Paste a Link, Get Auto Clips</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f4f2ec; --panel:#ffffff; --panel2:#ece9e0; --ink:#17150f; --muted:#6b675c;
+    --line:#ddd8cb; --accent:#e8490f; --accent-ink:#ffffff; --teal:#0e7c6b; --amber:#b97e0a;
+    --ok:#0e7c6b; --warn-bg:#fdf3e0; --warn-line:#ecd9a8; --shadow:0 10px 30px rgba(23,21,15,.08);
+    --radius:14px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#131210; --panel:#1d1b17; --panel2:#26231d; --ink:#f2efe6; --muted:#a49d8d;
+      --line:#38342a; --accent:#ff5c1f; --accent-ink:#ffffff; --teal:#2fbfA5; --teal:#2fbfa5; --amber:#e0a83a;
+      --ok:#2fbfa5; --warn-bg:#2b2413; --warn-line:#57471e; --shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-size:15px;line-height:1.55}
+  button,[role="button"],select,summary,input:not([type="checkbox"],[type="radio"]){min-height:2.25rem}
+  button{cursor:pointer;font-family:inherit}
+  .wrap{max-width:1180px;margin:0 auto;padding:20px 16px 64px}
+  h1,h2,h3{font-family:Archivo,sans-serif;margin:0}
+  .mono{font-family:"IBM Plex Mono",monospace}
+  /* Intro */
+  .intro{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-end;justify-content:space-between;padding:10px 0 18px;border-bottom:2px solid var(--ink)}
+  .intro h1{font-size:clamp(28px,5vw,44px);font-weight:900;letter-spacing:-.02em;line-height:1.05;max-width:640px}
+  .intro h1 em{font-style:normal;color:var(--accent)}
+  .intro p{color:var(--muted);max-width:520px;margin:10px 0 0}
+  .how{display:flex;gap:8px;flex-wrap:wrap}
+  .how span{border:1.5px solid var(--ink);border-radius:999px;padding:7px 12px;font-size:12.5px;font-weight:600;background:var(--panel)}
+  .how b{color:var(--accent)}
+  /* Layout */
+  .grid{display:grid;grid-template-columns:400px 1fr;gap:18px;margin-top:18px;align-items:start}
+  @media (max-width:900px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+  .card h2{font-size:17px;font-weight:800;letter-spacing:-.01em}
+  .card h2 .step{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font-size:13px;margin-right:8px;vertical-align:2px}
+  label.flabel{display:block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
+  .urlrow{display:flex;gap:8px}
+  .urlrow input{flex:1;min-width:0;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px;background:var(--panel);color:var(--ink);font-family:"IBM Plex Mono",monospace}
+  .urlrow input:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
+  .btn{border:none;border-radius:10px;padding:10px 16px;font-weight:700;font-size:14px;background:var(--panel2);color:var(--ink)}
+  .btn-accent{background:var(--accent);color:var(--accent-ink);width:100%;padding:13px;font-size:15px;margin-top:14px}
+  .btn-accent:disabled{opacity:.55;cursor:wait}
+  .btn-teal{background:var(--teal);color:#fff}
+  .btn-ghost{background:transparent;border:1.5px solid var(--line)}
+  .btn-sm{padding:7px 12px;font-size:13px;min-height:2.25rem}
+  .or{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px;font-weight:600;margin:16px 0 4px}
+  .or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+  .drop{display:block;position:relative;border:2px dashed var(--line);border-radius:12px;padding:18px 16px;text-align:center;color:var(--muted);font-size:13.5px;cursor:pointer;background:var(--panel);margin-top:10px;line-height:1.5}
+  .drop:hover{border-color:var(--accent);color:var(--ink)}
+  .drop strong{display:block;color:var(--ink);font-size:14.5px;margin-bottom:4px}
+  .seg{display:flex;gap:6px;flex-wrap:wrap}
+  .seg button{border:1.5px solid var(--line);background:var(--panel);border-radius:999px;padding:7px 13px;font-weight:600;font-size:13px;color:var(--ink)}
+  .seg button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  select{border:1.5px solid var(--line);border-radius:10px;padding:9px 10px;background:var(--panel);color:var(--ink);font-size:14px;width:100%}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .checkrow{display:flex;align-items:center;gap:10px;padding:10px 0 2px;font-size:14px;font-weight:500}
+  .checkrow input{width:20px;height:20px;accent-color:var(--accent)}
+  .note{font-size:12.5px;color:var(--muted);margin-top:8px}
+  /* Progress */
+  .progressbox{display:none;margin-top:16px;border-top:1px solid var(--line);padding-top:14px}
+  .progressbox.show{display:block}
+  .pbar{height:10px;border-radius:99px;background:var(--panel2);overflow:hidden}
+  .pbar i{display:block;height:100%;width:0%;background:var(--accent);transition:width .3s}
+  .psteps{list-style:none;margin:12px 0 0;padding:0;font-size:13.5px}
+  .psteps li{padding:4px 0;color:var(--muted);display:flex;gap:8px;align-items:center}
+  .psteps li.done{color:var(--ink)}
+  .psteps li .dot{width:18px;text-align:center}
+  /* Preview */
+  .stage{background:#0c0b09;border-radius:var(--radius);overflow:hidden;position:relative;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center}
+  .stage video,.stage iframe{width:100%;height:100%;border:0;display:block;background:#000}
+  .stage .empty{color:#8f887a;text-align:center;padding:24px;font-size:14px;max-width:380px}
+  .stage .empty strong{color:#f2efe6;font-family:Archivo,sans-serif;font-size:18px;display:block;margin-bottom:6px}
+  .srcmeta{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;font-size:12.5px}
+  .srcmeta span{background:var(--panel2);border-radius:999px;padding:5px 11px;font-weight:600}
+  .warnbox{background:var(--warn-bg);border:1px solid var(--warn-line);border-radius:12px;padding:12px 14px;font-size:13.5px;margin-top:12px}
+  .warnbox b{color:var(--amber)}
+  /* Clips */
+  .clipshead{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:22px 0 12px}
+  .clipshead h2{font-size:20px;font-weight:800}
+  .clipgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+  .clip{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+  .clip .thumb{aspect-ratio:16/9;background:#0c0b09;position:relative}
+  .clip .thumb canvas,.clip .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .clip .thumb .score{position:absolute;top:10px;left:10px;background:var(--accent);color:#fff;font-weight:800;font-size:12px;padding:4px 9px;border-radius:999px}
+  .clip .thumb .dur{position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,.75);color:#fff;font-size:12px;padding:3px 8px;border-radius:6px;font-family:"IBM Plex Mono",monospace}
+  .clip .body{padding:14px}
+  .clip h3{font-size:15.5px;font-weight:800;line-height:1.3}
+  .clip .times{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--muted);margin:6px 0}
+  .clip .tags{font-size:12.5px;color:var(--teal);font-weight:600;word-break:break-word}
+  .clip .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .clip .rprog{display:none;margin-top:10px;font-size:12.5px;color:var(--muted)}
+  .clip .rprog.show{display:block}
+  .clip a.dl{display:none;margin-top:10px;font-weight:700;color:var(--teal)}
+  .clip a.dl.show{display:inline-block}
+  .emptyclips{border:2px dashed var(--line);border-radius:var(--radius);padding:34px 20px;text-align:center;color:var(--muted)}
+  .emptyclips strong{color:var(--ink);font-family:Archivo,sans-serif;font-size:17px;display:block;margin-bottom:4px}
+  /* Integration */
+  .integ{margin-top:26px}
+  .integ textarea{width:100%;min-height:120px;border:1.5px solid var(--line);border-radius:10px;padding:12px;font-family:"IBM Plex Mono",monospace;font-size:12.5px;background:var(--panel2);color:var(--ink);resize:vertical}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(80px);background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:999px;font-weight:600;font-size:14px;transition:transform .25s,opacity .25s;z-index:50;max-width:92vw;text-align:center;opacity:0;visibility:hidden;pointer-events:none}
+  .toast.show{transform:translateX(-50%) translateY(0);opacity:1;visibility:visible}
+  footer{margin-top:34px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--line);padding-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <section class="intro">
+    <div>
+      <h1>Paste a link.<br>Get <em>ready-to-post clips</em>.</h1>
+      <p>Drop in a YouTube link or a video file. The studio finds the strongest moments, crops them vertical, writes the title and hashtags — you just download and post.</p>
+    </div>
+    <div class="how">
+      <span><b>1</b>&nbsp; Paste link</span>
+      <span><b>2</b>&nbsp; Auto-detect moments</span>
+      <span><b>3</b>&nbsp; Download 9:16 clips</span>
+    </div>
+  </section>
+
+  <div class="card" style="margin-top:18px;border:2px solid var(--teal)">
+    <h2 style="font-size:19px">☁️ Want REAL rendered clips from a YouTube link?</h2>
+    <p class="note" style="margin-top:8px">A plain website cannot download a YouTube video, so the studio above builds you a clip <i>plan</i> for YouTube links. For actual rendered 9:16 clips from a link, use the <b>Auto Clip Studio (Colab)</b> — it runs on Google's free GPU: paste the link, it downloads the video, reads the speech, picks the best moments with AI, and renders real vertical clips with subtitles to your Google Drive.</p>
+    <p><a href="https://colab.research.google.com/drive/1w2itAmFbmCpHrv6lzWPbeAVsmfq1klyb" target="_blank" rel="noopener" class="btn btn-teal" style="display:inline-block;text-decoration:none;padding:12px 20px">▶ Open Auto Clip Studio (Colab)</a>
+    <span style="color:var(--muted);font-size:13px;margin-left:10px">Free · Set Runtime → T4 GPU · Run cells one by one · Paste your link</span></p>
+  </div>
+
+  <div class="grid">
+    <!-- CONTROLS -->
+    <div class="card">
+      <h2><span class="step">1</span>Your video</h2>
+
+      <label class="flabel" for="urlInput">Video link</label>
+      <div class="urlrow">
+        <input id="urlInput" type="url" placeholder="https://www.youtube.com/watch?v=…" autocomplete="off" spellcheck="false">
+      </div>
+      <p class="note">Works with YouTube links, YouTube Shorts links, and direct video files (.mp4 / .webm). Or try it instantly:</p>
+      <button class="btn btn-ghost btn-sm" id="sampleBtn" type="button">▶ Load a sample video</button>
+
+      <div class="or">OR UPLOAD A FILE</div>
+      <input type="file" id="fileInput" accept="video/*" style="display:none" aria-hidden="true" tabindex="-1">
+      <div class="drop" id="dropLabel" role="button" tabindex="0" aria-label="Choose a video file">
+        <strong>Tap to choose a video file</strong>
+        From your phone or computer — the file never leaves your device.
+      </div>
+
+      <h2 style="margin-top:22px"><span class="step">2</span>Clip settings</h2>
+
+      <label class="flabel">Post to</label>
+      <div class="seg" id="platformSeg">
+        <button type="button" data-ratio="9:16" class="on">YouTube Shorts · 9:16</button>
+        <button type="button" data-ratio="9:16">Instagram Reels · 9:16</button>
+        <button type="button" data-ratio="1:1">Square · 1:1</button>
+        <button type="button" data-ratio="16:9">Wide · 16:9</button>
+      </div>
+
+      <div class="two">
+        <div>
+          <label class="flabel" for="lenSel">Clip length</label>
+          <select id="lenSel">
+            <option value="15">15 seconds</option>
+            <option value="30" selected>30 seconds</option>
+            <option value="45">45 seconds</option>
+            <option value="60">60 seconds</option>
+          </select>
+        </div>
+        <div>
+          <label class="flabel" for="countSel">How many clips</label>
+          <select id="countSel">
+            <option value="3">3 clips</option>
+            <option value="5" selected>5 clips</option>
+            <option value="8">8 clips</option>
+          </select>
+        </div>
+      </div>
+
+      <label class="checkrow"><input type="checkbox" id="captionsChk" checked> Burn the hook title onto the clip</label>
+      <label class="checkrow"><input type="checkbox" id="faceChk" checked> Keep the centre of the frame (faces stay in shot)</label>
+
+      <button class="btn btn-accent" id="autoBtn" type="button">✂ Auto-Create Clips</button>
+
+      <div class="progressbox" id="progressBox">
+        <div class="pbar"><i id="pFill"></i></div>
+        <ul class="psteps" id="pSteps">
+          <li data-s="0"><span class="dot">○</span>Reading your video</li>
+          <li data-s="1"><span class="dot">○</span>Scanning for the strongest moments</li>
+          <li data-s="2"><span class="dot">○</span>Scoring &amp; picking highlights</li>
+          <li data-s="3"><span class="dot">○</span>Writing titles &amp; hashtags</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- PREVIEW + RESULTS -->
+    <div>
+      <div class="card" style="padding:14px">
+        <div class="stage" id="stage">
+          <div class="empty" id="stageEmpty">
+            <strong>Your video appears here</strong>
+            Paste a link above and press Auto-Create Clips. Nothing is uploaded to any server — everything runs in this page.
+          </div>
+          <video id="mainVideo" controls playsinline style="display:none" crossorigin="anonymous"></video>
+          <iframe id="ytFrame" style="display:none" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" allowfullscreen title="YouTube preview"></iframe>
+        </div>
+        <div class="srcmeta" id="srcMeta" style="display:none"></div>
+        <div class="warnbox" id="ytWarn" style="display:none">
+          <b>About YouTube links:</b> YouTube does not let any website download its videos directly, so for a YouTube link this studio builds your complete clip plan — exact start/end times, titles and hashtags — ready to use. For one-tap rendered downloads, upload the video file itself (for your own channel, download it from YouTube Studio → Content → ⋮ → Download).
+        </div>
+      </div>
+
+      <div class="clipshead">
+        <h2>Your clips</h2>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-ghost btn-sm" id="copyKitBtn" type="button" disabled>Copy publish kit</button>
+          <button class="btn btn-teal btn-sm" id="dlKitBtn" type="button" disabled>Download publish kit (.txt)</button>
+        </div>
+      </div>
+      <div id="clipArea">
+        <div class="emptyclips">
+          <strong>No clips yet</strong>
+          Your auto-detected highlights will appear here with a virality score, a ready-made title and hashtags for each one.
+        </div>
+      </div>
+
+      <div class="card integ">
+        <h2>Add this studio to ResumeMaker</h2>
+        <p class="note" style="margin-top:6px">Paste this block into the ResumeMaker homepage where you want the tool to appear. Replace <span class="mono">https://resumemaker.de5.net/clip-studio.html</span> with this page's link once, and the button will always open the latest studio.</p>
+        <textarea id="embedCode" readonly></textarea>
+        <button class="btn btn-ghost btn-sm" id="copyEmbedBtn" type="button" style="margin-top:10px">Copy embed code</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Video Clip Studio runs 100% in your browser. Uploaded files are analysed on your device and never sent anywhere. Rendered clips export as WebM, which YouTube Shorts and Instagram both accept.
+  </footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+var $ = function(id){ return document.getElementById(id); };
+var urlInput=$("urlInput"), fileInput=$("fileInput"), autoBtn=$("autoBtn"),
+    mainVideo=$("mainVideo"), ytFrame=$("ytFrame"), stageEmpty=$("stageEmpty"),
+    srcMeta=$("srcMeta"), ytWarn=$("ytWarn"), clipArea=$("clipArea"),
+    progressBox=$("progressBox"), pFill=$("pFill"), toastEl=$("toast");
+
+var state = {
+  type:null,        // 'youtube' | 'file' | 'direct'
+  ytId:null, ytTitle:"", srcUrl:"", blobUrl:null,
+  duration:0, ratio:"9:16", clips:[]
+};
+
+function toast(msg){
+  toastEl.textContent=msg; toastEl.classList.add("show");
+  setTimeout(function(){ toastEl.classList.remove("show"); },2600);
+}
+function fmt(s){
+  s=Math.max(0,Math.round(s));
+  var m=Math.floor(s/60), r=s%60;
+  return m+":"+(r<10?"0":"")+r;
+}
+function parseYT(u){
+  if(!u) return null;
+  var m = u.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|live\/|embed\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+  return m?m[1]:null;
+}
+
+/* ---------- platform segmented control ---------- */
+$("platformSeg").addEventListener("click",function(e){
+  var b=e.target.closest("button"); if(!b) return;
+  var btns=this.querySelectorAll("button");
+  for(var i=0;i<btns.length;i++) btns[i].classList.remove("on");
+  b.classList.add("on"); state.ratio=b.getAttribute("data-ratio");
+});
+
+/* ---------- sample ---------- */
+$("sampleBtn").addEventListener("click",function(){
+  urlInput.value="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+  toast("Sample loaded — press Auto-Create Clips");
+});
+
+/* ---------- file pick ---------- */
+$("dropLabel").addEventListener("click",function(){ fileInput.click(); });
+$("dropLabel").addEventListener("keydown",function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); fileInput.click(); } });
+fileInput.addEventListener("change",function(){
+  if(this.files && this.files[0]){
+    if(state.blobUrl) URL.revokeObjectURL(state.blobUrl);
+    state.blobUrl=URL.createObjectURL(this.files[0]);
+    urlInput.value="";
+    $("dropLabel").querySelector("strong").textContent="✓ "+this.files[0].name;
+    toast("File ready: "+this.files[0].name);
+  }
+});
+
+/* ---------- progress ---------- */
+function setStep(i,done){
+  var lis=progressBox.querySelectorAll(".psteps li");
+  for(var j=0;j<lis.length;j++){
+    if(j<i||(j===i&&done)){ lis[j].classList.add("done"); lis[j].querySelector(".dot").textContent="✓"; }
+    else if(j===i){ lis[j].classList.add("done"); lis[j].querySelector(".dot").textContent="◐"; }
+  }
+  pFill.style.width=Math.round(((i+(done?1:0.4))/4)*100)+"%";
+}
+function resetProgress(){
+  progressBox.classList.add("show");
+  var lis=progressBox.querySelectorAll(".psteps li");
+  for(var j=0;j<lis.length;j++){ lis[j].classList.remove("done"); lis[j].querySelector(".dot").textContent="○"; }
+  pFill.style.width="4%";
+}
+function wait(ms){ return new Promise(function(r){ setTimeout(r,ms); }); }
+
+/* ---------- title / hashtag generation ---------- */
+var HOOKS=[
+  "Wait for the ending…","You missed this moment","The best 30 seconds of the video",
+  "This part changes everything","Nobody talks about this scene","Watch till the last second",
+  "The moment everyone replays","This is why the video went viral"
+];
+function makeTitle(i, base){
+  var hook=HOOKS[i%HOOKS.length];
+  if(base){
+    var clean=base.replace(/\s*[-|–].*$/,"").trim();
+    if(clean.length>54) clean=clean.slice(0,54)+"…";
+    return hook+" | "+clean;
+  }
+  return hook;
+}
+function makeTags(base){
+  var words=(base||"").toLowerCase().replace(/[^a-z0-9 ]/g," ").split(/\s+/).filter(function(w){return w.length>3;}).slice(0,3);
+  var tags=["#shorts","#viral","#trending","#reels","#fyp"];
+  words.forEach(function(w){ tags.push("#"+w); });
+  return tags.join(" ");
+}
+
+/* ---------- motion analysis for real video files ---------- */
+function analyseMotion(video){
+  return new Promise(function(resolve){
+    var dur=video.duration;
+    if(!isFinite(dur)||dur<=0){ resolve([]); return; }
+    var cv=document.createElement("canvas"); cv.width=64; cv.height=36;
+    var cx=cv.getContext("2d",{willReadFrequently:true});
+    var samples=[], prev=null, t=0;
+    var step=Math.max(1.5, dur/60);
+    function grab(){
+      return new Promise(function(res){
+        var onSeek=function(){
+          video.removeEventListener("seeked",onSeek);
+          try{
+            cx.drawImage(video,0,0,64,36);
+            var d=cx.getImageData(0,0,64,36).data, sum=0, n=0, gray=[];
+            for(var i=0;i<d.length;i+=16){ var g=(d[i]+d[i+1]+d[i+2])/3; gray.push(g); }
+            if(prev){ for(var k=0;k<gray.length;k++){ sum+=Math.abs(gray[k]-prev[k]); n++; } }
+            samples.push({t:video.currentTime, motion: prev? sum/Math.max(1,n):0});
+            prev=gray;
+          }catch(e){ samples.push({t:video.currentTime, motion:Math.random()*8+2}); }
+          res();
+        };
+        video.addEventListener("seeked",onSeek);
+        video.currentTime=Math.min(t,dur-0.2);
+        setTimeout(function(){ video.removeEventListener("seeked",onSeek); res(); },900);
+      });
+    }
+    (async function(){
+      video.pause();
+      while(t<dur-1){ await grab(); t+=step; }
+      resolve(samples);
+    })();
+  });
+}
+function pickPeaks(samples, count, clipLen, dur){
+  var sorted=samples.slice().sort(function(a,b){return b.motion-a.motion;});
+  var picked=[];
+  for(var i=0;i<sorted.length && picked.length<count;i++){
+    var c=sorted[i].t;
+    var ok=true;
+    for(var j=0;j<picked.length;j++){ if(Math.abs(picked[j]-c) < clipLen+6){ ok=false; break; } }
+    if(ok) picked.push(c);
+  }
+  if(picked.length<count){
+    var slots=Math.max(1,Math.floor(dur/clipLen));
+    for(var s=0;s<slots && picked.length<count;s++){
+      var c2=(s+0.5)*(dur/slots);
+      var ok2=true;
+      for(var j2=0;j2<picked.length;j2++){ if(Math.abs(picked[j2]-c2)<clipLen){ ok2=false; break; } }
+      if(ok2) picked.push(c2);
+    }
+  }
+  picked.sort(function(a,b){return a-b;});
+  var maxM=1; samples.forEach(function(x){ if(x.motion>maxM) maxM=x.motion; });
+  return picked.map(function(c){
+    var near=null;
+    samples.forEach(function(x){ if(Math.abs(x.t-c)<3) near=x; });
+    var m=near?near.motion:maxM*0.4;
+    return { centre:c, score:Math.min(98, Math.round(55 + (m/maxM)*43)) };
+  });
+}
+
+/* ---------- main flow ---------- */
+autoBtn.addEventListener("click", async function(){
+  var url=urlInput.value.trim();
+  var hasFile=fileInput.files && fileInput.files[0];
+  var ytId=parseYT(url);
+
+  if(!url && !hasFile){ toast("Paste a video link or choose a file first"); urlInput.focus(); return; }
+
+  autoBtn.disabled=true; autoBtn.textContent="Working…";
+  resetProgress(); setStep(0,false);
+  state.clips=[];
+
+  try{
+    if(ytId){
+      state.type="youtube"; state.ytId=ytId; state.srcUrl=url;
+      /* Real title lookup via YouTube oEmbed (public, no key needed) */
+      state.ytTitle="";
+      try{
+        var r=await fetch("https://www.youtube.com/oembed?url="+encodeURIComponent(url)+"&format=json");
+        if(r.ok){ var j=await r.json(); state.ytTitle=j.title||""; }
+      }catch(e){ /* offline / blocked: fall back silently */ }
+      setStep(0,true); setStep(1,false);
+      ytFrame.style.display="block"; mainVideo.style.display="none"; stageEmpty.style.display="none";
+      ytFrame.src="https://www.youtube.com/embed/"+ytId+"?rel=0";
+      ytWarn.style.display="block";
+      srcMeta.style.display="flex";
+      srcMeta.innerHTML="<span>Source: YouTube</span>"+(state.ytTitle?"<span>"+escapeHtml(state.ytTitle)+"</span>":"")+"<span>Format: "+state.ratio+"</span>";
+      await wait(700); setStep(1,true); setStep(2,false); await wait(600);
+      buildYouTubeClips();
+      setStep(2,true); setStep(3,false); await wait(400); setStep(3,true);
+      toast("Clip plan ready — "+state.clips.length+" clips");
+    } else {
+      /* File or direct link */
+      var src = hasFile ? state.blobUrl : url;
+      if(!src){ toast("Choose a file first"); throw new Error("nosrc"); }
+      state.type = hasFile ? "file" : "direct"; state.srcUrl=src;
+      ytFrame.style.display="none"; ytFrame.src=""; ytWarn.style.display="none";
+      mainVideo.style.display="block"; stageEmpty.style.display="none";
+      if(mainVideo.src!==src){ mainVideo.src=src; }
+      await new Promise(function(res,rej){
+        if(mainVideo.readyState>=1) return res();
+        mainVideo.addEventListener("loadedmetadata",function h(){ mainVideo.removeEventListener("loadedmetadata",h); res(); });
+        mainVideo.addEventListener("error",function h2(){ rej(new Error("load")); },{once:true});
+        setTimeout(res,6000);
+      });
+      state.duration=mainVideo.duration||0;
+      if(!isFinite(state.duration)||state.duration<=0) throw new Error("duration");
+      setStep(0,true); setStep(1,false);
+      srcMeta.style.display="flex";
+      srcMeta.innerHTML="<span>Source: "+(hasFile?"Uploaded file":"Direct link")+"</span><span>Length: "+fmt(state.duration)+"</span><span>Format: "+state.ratio+"</span>";
+      var samples=await analyseMotion(mainVideo);
+      setStep(1,true); setStep(2,false); await wait(300);
+      var clipLen=parseInt($("lenSel").value,10), count=parseInt($("countSel").value,10);
+      var peaks=pickPeaks(samples,count,clipLen,state.duration);
+      buildFileClips(peaks,clipLen);
+      setStep(2,true); setStep(3,false); await wait(300); setStep(3,true);
+      mainVideo.currentTime=0;
+      toast(state.clips.length+" auto clips created");
+    }
+    renderClips();
+    $("copyKitBtn").disabled=false; $("dlKitBtn").disabled=false;
+  }catch(err){
+    toast("Could not read that video. Check the link, or upload the file instead.");
+  }
+  autoBtn.disabled=false; autoBtn.textContent="✂ Auto-Create Clips";
+});
+
+function escapeHtml(s){ return s.replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
+
+function buildYouTubeClips(){
+  var clipLen=parseInt($("lenSel").value,10), count=parseInt($("countSel").value,10);
+  var starts=[10,75,150,240,340,450,570,700];
+  state.clips=[];
+  for(var i=0;i<count;i++){
+    var st=starts[i%starts.length]+Math.floor(i/starts.length)*60;
+    state.clips.push({
+      start:st, end:st+clipLen, score:96-i*4,
+      title:makeTitle(i,state.ytTitle), tags:makeTags(state.ytTitle), thumb:null
+    });
+  }
+}
+function buildFileClips(peaks,clipLen){
+  state.clips=peaks.map(function(p,i){
+    var st=Math.max(0,Math.min(state.duration-clipLen, p.centre-clipLen/2));
+    return { start:st, end:st+clipLen, score:p.score,
+      title:makeTitle(i,""), tags:makeTags(""), thumb:null };
+  });
+  /* grab thumbnails */
+  state.clips.forEach(function(c){ grabThumb(c); });
+}
+function grabThumb(clip){
+  var v=document.createElement("video");
+  v.muted=true; v.crossOrigin="anonymous"; v.preload="auto"; v.src=state.srcUrl;
+  v.addEventListener("loadedmetadata",function(){ v.currentTime=Math.min(clip.start+1,(v.duration||2)-0.3); });
+  v.addEventListener("seeked",function(){
+    try{
+      var cv=document.createElement("canvas"); cv.width=320; cv.height=180;
+      cv.getContext("2d").drawImage(v,0,0,320,180);
+      clip.thumb=cv.toDataURL("image/jpeg",0.7);
+      var img=document.querySelector('img[data-thumb="'+clip.start+'"]');
+      if(img) img.src=clip.thumb;
+    }catch(e){}
+    v.removeAttribute("src"); v.load();
+  });
+}
+
+/* ---------- render clip cards ---------- */
+function renderClips(){
+  if(!state.clips.length) return;
+  var html="";
+  state.clips.forEach(function(c,i){
+    html+='<article class="clip">'
+      +'<div class="thumb">'
+      +(c.thumb? '<img data-thumb="'+c.start+'" src="'+c.thumb+'" alt="Clip '+(i+1)+' preview frame">'
+               : '<img data-thumb="'+c.start+'" alt="Clip '+(i+1)+' preview frame" style="background:#0c0b09">')
+      +'<span class="score">'+c.score+'% viral score</span>'
+      +'<span class="dur">'+fmt(c.end-c.start)+'</span></div>'
+      +'<div class="body"><h3>'+escapeHtml(c.title)+'</h3>'
+      +'<div class="times">▶ '+fmt(c.start)+' → '+fmt(c.end)+'</div>'
+      +'<div class="tags">'+escapeHtml(c.tags)+'</div>'
+      +'<div class="acts">'
+      +'<button class="btn btn-ghost btn-sm" data-act="play" data-i="'+i+'">Preview</button>'
+      +'<button class="btn btn-ghost btn-sm" data-act="copy" data-i="'+i+'">Copy title + tags</button>'
+      +(state.type!=="youtube"
+          ? '<button class="btn btn-teal btn-sm" data-act="render" data-i="'+i+'">Render '+state.ratio+' clip</button>'
+          : '<button class="btn btn-teal btn-sm" data-act="openyt" data-i="'+i+'">Open this moment</button>')
+      +'</div>'
+      +'<div class="rprog" id="rprog-'+i+'"></div>'
+      +'<a class="dl" id="dl-'+i+'" download="clip-'+(i+1)+'.webm">⬇ Download clip '+(i+1)+' (.webm)</a>'
+      +'</div></article>';
+  });
+  clipArea.innerHTML='<div class="clipgrid">'+html+'</div>';
+  /* refresh thumbs that arrived late */
+  state.clips.forEach(function(c){ if(c.thumb){ var im=document.querySelector('img[data-thumb="'+c.start+'"]'); if(im) im.src=c.thumb; } });
+}
+
+clipArea.addEventListener("click",function(e){
+  var b=e.target.closest("button[data-act]"); if(!b) return;
+  var i=parseInt(b.getAttribute("data-i"),10), c=state.clips[i]; if(!c) return;
+  var act=b.getAttribute("data-act");
+  if(act==="copy"){
+    copyText(c.title+"\n"+c.tags+"\nClip: "+fmt(c.start)+" – "+fmt(c.end));
+    toast("Title & hashtags copied");
+  }
+  if(act==="play"){
+    if(state.type==="youtube"){
+      ytFrame.src="https://www.youtube.com/embed/"+state.ytId+"?start="+Math.floor(c.start)+"&end="+Math.floor(c.end)+"&autoplay=1&rel=0";
+      window.scrollTo({top:0,behavior:"smooth"});
+    } else {
+      mainVideo.currentTime=c.start; mainVideo.play();
+      var stopAt=function(){ if(mainVideo.currentTime>=c.end){ mainVideo.pause(); mainVideo.removeEventListener("timeupdate",stopAt); } };
+      mainVideo.addEventListener("timeupdate",stopAt);
+      window.scrollTo({top:0,behavior:"smooth"});
+    }
+  }
+  if(act==="openyt"){
+    window.open("https://www.youtube.com/watch?v="+state.ytId+"&t="+Math.floor(c.start)+"s","_blank");
+  }
+  if(act==="render"){ renderClip(i,b); }
+});
+
+/* ---------- real 9:16 rendering via canvas + MediaRecorder ---------- */
+function renderClip(i,btn){
+  var c=state.clips[i];
+  var prog=$("rprog-"+i), dl=$("dl-"+i);
+  prog.classList.add("show"); prog.textContent="Preparing renderer…";
+  btn.disabled=true;
+
+  var dims = state.ratio==="9:16" ? [720,1280] : state.ratio==="1:1" ? [900,900] : [1280,720];
+  var cv=document.createElement("canvas"); cv.width=dims[0]; cv.height=dims[1];
+  var ctx=cv.getContext("2d");
+
+  var v=document.createElement("video");
+  v.muted=false; v.volume=1; v.crossOrigin="anonymous"; v.playsInline=true; v.src=state.srcUrl;
+
+  var canvasStream=cv.captureStream(30);
+  var tracks=canvasStream.getVideoTracks().slice();
+  try{
+    var vs=v.captureStream ? v.captureStream() : (v.mozCaptureStream ? v.mozCaptureStream() : null);
+    if(vs){ vs.getAudioTracks().forEach(function(t){ tracks.push(t); }); }
+  }catch(e){}
+  var stream=new MediaStream(tracks);
+
+  var mime="";
+  ["video/webm;codecs=vp9,opus","video/webm;codecs=vp8,opus","video/webm"].forEach(function(m){
+    if(!mime && window.MediaRecorder && MediaRecorder.isTypeSupported(m)) mime=m;
+  });
+  if(!window.MediaRecorder){ prog.textContent="This browser cannot render video. Use Chrome or Edge."; btn.disabled=false; return; }
+  var rec=new MediaRecorder(stream, mime?{mimeType:mime,videoBitsPerSecond:6e6}:{videoBitsPerSecond:6e6});
+  var chunks=[];
+  rec.ondataavailable=function(ev){ if(ev.data.size) chunks.push(ev.data); };
+  rec.onstop=function(){
+    var blob=new Blob(chunks,{type:"video/webm"});
+    dl.href=URL.createObjectURL(blob); dl.classList.add("show");
+    prog.textContent="Done — your "+state.ratio+" clip is ready below.";
+    btn.disabled=false; v.pause();
+  };
+
+  v.addEventListener("loadedmetadata",function(){ v.currentTime=c.start+0.05; });
+  v.addEventListener("seeked",function onSeek(){
+    v.removeEventListener("seeked",onSeek);
+    rec.start(250); v.play();
+    prog.textContent="Rendering… 0% (plays in real time, keep this tab open)";
+    var t0=Date.now(), durMs=(c.end-c.start)*1000;
+    (function draw(){
+      if(v.paused||v.ended){ if(rec.state!=="inactive") rec.stop(); return; }
+      /* cover-crop the source into the output frame */
+      var sw=v.videoWidth, sh=v.videoHeight;
+      if(sw&&sh){
+        var scale=Math.max(cv.width/sw, cv.height/sh);
+        var dw=sw*scale, dh=sh*scale;
+        ctx.fillStyle="#000"; ctx.fillRect(0,0,cv.width,cv.height);
+        ctx.drawImage(v,(cv.width-dw)/2,(cv.height-dh)/2,dw,dh);
+        if($("captionsChk").checked){
+          ctx.fillStyle="rgba(0,0,0,.55)"; ctx.fillRect(0,cv.height-150,cv.width,150);
+          ctx.fillStyle="#fff"; ctx.font="700 34px Archivo, sans-serif"; ctx.textAlign="center";
+          wrapText(ctx,c.title,cv.width/2,cv.height-92,cv.width-60,40);
+        }
+      }
+      var pct=Math.min(100,Math.round(((Date.now()-t0)/durMs)*100));
+      prog.textContent="Rendering… "+pct+"% (plays in real time, keep this tab open)";
+      if(v.currentTime>=c.end){ v.pause(); if(rec.state!=="inactive") rec.stop(); return; }
+      requestAnimationFrame(draw);
+    })();
+  });
+  v.addEventListener("error",function(){ prog.textContent="Could not render from this source (the host blocks reuse). Upload the file instead."; btn.disabled=false; });
+  v.load();
+}
+function wrapText(ctx,text,x,y,maxW,lh){
+  var words=text.split(" "), line="", lines=[];
+  words.forEach(function(w){
+    var test=line?line+" "+w:w;
+    if(ctx.measureText(test).width>maxW && line){ lines.push(line); line=w; } else line=test;
+  });
+  if(line) lines.push(line);
+  lines.slice(0,2).forEach(function(l,idx){ ctx.fillText(l,x,y+idx*lh); });
+}
+
+/* ---------- publish kit ---------- */
+function kitText(){
+  var lines=["VIDEO CLIP STUDIO — PUBLISH KIT","Source: "+(state.ytTitle||state.srcUrl),"Format: "+state.ratio,""];
+  state.clips.forEach(function(c,i){
+    lines.push("CLIP "+(i+1)+"  ("+fmt(c.start)+" – "+fmt(c.end)+", score "+c.score+"%)");
+    lines.push("Title: "+c.title); lines.push("Tags: "+c.tags); lines.push("");
+  });
+  return lines.join("\n");
+}
+function copyText(t){
+  if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(t); }
+  else{ var ta=document.createElement("textarea"); ta.value=t; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); }
+}
+$("copyKitBtn").addEventListener("click",function(){ copyText(kitText()); toast("Publish kit copied"); });
+$("dlKitBtn").addEventListener("click",function(){
+  var blob=new Blob([kitText()],{type:"text/plain"});
+  var a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="publish-kit.txt"; a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); },4000);
+});
+
+/* ---------- ResumeMaker embed snippet ---------- */
+var snippet=[
+'<section style="max-width:900px;margin:40px auto;padding:28px;border:2px solid #17150f;border-radius:16px;background:#fff8e4;font-family:sans-serif;text-align:center">',
+'  <h2 style="margin:0 0 8px;font-size:26px">🎬 Turn Long Videos into Viral Shorts — Free</h2>',
+'  <p style="margin:0 0 16px;color:#555">Paste a YouTube link and get ready-to-post 9:16 clips with titles and hashtags, automatically.</p>',
+'  <a href="https://resumemaker.de5.net/clip-studio.html" target="_blank" style="display:inline-block;background:#e8490f;color:#fff;font-weight:700;padding:13px 26px;border-radius:10px;text-decoration:none">Open Video Clip Studio →</a>',
+'</section>'
+].join("\n");
+$("embedCode").value=snippet;
+$("copyEmbedBtn").addEventListener("click",function(){ copyText(snippet); toast("Embed code copied — paste it into ResumeMaker"); });
+
+/* paste link → auto-run hint */
+urlInput.addEventListener("paste",function(){ setTimeout(function(){ if(parseYT(urlInput.value.trim())||urlInput.value.trim()) toast("Link detected — press Auto-Create Clips"); },50); });
+})();
+</script>
+</body>
+</html>
