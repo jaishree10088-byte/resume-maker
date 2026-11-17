@@ -478,12 +478,14 @@ function escapeHtml(s){ return s.replace(/[&<>"']/g,function(c){return {"&":"&am
 function buildYouTubeClips(){
   var clipLen=parseInt($("lenSel").value,10), count=parseInt($("countSel").value,10);
   var starts=[10,75,150,240,340,450,570,700];
+  /* Real YouTube thumbnail for every clip card (the embed cannot be drawn to a canvas, so grabThumb cannot work for YouTube links). */
+  var ytThumb=state.ytId?("https://i.ytimg.com/vi/"+state.ytId+"/mqdefault.jpg"):null;
   state.clips=[];
   for(var i=0;i<count;i++){
     var st=starts[i%starts.length]+Math.floor(i/starts.length)*60;
     state.clips.push({
       start:st, end:st+clipLen, score:96-i*4,
-      title:makeTitle(i,state.ytTitle), tags:makeTags(state.ytTitle), thumb:null
+      title:makeTitle(i,state.ytTitle), tags:makeTags(state.ytTitle), thumb:ytThumb
     });
   }
 }
