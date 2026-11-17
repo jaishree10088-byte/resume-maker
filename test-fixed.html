@@ -47,7 +47,7 @@ nav ul{display:flex;gap:18px;list-style:none;margin:0;padding:0}nav a{color:var(
 .stage .sun{position:absolute;right:2%;top:-4%;width:90px;height:90px;border-radius:50%;background:var(--yellow);border:3px solid var(--ink);animation:spin 20s linear infinite}
 .stage .sun::before{content:"";position:absolute;inset:-16px;border-radius:50%;border:4px dotted var(--ink);opacity:.4}
 @keyframes spin{to{transform:rotate(360deg)}}
-.pop{position:absolute;font:700 1rem 'Lilita One';background:#fff;border:3px solid var(--ink);border-radius:16px;padding:6px 12px;box-shadow:3px 3px 0 var(--ink);animation:bob 3.4s ease-in-out infinite}
+.pop{position:absolute;z-index:4;font:700 1rem 'Lilita One';background:#fff;border:3px solid var(--ink);border-radius:16px;padding:6px 12px;box-shadow:3px 3px 0 var(--ink);animation:bob 3.4s ease-in-out infinite}
 /* character animation */
 .blink{animation:blink 4.2s infinite;transform-box:fill-box;transform-origin:center}@keyframes blink{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.08)}}
 .wave{transform-box:fill-box;transform-origin:10% 95%;animation:wave 1.3s ease-in-out infinite}@keyframes wave{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(22deg)}}
@@ -128,7 +128,7 @@ nav{background:rgba(255,246,229,.94);border-bottom:2px solid rgba(27,36,89,.15)}
 
 .prog{position:fixed;left:0;top:0;height:5px;width:0;background:linear-gradient(90deg,var(--yellow),var(--purple));z-index:99}
 section+section{border-radius:56px 56px 0 0;margin-top:-56px;padding-top:140px;box-shadow:0 -10px 30px rgba(27,36,89,.08)}
-#hero{padding-bottom:130px}
+#hero{padding-bottom:190px}
 section:not(#hero)::after,section:not(#hero)::before{content:"";position:absolute;width:300px;height:300px;border-radius:42% 58% 63% 37%/45% 40% 60% 55%;background:rgba(255,255,255,.4);animation:morph 12s ease-in-out infinite;z-index:1;pointer-events:none}
 section:not(#hero)::after{right:-90px;top:18%}section:not(#hero)::before{left:-120px;bottom:-60px;width:240px;height:240px;animation-delay:-5s;background:rgba(255,255,255,.3)}
 @keyframes morph{50%{border-radius:60% 40% 35% 65%/55% 60% 40% 45%;transform:translate(-18px,14px) rotate(14deg)}}
@@ -174,7 +174,7 @@ section>.sp{position:absolute;z-index:1;pointer-events:none}
 body{background:var(--cream)}
 #hero{background:linear-gradient(#4cb8ff,#9ddfff 70%,var(--cream) 72%)}
 #templates{background-color:#7fd0ff}#ats{background-color:#fff3d6}#match{background-color:#7ef0c0}#cover{background-color:#d2bcff}#how{background-color:#ffd000}#builder{background-color:#ffab7a}#pricing{background-color:#7fd0ff}
-.birds{position:fixed;inset:0;pointer-events:none;z-index:40;overflow:hidden}
+.birds{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
 .bd{position:absolute;left:0;animation:fly linear infinite;will-change:transform}
 .bd svg{display:block;width:100%;animation:bobb 1.1s ease-in-out infinite;filter:drop-shadow(0 6px 0 rgba(27,36,89,.12))}
 .bd.r{animation-name:flyr;left:auto;right:0}.bd.r svg{transform:scaleX(-1)}
@@ -321,7 +321,7 @@ button.tpl{font:inherit;color:inherit;width:100%}.tpl .pg{padding:0!important}
 <path class="a1" d="M-14 -10l-12-24" fill="none" stroke-width="10"/><path class="a1" d="M-14 -10l-12-24" fill="none" stroke="#9a5b2e" stroke-width="5"/><path class="a2" d="M14 -10l12-24" fill="none" stroke-width="10"/><path class="a2" d="M14 -10l12-24" fill="none" stroke="#9a5b2e" stroke-width="5"/>
 <circle cx="-15" cy="-30" r="6" fill="#f2c48a"/><circle cx="15" cy="-30" r="6" fill="#f2c48a"/><circle cx="0" cy="-28" r="15" fill="#9a5b2e"/><ellipse cx="0" cy="-24" rx="10" ry="9" fill="#f2c48a" stroke="none"/>
 <circle cx="-5" cy="-29" r="2.4" fill="#1b2459" stroke="none"/><circle cx="5" cy="-29" r="2.4" fill="#1b2459" stroke="none"/><path d="M-5 -20q5 5 10 0" fill="none" stroke-width="2.5"/></g></g></svg><use href="#boy" x="238" y="219" width="169" height="237"/><use href="#girl" x="393" y="219" width="169" height="237"/></svg>
-<div class="pop" style="left:0;top:8%">Hi, I'm Max!</div><div class="pop" style="right:0;top:20%;animation-delay:-1.5s">And I'm Mia!</div>
+<div class="pop" style="left:3%;top:12%">Hi, I'm Max!</div><div class="pop" style="right:3%;top:24%;animation-delay:-1.5s">And I'm Mia!</div>
 </div></div><div class="fi" data-d="18" style="left:4%;top:34%;background:var(--yellow)"><span><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.7 7.2L12 18l-6.4 3.5 1.7-7.2L2 9.6 9 9z" fill="#ffd23f" stroke="#1b2459" stroke-width="1.8" stroke-linejoin="round"/></svg></span></div><div class="fi" data-d="-24" style="right:3%;top:52%;background:var(--mint)"><span><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6" fill="none" stroke="#1b2459" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div><div class="fi" data-d="30" style="left:46%;top:8%;background:var(--peach)"><span><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3" fill="#fff" stroke="#1b2459" stroke-width="2"/><path d="M4 7l8 6 8-6" fill="none" stroke="#1b2459" stroke-width="2"/></svg></span></div><div class="fi" data-d="-14" style="right:40%;bottom:16%;background:#d2bcff"><span><svg viewBox="0 0 24 24"><path d="M12 21s-8-5-8-11a4.5 4.5 0 018-3 4.5 4.5 0 018 3c0 6-8 11-8 11z" fill="#fff" stroke="#1b2459" stroke-width="2"/></svg></span></div><div class="hills"></div></section>
 <div class="strip"><div class="card stats"><div><b data-n="50000" data-s="K+">0</b><span>Resumes built</span></div><div><b data-n="98" data-s="%">0</b><span>Pass ATS checks</span></div><div><b data-n="21" data-s="">0</b><span>Templates</span></div><div><b data-n="49" data-s="★">0</b><span>User rating</span></div></div>
 
@@ -437,13 +437,13 @@ for(let i=0;i<9;i++){const x=40+i*135+R()*60,y=100+R()*30,r=18+R()*12;o+=`<rect 
 return `<svg class="scn" viewBox="0 0 1200 170" preserveAspectRatio="xMidYMax slice" aria-hidden="true">${o}</svg>`}
 function palm(x,y,h){let o=`<path d="M${x} ${y}q8 ${-h/2} -4 ${-h}" fill="none" stroke="#1b2459" stroke-width="11" stroke-linecap="round"/><path d="M${x} ${y}q8 ${-h/2} -4 ${-h}" fill="none" stroke="#a8692f" stroke-width="6" stroke-linecap="round"/>`;const tx=x-4,ty=y-h;const L=[[-38,8],[-28,-14],[-8,-24],[16,-20],[34,-4],[38,10]];L.forEach(([dx,dy])=>o+=`<path d="M${tx} ${ty}q${dx/2} ${dy-12} ${dx} ${dy}" fill="none" stroke="#1b2459" stroke-width="13" stroke-linecap="round"/>`);L.forEach(([dx,dy])=>o+=`<path d="M${tx} ${ty}q${dx/2} ${dy-12} ${dx} ${dy}" fill="none" stroke="#2fb872" stroke-width="7" stroke-linecap="round"/>`);return o+`<circle cx="${tx}" cy="${ty+4}" r="5" fill="#8a5a2b" stroke="#1b2459" stroke-width="2.5"/>`}
 function scene(){let o='';const I='stroke="#1b2459" stroke-width="3" stroke-linejoin="round"';
-o+=`<path d="M0 100Q200 62 420 96T800 90T1200 84V170H0z" fill="#efcb8a" ${I}/>`;
-for(let i=0;i<4;i++){const x=70+i*300+R()*120,w=90+R()*36;o+=`<use href="#hut" x="${x}" y="${114-w*.98}" width="${w}" height="${w}"/>`}
-for(let i=0;i<5;i++)o+=palm(30+i*250+R()*140,118,58+R()*30);
-o+=`<path d="M0 126Q250 102 520 124T1200 118V170H0z" fill="#5fbf4a" ${I}/><path d="M0 150Q300 132 640 148T1200 142V170H0z" fill="#d9a066" ${I}/><path d="M0 161h1200" stroke="#a9703c" stroke-width="3" stroke-dasharray="30 22" fill="none"/>`;
-for(let i=0;i<10;i++){const x=20+i*125+R()*60;o+=`<path d="M${x} 136l6-10 6 10M${x+10} 138l6-12 6 12" fill="none" stroke="#2f9e44" stroke-width="3" stroke-linecap="round"/>`}
-const hx=300+R()*500;o+=`<path d="M${hx} 150q22-34 44 0z" fill="#f0c45a" ${I}/><path d="M${hx+8} 134l28 0" stroke="#b8862b" stroke-width="3"/>`;
-return `<svg class="scn" viewBox="0 0 1200 170" preserveAspectRatio="xMidYMax slice" aria-hidden="true">${o}</svg>`}
+o+=`<path d="M0 100Q200 62 420 96T800 90T1200 84T1600 92T2000 86T2400 90V170H0z" fill="#efcb8a" ${I}/>`;
+for(let i=0;i<8;i++){const x=70+i*300+R()*120,w=90+R()*24;o+=`<use href="#hut" x="${x}" y="${114-w*.98}" width="${w}" height="${w}"/>`}
+for(let i=0;i<10;i++)o+=palm(30+i*240+R()*140,118,58+R()*30);
+o+=`<path d="M0 126Q250 102 520 124T900 120T1300 126T1700 120T2100 124T2400 120V170H0z" fill="#5fbf4a" ${I}/><path d="M0 150Q300 132 640 148T1000 144T1400 148T1800 144T2200 148T2400 144V170H0z" fill="#d9a066" ${I}/><path d="M0 161h2400" stroke="#a9703c" stroke-width="3" stroke-dasharray="30 22" fill="none"/>`;
+for(let i=0;i<20;i++){const x=20+i*120+R()*60;o+=`<path d="M${x} 136l6-10 6 10M${x+10} 138l6-12 6 12" fill="none" stroke="#2f9e44" stroke-width="3" stroke-linecap="round"/>`}
+const hx=300+R()*1800;o+=`<path d="M${hx} 150q22-34 44 0z" fill="#f0c45a" ${I}/><path d="M${hx+8} 134l28 0" stroke="#b8862b" stroke-width="3"/>`;
+return `<svg class="scn" viewBox="0 0 2400 170" preserveAspectRatio="xMidYMax slice" aria-hidden="true">${o}</svg>`}
 const C={hero:['hills','#5fe0a8','#3fcf8f'],builder:['hills','#ffc27a','#ff9a5a',[['boy',20,'page']]],templates:['city','#fff6e5','#a9dcff',[['boy',20,'page']]],ats:['hills','#5fe0a8','#3fcf8f',[['girl',20,'mag']]],match:['hills','#9af0c8','#3fcf8f',[['boy',20,'clip']]],cover:['city','#b99bff','#fff',[['girl',20,'mail']]],how:['hills','#5fe0a8','#3fcf8f',[['girl',20,''],['boy',68,'']]],reviews:['city','#7fd0ff','#d2bcff',[['girl',20,'']]],pricing:['hills','#5fe0a8','#3fcf8f',[['boy',20,'coin']]]};
 Object.entries(C).forEach(([id,[t,a,b,ch]])=>{const el=document.getElementById(id);if(!el)return;seed=id.length*13;el.insertAdjacentHTML('beforeend',scene(t,a,b));el.setAttribute('data-scene','');
 (ch||[]).forEach(([w,x,p],i)=>{const side=x>50?'right:'+(100-x-12)+'%':'left:'+x+'%';el.insertAdjacentHTML('beforeend',`<div class="vg${x>50?' rt':''}" style="${side}"><svg class="pl pl1" viewBox="-10 -20 240 560" aria-hidden="true"><use href="#palm" x="-10" y="-20" width="240" height="560"/></svg><svg class="pl pl2" viewBox="-10 -20 240 560" aria-hidden="true"><use href="#palm" x="-10" y="-20" width="240" height="560"/></svg><svg class="hut" viewBox="0 0 300 220" aria-hidden="true"><use href="#hut"/></svg><svg class="sc" style="animation-delay:${-i*1.7}s" viewBox="-40 0 280 280" role="img" aria-label="Cartoon character"><g stroke="#1b2459" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><use href="#${w}" width="200" height="280"/>${P[p]}</g></svg></div>`)})});
